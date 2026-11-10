@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stage Requirements Stepper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-top: 20px; overflow-x: auto; }
+  .req-card { margin-top: 24px; max-width: 720px; }
+  .req-card .p-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .ready { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 12px; background: #dcfce7; color: #15803d; }
+  html.dark .ready { background: #14532d55; color: #86efac; }
+  .ready-wait { color: var(--ink-3); }
+
+  .stepper { list-style: none; margin: 0; padding: 8px 20px 16px; }
+  .stage { position: relative; padding-left: 36px; }
+  .stage + .stage { margin-top: 2px; }
+  .stage::before { content: ''; position: absolute; left: 10px; top: 30px; bottom: -6px; width: 2px; background: var(--border); }
+  .stage:last-child::before { display: none; }
+  .marker { position: absolute; left: 0; top: 9px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #fff; }
+  .marker.done { background: var(--ok-ink); }
+  html.dark .marker.done { color: #0d0d12; }
+  .marker.cur { background: var(--accent); box-shadow: 0 0 0 4px var(--tint); }
+  html.dark .marker.cur { box-shadow: 0 0 0 4px #16313e; }
+  .marker.todo { background: var(--card); border: 2px solid var(--border-strong); }
+  .shead { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 40px; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+  .shead:hover { background: var(--card-muted); }
+  html.dark .shead:hover { background: #1c1c24; }
+  .shead:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .stage.current .shead { background: var(--tint); }
+  html.dark .stage.current .shead { background: #16313e; }
+  .shead .name { flex: 1; min-width: 0; }
+  .stage.current .shead .name { font-weight: 600; }
+  .count { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .count.full { color: var(--ok-ink); }
+  .chev { width: 7px; height: 7px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform .15s; flex: none; margin: 0 4px; }
+  .stage.open .chev { transform: rotate(45deg); }
+  .sbody { display: none; padding: 2px 10px 10px; }
+  .stage.open .sbody { display: block; }
+  .req { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .req:last-child { border-bottom: 0; }
+  .req .mark { width: 14px; height: 14px; border-radius: 50%; flex: none; border: 1.5px solid var(--gray-400); }
+  .req .mark.met { background: var(--ok-ink); border-color: var(--ok-ink); }
+  .req .rname { flex: 1; min-width: 0; }
+  .linkbtn { border: 0; background: transparent; padding: 0; cursor: pointer; }
+  .readonly { color: var(--ink-3); }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">Stage requirements stepper</span>
+  <span class="t-meta" style="color:#9ca3af">July 2, 2026 · Clara-1072 · Lead detail, Stage requirements · Shipped</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+
+<div class="review-layout">
+<div class="split-wrap">
+
+<div data-variant="proposed" class="pro">
+<div class="variant-tag">Proposed</div>
+<div class="app">
+  <aside class="side">
+    <div class="side-head"><span class="side-logo"></span>Clara Studio</div>
+    <div class="side-ws"><span class="av">A</span><div><b>Acme Corp</b><small>Workspace · 3 projects</small></div></div>
+    <div class="side-item"><i></i>Dashboard</div>
+    <div class="side-item"><i></i>Overview</div>
+    <div class="side-item active"><i></i>Sales pipeline</div>
+    <div class="side-item"><i></i>Issue Board</div>
+    <hr><div class="side-group">Projects (3)</div>
+    <div class="side-item"><i></i>Website Rebuild</div>
+    <div class="side-item"><i></i>Brand Refresh</div>
+    <div class="side-item"><i></i>Data Migration</div>
+  </aside>
+  <div class="main">
+    <div class="topbar">Acme Corp › Sales pipeline › <b>Acme Corp · Website deal</b></div>
+    <div class="page">
+      <h1 class="t-page-title">Acme Corp · Website deal</h1>
+      <p class="t-page-context">Deal · stage Discovery · owner Dana Wu · opened June 12</p>
+
+      <div class="tabs">
+        <span class="t-tab">Overview</span><span class="t-tab on">Documents</span><span class="t-tab">Conversations</span>
+      </div>
+
+      <section class="p-card req-card">
+        <div class="p-card-head">
+          <div>
+            <h2 class="t-section">Stage requirements</h2>
+            <p class="t-meta">Documents each stage needs before the deal moves on. The current stage is highlighted.</p>
+          </div>
+          <span class="row" id="readySlot"></span>
+        </div>
+        <ol class="stepper" id="stepper"></ol>
+      </section>
+      <p class="t-help" style="max-width:720px">Click a stage to open or close it. Link the SOW on the current stage to see "Ready to advance" appear.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<aside class="notes">
+  <h2>What this proposes and why</h2>
+  <p class="notes-sub">The Stage requirements panel on a deal shows every sales stage as a stepper, not only the current one. Only the current stage can be changed, and only it decides whether the deal is ready to move on.</p>
+  <ol>
+    <li><b>All stages are shown, as a stepper.</b> First Contact, Discovery and Proposal sit in order, with a line joining them. <span class="why">The rep sees where the deal has been and what comes next, not just today's checklist.</span></li>
+    <li><b>The current stage is open and highlighted.</b> It carries the brand tint and a filled marker. <span class="why">One stage is the one to work on; it should be the one that is already open.</span></li>
+    <li><b>Past and future stages are closed, read-only, each with an x/n count.</b> They open on click to show their rows, with no actions. <span class="why">The count says enough at a glance; the rows are there to check, not to edit.</span></li>
+    <li><b>"+ Link" appears only on the current stage's unmet requirements.</b> <span class="why">Linking a document to a past or future stage would not change what the deal needs now.</span></li>
+    <li><b>"Ready to advance" reflects only the current stage.</b> It appears in the panel header when the current stage reaches its full count (2/2 here). <span class="why">Advancing is gated on the current stage; a full past stage must not suggest the deal can move.</span></li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+<script>
+// Concept page: there is no Current view, so keep the proposed block visible whatever another page stored.
+(function () {
+  function fix() {
+    var b = document.body;
+    if (b.dataset.show !== 'proposed') {
+      b.dataset.show = 'proposed';
+      b.classList.toggle('hide-pins', !!document.querySelector('.review-layout.no-notes'));
+    }
+  }
+  document.addEventListener('click', fix);
+  document.addEventListener('keydown', fix);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fix); else fix();
+})();
+</script>
+<script>
+(function () {
+  const stages = [
+    { name: 'First Contact', relation: 'past', reqs: [{ name: 'Discovery call notes', met: true }] },
+    { name: 'Discovery', relation: 'current', reqs: [{ name: 'Solution Design', met: true }, { name: 'SOW', met: false }] },
+    { name: 'Proposal', relation: 'future', reqs: [{ name: 'Proposal deck', met: false }] },
+  ];
+  const open = new Set(['Discovery']);
+  const list = document.getElementById('stepper');
+  const slot = document.getElementById('readySlot');
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  function render() {
+    list.innerHTML = stages.map((s, si) => {
+      const met = s.reqs.filter((r) => r.met).length;
+      const full = met === s.reqs.length;
+      const isCur = s.relation === 'current';
+      const marker = s.relation === 'past' ? '<span class="marker done" aria-hidden="true">✓</span>'
+        : isCur ? '<span class="marker cur" aria-hidden="true"></span>'
+        : '<span class="marker todo" aria-hidden="true"></span>';
+      const tag = isCur
+        ? '<span class="chip blue t-badge">Current</span>' + '<span class="pin">2</span>'
+        : `<span class="t-meta">${s.relation === 'past' ? 'past' : 'upcoming'}</span>`;
+      const rows = s.reqs.map((r, ri) => {
+        let action;
+        if (r.met) action = isCur
+          ? `<span class="chip green t-badge">✓ Linked</span><button class="linkbtn t-link" style="font-size:12px" data-unlink="${si}:${ri}">Unlink</button>`
+          : '<span class="chip green t-badge">✓ Linked</span>';
+        else action = isCur
+          ? `<button class="btn sm" data-link="${si}:${ri}">+ Link</button><span class="pin">4</span>`
+          : '<span class="t-meta readonly">Not linked</span>';
+        return `<div class="req"><span class="mark ${r.met ? 'met' : ''}"></span><span class="rname t-body">${esc(r.name)}</span>${action}</div>`;
+      }).join('');
+      const pin = si === 0 ? '<span class="pin">1</span>' : '';
+      const countPin = s.relation === 'future' ? '<span class="pin">3</span>' : '';
+      return `<li class="stage ${isCur ? 'current' : ''} ${open.has(s.name) ? 'open' : ''}">
+        ${marker}
+        <button class="shead" type="button" aria-expanded="${open.has(s.name)}" data-stage="${esc(s.name)}">
+          <span class="name t-body">${esc(s.name)}${pin}</span>${tag}
+          <span class="count ${full ? 'full' : ''}">${met}/${s.reqs.length}</span>${countPin}
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+        <div class="sbody">${rows}${isCur ? '' : '<p class="t-help readonly" style="margin-top:4px">Read-only: only the current stage can be changed.</p>'}</div>
+      </li>`;
+    }).join('');
+
+    const cur = stages.find((s) => s.relation === 'current');
+    const ready = cur.reqs.every((r) => r.met);
+    slot.innerHTML = ready
+      ? '<span class="ready t-badge">✓ Ready to advance</span><span class="pin">5</span>'
+      : `<span class="t-meta ready-wait">${cur.reqs.filter((r) => r.met).length} of ${cur.reqs.length} for Discovery</span><span class="pin">5</span>`;
+  }
+
+  list.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-link], [data-unlink]');
+    if (link) {
+      const [si, ri] = (link.dataset.link || link.dataset.unlink).split(':').map(Number);
+      stages[si].reqs[ri].met = !!link.dataset.link;
+      render();
+      return;
+    }
+    const head = e.target.closest('.shead');
+    if (!head) return;
+    const name = head.dataset.stage;
+    open.has(name) ? open.delete(name) : open.add(name);
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Global Search</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  :root { --mark-bg: rgba(67,182,231,.22); --backdrop: rgba(0,0,0,.4); }
+  html.dark { --mark-bg: rgba(67,182,231,.3); --backdrop: rgba(0,0,0,.6); }
+  mark { background: var(--mark-bg); color: inherit; border-radius: 2px; padding: 0 1px; }
+  kbd { font-family: var(--font-mono); font-size: 10px; line-height: 1; padding: 3px 6px; border-radius: 4px; border: 1px solid var(--border-strong); color: var(--ink-3); background: var(--card); }
+  .side-item .n { margin-left: auto; font-size: 12px; color: var(--ink-3); }
+  .side-item .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .topbar { justify-content: space-between; }
+  .search-trigger { display: inline-flex; align-items: center; gap: 8px; height: 34px; min-width: 260px; padding: 0 8px 0 12px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--card); color: var(--ink-3); cursor: pointer; }
+  .search-trigger:hover { border-color: var(--gray-400); }
+  .search-trigger:focus-visible, .try:focus-visible, .cp-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .search-trigger span.lbl { flex: 1; text-align: left; font-size: 14px; font-weight: 300; }
+  .search-trigger svg { width: 16px; height: 16px; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: #c7d2fe; color: #3730a3; font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+
+  .prompt { max-width: 580px; margin: 10vh auto 0; text-align: center; }
+  .prompt .t-body-2 { margin: 12px 0 16px; }
+  .tries { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .try { font-family: var(--font-mono); font-size: 12px; height: 28px; padding: 0 12px; border-radius: 14px; border: 1px solid var(--border-strong); background: var(--card); color: var(--link); cursor: pointer; }
+  .try:hover { background: var(--tint); }
+  html.dark .try:hover { background: #16313e; }
+
+  .cp-overlay { position: fixed; inset: 0; z-index: 60; display: flex; align-items: flex-start; justify-content: center; padding: 16px; padding-top: 12vh; }
+  .cp-backdrop { position: fixed; inset: 0; background: var(--backdrop); }
+  .cp { position: relative; width: 100%; max-width: 672px; border-radius: 12px; background: var(--card); border: 1px solid var(--border-strong); box-shadow: 0 25px 50px -12px rgba(0,0,0,.35); overflow: hidden; }
+  .cp-input { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .cp-input svg { width: 16px; height: 16px; color: var(--ink-3); flex: none; }
+  .cp-input input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; font-size: 14px; color: var(--ink-1); }
+  .cp-input input::placeholder { color: var(--ink-3); font-weight: 300; }
+  .spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); border-top-color: var(--accent); animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .cp-list { max-height: 55vh; overflow-y: auto; }
+  .cp-group { display: flex; align-items: center; gap: 8px; padding: 12px 16px 4px; }
+  .cp-group .by { font-size: 12px; font-weight: 300; color: var(--ink-2); text-transform: none; letter-spacing: 0; }
+  .cp-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 8px 16px; border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+  .cp-row.active { background: var(--tint); }
+  html.dark .cp-row.active { background: #16313e; }
+  .cp-row .ic { width: 16px; height: 16px; color: var(--ink-3); flex: none; }
+  .cp-row.active .ic { color: var(--accent-text); }
+  html.dark .cp-row.active .ic { color: var(--accent); }
+  .cp-row .body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .cp-row .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cp-row .snip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
+  .cp-row .m { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); white-space: nowrap; }
+  .cp-state { padding: 32px 16px; text-align: center; }
+  .cp-foot { display: flex; gap: 16px; padding: 8px 16px; border-top: 1px solid var(--border); }
+
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 70; background: var(--ink-1); color: var(--page); padding: 10px 14px; border-radius: 10px; font-size: 13px; box-shadow: 0 10px 30px rgba(0,0,0,.25); max-width: calc(100% - 32px); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .toast code { font-family: var(--font-mono); font-size: 11px; opacity: .8; }
+  @media (max-width: 760px) { .search-trigger { min-width: 0; } .search-trigger .lbl, .search-trigger kbd { display: none; } }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">Global search</span>
+  <span class="t-meta" style="color:#9ca3af">September 22, 2026 · Top bar search and ⌘K search bar</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+
+<div class="review-layout">
+<div class="split-wrap">
+
+<div data-variant="proposed" class="pro">
+<div class="variant-tag">Proposed</div>
+<div class="app">
+  <aside class="side">
+    <div class="side-head"><span class="side-logo"></span>Clara Studio</div>
+    <div class="side-item active"><i></i>Dashboard</div>
+    <div class="side-item"><i></i>My work</div>
+    <div class="side-item"><i></i>Conversations</div>
+    <hr><div class="side-group">Workspaces (23)</div>
+    <div id="sideWs"></div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <span><b>Dashboard</b></span>
+      <span class="row" style="gap:10px">
+        <button class="search-trigger" id="searchTrigger" type="button" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <span class="lbl">Search</span><kbd class="kbd-hint">⌘K</kbd>
+        </button><span class="pin" style="margin-left:-4px">1</span>
+        <span class="avatar" aria-label="Dana Wu">DW</span>
+      </span>
+    </div>
+    <div class="page">
+      <div class="prompt">
+        <h1 class="t-page-title">Global search</h1>
+        <p class="t-body-2">Press <kbd class="kbd-hint">⌘K</kbd> anywhere, or click <b style="font-weight:500;color:var(--ink-1)">Search</b> in the top bar. The search bar matches workspaces and projects by name<span class="pin">2</span>, and searches documents, issues and comments in full<span class="pin">3</span>. Try:</p>
+        <div class="tries" id="tries"></div>
+        <p class="t-help">Typing shows name matches at once; the full search follows a moment later<span class="pin">4</span></p>
+        <p class="t-help">Illustrative data, held in the page. Choosing a result shows the route the app would open<span class="pin">5</span></p>
+        <p class="t-help">↑ ↓ to move, Enter to open, Esc to close<span class="pin">6</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<aside class="notes">
+  <h2>What this proposes and why</h2>
+  <p class="notes-sub">One search for the whole app: a Search control in the top bar that opens a search bar over any page, also on ⌘K (Ctrl K on Windows). It finds places by name and content in full, in one list grouped by kind.</p>
+  <ol>
+    <li><b>One search bar, from the top bar or ⌘K anywhere.</b> The top bar shows the shortcut next to the word Search. <span class="why">Search is reachable from every page without leaving it, and the shortcut teaches itself.</span></li>
+    <li><b>Workspaces and projects match by name, under "Jump to".</b> Up to four workspaces and eight places in total, marked "by name". <span class="why">These are places to go, not text to read; matching their names is instant and predictable.</span></li>
+    <li><b>Documents, issues and comments are searched in full.</b> When the match is in the body, a one-line snippet shows it highlighted. <span class="why">People remember a phrase from a document or a comment more often than its title.</span></li>
+    <li><b>Name matches show at once; the full search follows after a short wait.</b> A spinner in the input marks the server search (about a quarter of a second after typing stops). <span class="why">Jumping to a known workspace stays instant, and the server is not queried on every keystroke.</span></li>
+    <li><b>Choosing a result opens it.</b> Here a note shows the route the app would open, such as <code>/clients/acme-corp/issues/17</code>. <span class="why">Every result is a destination, so the list never ends in a dead end.</span></li>
+    <li><b>Keyboard first.</b> Arrow keys move the highlight, Enter opens, Esc closes and returns focus to where it was. <span class="why">The people who use ⌘K expect to finish without the mouse.</span></li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+<script>
+// Concept page: there is no Current view, so keep the proposed block visible whatever another page stored.
+(function () {
+  function fix() {
+    var b = document.body;
+    if (b.dataset.show !== 'proposed') {
+      b.dataset.show = 'proposed';
+      b.classList.toggle('hide-pins', !!document.querySelector('.review-layout.no-notes'));
+    }
+  }
+  document.addEventListener('click', fix);
+  document.addEventListener('keydown', fix);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fix); else fix();
+})();
+</script>
+<script>
+const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const WORKSPACES = [
+  ['Northwind Logistics', ['Compliance Uplift', 'Fleet Telemetry']],
+  ['Halcyon Health', ['Patient Portal', 'Data Handling Review']],
+  ['Brightwater Utilities', ['Meter Reads Pipeline']],
+  ['Kestrel Financial', ['Exports Hardening', 'Ledger Sync']],
+  ['Meridian Foods', ['Supplier Portal']],
+  ['Ardent Robotics', ['Firmware Rollout']],
+  ['Cobalt Mining Group', ['Penetration Test Remediation']],
+  ['Lumen Education', ['Enrolment Rebuild']],
+  ['Saltmarsh Insurance', ['Claims Handover']],
+  ['Vertex Manufacturing', ['Shop-floor Dashboard']],
+  ['Peregrine Travel', ['Booking Engine v2']],
+  ['Ironbark Construction', ['Site Safety App']],
+  ['Solstice Energy', ['Tariff Engine']],
+  ['Marlowe Legal', ['Adapter Pattern Spike', 'Reporting Rebuild']],
+  ['Juniper Retail', ['Loyalty Relaunch', 'Store Locator']],
+  ['Anchorpoint Marine', ['Integration Comparison']],
+  ['Thornfield Agriculture', ['Yield Forecasting']],
+  ['Calder Pharmaceuticals', ['Payments Integration']],
+  ['Whitmore Hospitality', ['Self-Service Portal']],
+  ['Glasshouse Media', ['Reporting Rebuild', 'Shadow-traffic Window']],
+  ['Initech Solutions', ['DevFlow v2']],
+  ['Globex Industries', ['Inventory Platform']],
+  ['Acme Corp', ['Data Migration', 'Onboarding Automation', 'Billing Platform']],
+].map(([name, projects]) => ({ name, projects, slug: slug(name) }));
+
+const DOCS = [
+  { title: 'Technical Specification — Self-Service Portal', type: 'spec', ws: 'Whitmore Hospitality', body: 'Guest self-service portal covering check-in, room service and folio. Loyalty tier lookup reuses the connector built for Juniper Retail.' },
+  { title: 'Business Requirements — Data Migration', type: 'brd', ws: 'Acme Corp', body: 'R-1 through R-14 for moving invoices, contacts and attachments off the legacy system. Export cut-over window is a weekend.' },
+  { title: 'Master Service Agreement', type: 'sow', ws: 'Juniper Retail', body: 'Master agreement between Lakeside Partners and Juniper Retail Ltd covering credit-based engagements from January 2026.' },
+  { title: 'Interface Mockup — Data Migration', type: 'mock', ws: 'Acme Corp', body: 'Screens for the migration progress console and the reconciliation report. Pattern borrowed from the Juniper loyalty console.' },
+  { title: 'WBS & Estimate — Self-Service Portal', type: 'estimate', ws: 'Whitmore Hospitality', body: 'Twelve packages, 184 credits net. Loyalty integration package assumes the Juniper connector is reusable.' },
+  { title: 'Interface Mockup — Onboarding Automation', type: 'mock', ws: 'Acme Corp', body: 'Onboarding wizard, welcome email sequence and the CSV account import step.' },
+  { title: 'Statement of Work — Onboarding Automation', type: 'sow', ws: 'Acme Corp', body: 'Fixed-scope onboarding automation. Juniper-style acceptance checklist attached as Schedule B.' },
+  { title: 'Data Handling & Access Decision', type: 'decision', ws: 'Halcyon Health', body: 'Decision record: patient exports stay inside the tenant; no cross-workspace export. Reviewed with Juniper Retail precedent.' },
+  { title: 'Account Onboarding Notes', type: 'spec', ws: 'Juniper Retail', body: 'Notes from the Juniper Retail kickoff: store list, POS vendors, loyalty migration risks.' },
+  { title: 'Technical Specification — Compliance Uplift', type: 'spec', ws: 'Northwind Logistics', body: 'Audit-log retention, driver-hours compliance export and the permission model rework.' },
+  { title: 'Business Requirements — Loyalty Relaunch', type: 'brd', ws: 'Juniper Retail', body: 'Points, tiers, refunds and the store-locator dependency for the Juniper Retail loyalty relaunch.' },
+  { title: 'WBS & Estimate — Reporting Rebuild', type: 'estimate', ws: 'Glasshouse Media', body: 'Rebuild of the campaign reporting stack. Nightly export to the client warehouse.' },
+  { title: 'Payments Integration Decision Record', type: 'decision', ws: 'Calder Pharmaceuticals', body: 'Chose a regulated-goods payment provider over a general one because of the export rules for pharmacy payments.' },
+  { title: 'Statement of Work — Fleet Telemetry', type: 'sow', ws: 'Northwind Logistics', body: 'Telemetry ingest, vehicle map and a weekly CSV export for the ops team.' },
+  { title: 'Exports Hardening Spec', type: 'spec', ws: 'Kestrel Financial', body: 'Every export must pass the workspace permission check before the file is generated.' },
+];
+
+const ISSUES = [
+  { n: 2, title: 'Validate DevFlow v2 sizing with engineering', status: 'production_uat', ws: 'Initech Solutions', body: 'Sizing review before UAT sign-off.' },
+  { n: 1, title: 'Fix production memory leak', status: 'in_progress', ws: 'Globex Industries', body: 'Heap grows under the inventory export job.' },
+  { n: 1, title: 'Implement user authentication', status: 'ready', ws: 'Acme Corp', body: 'SSO for the onboarding wizard.' },
+  { n: 3, title: 'Add inventory CSV export', status: 'ready', ws: 'Globex Industries', body: 'CSV export of stock levels per warehouse.' },
+  { n: 5, title: 'Migrate billing service to GraphQL', status: 'in_progress', ws: 'Acme Corp', body: 'Part of the data migration programme.' },
+  { n: 2, title: 'Set up CI/CD pipeline', status: 'ready', ws: 'Acme Corp', body: 'Pipeline for the migration tooling.' },
+  { n: 1, title: 'Design landing page', status: 'backlog', ws: 'Initech Solutions', body: 'Marketing page for DevFlow v2.' },
+  { n: 39, title: 'Tidy the orphaned attachment rows', status: 'production_uat', ws: 'Juniper Retail', body: 'Attachments left behind by the Juniper loyalty import.' },
+  { n: 21, title: 'Rework the permission check on exports', status: 'qa_in_progress', ws: 'Juniper Retail', body: 'Exports from Juniper Retail must respect store-level permissions.' },
+  { n: 12, title: 'Loyalty points double-counted on refunds', status: 'blocked', ws: 'Juniper Retail', body: 'Blocked on POS vendor fix.' },
+  { n: 44, title: 'Store locator map tiles 404 in staging', status: 'ready', ws: 'Juniper Retail', body: 'Tile server key missing in staging.' },
+  { n: 8, title: 'Telemetry ingest drops packets over 1 MB', status: 'in_progress', ws: 'Northwind Logistics', body: 'Ingest buffer cap.' },
+  { n: 17, title: 'Migration dry-run fails on legacy invoices', status: 'waiting', ws: 'Acme Corp', body: 'Invoices before 2019 have no currency code.' },
+  { n: 30, title: 'Onboarding email template missing footer', status: 'closed', ws: 'Acme Corp', body: 'Footer partial not included.' },
+  { n: 9, title: 'Nightly export times out on large campaigns', status: 'in_progress', ws: 'Glasshouse Media', body: 'Export exceeds the 10-minute function limit.' },
+];
+
+const COMMENTS = [
+  { author: 'Priya Natarajan', on: 'Master Service Agreement', text: 'Juniper’s legal team signed the MSA amendment yesterday; credits start Monday.' },
+  { author: 'Marcus Bell', on: 'Issue 21 · Rework the permission check on exports', text: 'The export job now respects workspace scoping. Ready for QA on staging.' },
+  { author: 'Dana Wu', on: 'Issue 17 · Migration dry-run fails on legacy invoices', text: 'Defaulting legacy invoices to GBP and flagging them in the reconciliation report.' },
+  { author: 'Sofia Reyes', on: 'Interface Mockup — Onboarding Automation', text: 'Can we reuse the Juniper onboarding checklist here instead of a new one?' },
+  { author: 'Marcus Bell', on: 'Issue 9 · Nightly export times out on large campaigns', text: 'Splitting the export into per-campaign chunks fixed it locally.' },
+];
+
+const P = {
+  users: 'M17 20h5v-2a3 3 0 00-5.4-1.8M17 20H7m10 0v-2c0-.7-.1-1.3-.4-1.8M7 20H2v-2a3 3 0 015.4-1.8M7 20v-2c0-.7.1-1.3.4-1.8m0 0a5 5 0 019.2 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
+  folder: 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z',
+  message: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.4-4 8-9 8a9.9 9.9 0 01-4-.8L3 20l1.4-3.7A7.4 7.4 0 013 12c0-4.4 4-8 9-8s9 3.6 9 8z',
+  search: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
+  document: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.6a1 1 0 01.7.3l5.4 5.4a1 1 0 01.3.7V19a2 2 0 01-2 2z',
+  issue: 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+};
+const ic = (name, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[name]}"/></svg>`;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const GROUP = { jump: 'Jump to', document: 'Documents', issue: 'Issues', comment: 'Comments' };
+const GROUP_PIN = { jump: 2, document: 3 };
+const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+
+let cp = null, cpRows = [], cpActive = 0, cpTimer = null, prevFocus = null;
+
+function highlight(text, q) {
+  if (!q) return esc(text);
+  const i = text.toLowerCase().indexOf(q.toLowerCase());
+  if (i < 0) return esc(text);
+  return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+}
+function snippet(body, q) {
+  const i = body.toLowerCase().indexOf(q.toLowerCase());
+  if (i < 0) return '';
+  const start = Math.max(0, i - 40);
+  return (start > 0 ? '…' : '') + highlight(body.slice(start, i + q.length + 60), q);
+}
+function search(q) {
+  const needle = q.trim().toLowerCase();
+  const rows = [];
+  if (needle.length >= 1) {
+    let n = 0;
+    for (const w of WORKSPACES) { if (n < 4 && w.name.toLowerCase().includes(needle)) { rows.push({ kind: 'jump', icon: 'users', title: w.name, meta: 'workspace', route: `/clients/${w.slug}` }); n++; } }
+    for (const w of WORKSPACES) for (const p of w.projects) { if (rows.length < 8 && p.toLowerCase().includes(needle)) rows.push({ kind: 'jump', icon: 'folder', title: p, meta: w.name, route: `/clients/${w.slug}/projects/${slug(p)}` }); }
+  }
+  if (needle.length >= 2) {
+    DOCS.filter((d) => (d.title + ' ' + d.body).toLowerCase().includes(needle)).slice(0, 10)
+      .forEach((d) => rows.push({ kind: 'document', icon: 'document', title: d.title, meta: d.type, snip: d.title.toLowerCase().includes(needle) ? '' : snippet(d.body, needle), route: `/clients/${slug(d.ws)}/documents/${slug(d.title)}` }));
+    ISSUES.filter((i) => (i.title + ' ' + i.body).toLowerCase().includes(needle)).slice(0, 8)
+      .forEach((i) => rows.push({ kind: 'issue', icon: 'issue', title: i.title, meta: `issue ${i.n} · ${i.status.replace(/_/g, ' ')}`, snip: i.title.toLowerCase().includes(needle) ? '' : snippet(i.body, needle), route: `/clients/${slug(i.ws)}/issues/${i.n}` }));
+    COMMENTS.filter((c) => c.text.toLowerCase().includes(needle)).slice(0, 6)
+      .forEach((c) => rows.push({ kind: 'comment', icon: 'message', title: c.text, meta: `comment by ${c.author}`, snip: 'on ' + esc(c.on), route: `/comments/${slug(c.on)}` }));
+  }
+  return rows;
+}
+
+function openSearch(prefill = '') {
+  if (cp) return;
+  prevFocus = document.activeElement;
+  cp = document.createElement('div');
+  cp.className = 'cp-overlay';
+  cp.innerHTML = `<div class="cp-backdrop"></div>
+    <div class="cp" role="dialog" aria-modal="true" aria-label="Search">
+      <div class="cp-input">${ic('search')}<input id="cpInput" type="text" autocomplete="off" aria-label="Search" placeholder="Find documents, issues and comments, or jump to a workspace or project"><span id="cpSpin" hidden class="spin"></span><span class="pin" id="cpPin4" hidden>4</span><kbd>esc</kbd></div>
+      <div class="cp-list" id="cpList" role="listbox" aria-label="Results"></div>
+      <div class="cp-foot t-meta"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span><span class="pin">6</span></div>
+    </div>`;
+  document.body.appendChild(cp);
+  const input = cp.querySelector('#cpInput');
+  input.value = prefill;
+  input.focus();
+  input.addEventListener('input', () => schedule(input.value));
+  cp.querySelector('.cp-backdrop').addEventListener('click', closeSearch);
+  renderResults(prefill, true);
+  if (prefill) schedule(prefill);
+}
+function closeSearch() {
+  if (!cp) return;
+  clearTimeout(cpTimer);
+  cp.remove(); cp = null; cpRows = [];
+  if (prevFocus && prevFocus.focus) prevFocus.focus();
+}
+function schedule(q) {
+  clearTimeout(cpTimer);
+  const spin = cp.querySelector('#cpSpin'), pin4 = cp.querySelector('#cpPin4');
+  // Name matches are local and instant; documents, issues and comments simulate the debounced server search.
+  renderResults(q, false, true);
+  if (q.trim().length >= 2) {
+    spin.hidden = false; pin4.hidden = false;
+    cpTimer = setTimeout(() => { spin.hidden = true; pin4.hidden = true; renderResults(q, false); }, 260);
+  } else { spin.hidden = true; pin4.hidden = true; }
+}
+function renderResults(q, initial, jumpOnly = false) {
+  const list = cp.querySelector('#cpList');
+  const needle = q.trim();
+  cpRows = jumpOnly ? search(needle).filter((r) => r.kind === 'jump') : search(needle);
+  cpActive = 0;
+  if (!needle) { list.innerHTML = '<div class="cp-state t-body-2">Type to search. Workspaces and projects match by name; documents, issues and comments are searched in full.</div>'; return; }
+  if (!cpRows.length) {
+    list.innerHTML = jumpOnly || needle.length < 2 ? '' : `<div class="cp-state t-body-2">No matches for “${esc(needle)}”.</div>`;
+    return;
+  }
+  let html = '', last = null;
+  cpRows.forEach((r, i) => {
+    if (r.kind !== last) {
+      const pin = GROUP_PIN[r.kind] ? `<span class="pin">${GROUP_PIN[r.kind]}</span>` : '';
+      html += `<div class="cp-group"><span class="t-overline">${GROUP[r.kind]}</span>${r.kind === 'jump' ? '<span class="by">by name</span>' : ''}${pin}</div>`;
+      last = r.kind;
+    }
+    html += `<button type="button" class="cp-row ${i === 0 ? 'active' : ''}" role="option" data-i="${i}" aria-selected="${i === 0}">${ic(r.icon, 'ic')}<span class="body"><span class="t t-body">${highlight(r.title, needle)}</span>${r.snip ? `<span class="snip t-meta">${r.snip}</span>` : ''}</span><span class="m">${esc(r.meta)}</span></button>`;
+  });
+  list.innerHTML = html;
+  list.querySelectorAll('.cp-row').forEach((el) => {
+    el.addEventListener('mouseenter', () => setActive(+el.dataset.i));
+    el.addEventListener('click', () => choose(+el.dataset.i));
+  });
+}
+function setActive(i) {
+  if (!cp || !cpRows.length) return;
+  cpActive = Math.max(0, Math.min(cpRows.length - 1, i));
+  cp.querySelectorAll('.cp-row').forEach((el) => {
+    const on = +el.dataset.i === cpActive;
+    el.classList.toggle('active', on);
+    el.setAttribute('aria-selected', on);
+    if (on) el.scrollIntoView({ block: 'nearest' });
+  });
+}
+function choose(i) {
+  const r = cpRows[i]; if (!r) return;
+  closeSearch();
+  toast(`Opens ${r.kind === 'jump' ? (r.icon === 'users' ? 'workspace' : 'project') : r.kind} “${r.title}”`, r.route);
+}
+
+let toastEl = null, toastTimer = null;
+function toast(msg, route) {
+  if (toastEl) toastEl.remove();
+  toastEl = document.createElement('div'); toastEl.className = 'toast'; toastEl.setAttribute('role', 'status');
+  toastEl.innerHTML = `<span>${esc(msg)}</span>${route ? `<code>${esc(route)}</code>` : ''}`;
+  document.body.appendChild(toastEl);
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { if (toastEl) toastEl.remove(); toastEl = null; }, 3200);
+}
+
+document.getElementById('sideWs').innerHTML = WORKSPACES.slice(0, 9).map((w) =>
+  `<div class="side-item"><i></i><span class="nm">${esc(w.name)}</span><span class="n">${w.projects.length}</span></div>`).join('') +
+  '<div class="side-item t-meta" style="color:var(--ink-3)">14 more…</div>';
+document.querySelectorAll('.kbd-hint').forEach((k) => { k.textContent = isMac ? '⌘K' : 'Ctrl K'; });
+document.getElementById('searchTrigger').addEventListener('click', () => openSearch());
+document.getElementById('tries').innerHTML = ['juni', 'export', 'migration', 'onboarding'].map((q) => `<button type="button" class="try" data-try="${q}">${q}</button>`).join('');
+document.querySelectorAll('[data-try]').forEach((b) => b.addEventListener('click', () => openSearch(b.dataset.try)));
+
+window.addEventListener('keydown', (e) => {
+  const chord = (isMac ? e.metaKey : e.ctrlKey) && !e.altKey && e.key.toLowerCase() === 'k';
+  if (chord) { e.preventDefault(); cp ? closeSearch() : openSearch(); return; }
+  if (!cp) return;
+  if (e.key === 'Escape') { e.preventDefault(); closeSearch(); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); setActive(cpActive + 1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(cpActive - 1); }
+  else if (e.key === 'Enter') { e.preventDefault(); choose(cpActive); }
+});
+</script>
+</body>
+</html>

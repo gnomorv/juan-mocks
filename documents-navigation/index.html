@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documents Navigation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  .appframe { display: block; width: 100%; height: calc(100vh - 49px); border: 0; background: var(--page); }
+  body[data-show='split'] .appframe { height: calc(100vh - 72px); }
+  @media (max-width: 1100px) { .appframe, body[data-show='split'] .appframe { height: 82vh; } }
+  .flowseg button[aria-pressed='true'] { background: #f9fafb; color: #111827; font-weight: 600; }
+  .notes table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 12px; }
+  .notes th, .notes td { text-align: left; padding: 5px 6px 5px 0; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+  html.dark .notes th, html.dark .notes td { border-color: #27272f; }
+  .notes th { font-weight: 600; color: #111827; }
+  html.dark .notes th { color: #f9fafb; }
+  .notes td.n { font-weight: 700; white-space: nowrap; }
+  .notes code { font-family: var(--font-mono); font-size: 11.5px; }
+  .notes .decide { margin-top: 18px; padding: 12px 14px; border-radius: 8px; background: #ede9fe; color: #3b0764; }
+  html.dark .notes .decide { background: #2e1065; color: #ede9fe; }
+  .notes .decide h3 { margin: 0 0 4px; font-size: 13px; }
+  .notes .decide p { margin: 0; }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">Documents navigation</span>
+  <span class="t-meta" style="color:#9ca3af">November 5, 2026 · getting back to Documents from a document, /w/… and /p/… Documents tab</span>
+  <span class="rb-spacer"></span>
+  <span class="seg flowseg" role="group" aria-label="Start from"><button data-flow="w">Workspace</button><button data-flow="p">Project</button></span>
+  <span class="seg" role="group" aria-label="Variant"><button data-set="show:current">Current</button><button data-set="show:proposed">Proposed</button><button data-set="show:split">Side by side</button></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+
+<div class="review-layout">
+<div class="split-wrap">
+  <div data-variant="current" class="cur"><div class="variant-tag">Current</div><iframe class="appframe" title="Current app" data-src="app.html?mode=asis"></iframe></div>
+  <div data-variant="proposed" class="pro"><div class="variant-tag">Proposed</div><iframe class="appframe" title="Proposed app" data-src="app.html?mode=tobe"></iframe></div>
+</div>
+
+<aside class="notes">
+  <h2>What changed and why</h2>
+  <p class="notes-sub">Today, leaving a document always lands on the workspace or project Overview, so people reopen Documents and find their folder again every time. The proposal keeps the tab and the folder in the links. Try it: pick Workspace or Project in the bar, open a document inside a folder, then get back to the folder or open the next document. The strip above each app shows the address and counts your clicks. Both views share one layout; the proposed one uses the shared proposed type roles, so only the navigation differs.</p>
+  <ol>
+    <li><b>"Back to &lt;folder&gt;" sits above the document title.</b> It reads "Back to 2. Design", or "Back to Documents" at the root, and opens the Documents tab at that folder. <span class="why">Today a document has no way back; the breadcrumb is the only way out. The link also works on phones, where the breadcrumb is cut down to the current page.</span></li>
+    <li><b>The breadcrumb names Documents and each folder.</b> Acme Corp › Website Rebuild › Documents › 2. Design › Solution Design. Each part opens Documents at that level, and the workspace or project crumb returns to the same tab instead of Overview. <span class="why">Root cause: today the breadcrumb links to <code>/w/&lt;slug&gt;</code> and <code>/p/&lt;id&gt;</code> without <code>?tab=documents</code>, so it always opens Overview. The document page knows its folder but never shows it.</span></li>
+    <li><b>The open folder is kept in the address.</b> As you move between folders the address gains <code>&amp;folder=…</code>, so browser Back, refresh and shared links reopen the same folder. <span class="why">Root cause: today the open folder lives only in the Documents list's own memory (component state in <code>ArtifactExplorer</code>), never in the address. It resets whenever the list leaves the screen, so even browser Back lands at the root. Compare with the arrows in the address strip.</span></li>
+    <li><b>Previous and next in this folder (optional).</b> Links under the document to its neighbours in the same folder, with "2 of 3 in 2. Design". <span class="why">Reading a set of files in order takes one click per file instead of a round trip through the list.</span></li>
+    <li><b>The same return works from every tab.</b> An item opened from Issues, Conversations, Activity, Agreements, Connectors, Assets or the Overview's recent documents shows "Back to &lt;tab&gt;" and a crumb for that tab. The item link carries where it was opened from as <code>?from=&lt;owner&gt;~&lt;tab&gt;~&lt;folder&gt;</code>. <span class="why">Today every item page has the same dead end as documents.</span></li>
+    <li><b>The row you opened is highlighted when you return.</b> A short blue flash marks it, and the list scrolls to it (the pin shows after you come back). <span class="why">You see where you left off without scanning the list.</span></li>
+    <li><b>Clicks to open the next document.</b>
+      <table>
+        <thead><tr><th>Starting from</th><th>Today</th><th>Proposed</th></tr></thead>
+        <tbody>
+          <tr><td>Workspace document at the Documents root</td><td class="n">3</td><td class="n">2</td></tr>
+          <tr><td>Workspace document inside a folder</td><td class="n">4</td><td class="n">1–2</td></tr>
+          <tr><td>Project document inside a folder</td><td class="n">4</td><td class="n">1–2</td></tr>
+          <tr><td>Browser Back from a document in a folder</td><td>Lands at the root</td><td>Lands in the folder</td></tr>
+        </tbody>
+      </table>
+      <span class="why">1 click with Next in this folder; 2 with Back to the folder and then the document.</span></li>
+  </ol>
+  <div class="decide">
+    <h3>Decision needed</h3>
+    <p>Changes 1, 2, 3, 5 and 6 fix both workflows and fit in one ticket; change 4 is a separate enhancement. <b>Should 1–3, 5 and 6 be filed as one ticket, with 4 kept as a separate idea?</b></p>
+  </div>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+<script>
+(() => {
+  const frames = [...document.querySelectorAll('.appframe')];
+  const read = (k, d) => { try { return localStorage.getItem('jm-' + k) || d; } catch { return d; } };
+  let flow = 'p';
+  const theme = read('theme', 'light');
+  const pins = read('notes', 'on') === 'on';
+  frames.forEach((f) => { f.src = `${f.dataset.src}&theme=${theme}&pins=${pins ? 'on' : 'off'}&flow=${flow}`; });
+
+  const state = () => ({
+    jm: 'state',
+    theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+    pins: !document.body.classList.contains('hide-pins'),
+    show: document.body.dataset.show || 'proposed',
+  });
+  const send = (m) => frames.forEach((f) => f.contentWindow && f.contentWindow.postMessage(m, '*'));
+  const sync = () => send(state());
+  new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  new MutationObserver(sync).observe(document.body, { attributes: true, attributeFilter: ['class', 'data-show'] });
+
+  const paintFlow = () => document.querySelectorAll('[data-flow]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.flow === flow)));
+  paintFlow();
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-flow]');
+    if (!b) return;
+    flow = b.dataset.flow;
+    paintFlow();
+    send({ jm: 'start', flow });
+  });
+
+  window.addEventListener('message', (e) => {
+    const m = e.data;
+    if (!m || m.jm == null) return;
+    if (m.jm === 'ready') e.source.postMessage(state(), '*');
+    else if (m.jm === 'key') document.body.dispatchEvent(new KeyboardEvent('keydown', { key: m.key, bubbles: true }));
+  });
+})();
+</script>
+</body>
+</html>

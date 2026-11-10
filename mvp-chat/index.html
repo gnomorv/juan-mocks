@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MVP Chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  .app { position: relative; min-height: calc(100vh - 49px); }
+  .side { display: flex; flex-direction: column; }
+  .scope { display: flex; padding: 3px; gap: 2px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); margin-bottom: 12px; }
+  .scope button { flex: 1; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--ink-2); font-size: 12px; font-weight: 500; cursor: pointer; }
+  .scope button.on { background: var(--tint); color: #0369a1; font-weight: 600; }
+  html.dark .scope button.on { background: #16313e; color: #7dd3fc; }
+  .tree-head { display: flex; align-items: center; justify-content: space-between; }
+  .tree-head .add { border: 0; background: transparent; color: var(--ink-3); font-size: 16px; line-height: 1; cursor: pointer; padding: 2px 6px; border-radius: 4px; }
+  .tree-head .add:hover { background: var(--card-muted); color: var(--ink-1); }
+  .node > .side-item { cursor: pointer; }
+  .node > .side-item:hover { background: var(--card-muted); }
+  html.dark .node > .side-item:hover { background: #1c1c24; }
+  .node > .side-item.active:hover { background: var(--tint); }
+  html.dark .node > .side-item.active:hover { background: #16313e; }
+  .node .kids { padding-left: 10px; }
+  .kids .side-item { gap: 6px; }
+  .node.closed > .kids { display: none; }
+  .tri { width: 6px; height: 6px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(45deg); flex: none; margin: 0 2px; transition: transform .15s; }
+  .node.closed > .side-item .tri { transform: rotate(-45deg); }
+  .side-item .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .new-chat { margin-top: 12px; width: 100%; justify-content: center; }
+  .side-foot { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+  .av-u { width: 30px; height: 30px; border-radius: 50%; background: #c7d2fe; color: #3730a3; font-size: 11px; font-weight: 700; display: grid; place-items: center; flex: none; }
+  .av-c { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; flex: none; }
+  .av-c svg { width: 16px; height: 16px; }
+
+  .topbar { justify-content: space-between; }
+  .ctx { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .ctx .chip { text-transform: none; }
+  .icon-btn { cursor: pointer; }
+  .icon-btn:hover { background: var(--card-muted); color: var(--ink-1); }
+
+  .chat { max-width: 780px; padding: 24px 32px 0; }
+  .msg { display: flex; gap: 12px; margin-bottom: 20px; }
+  .msg.user { flex-direction: row-reverse; }
+  .msg .body { min-width: 0; max-width: 620px; display: grid; gap: 10px; }
+  .msg.user .body { justify-items: end; }
+  .bubble { padding: 10px 14px; border-radius: 12px; background: var(--card-muted); border: 1px solid var(--border); }
+  .msg.user .bubble { background: var(--tint); border-color: transparent; }
+  html.dark .msg.user .bubble { background: #16313e; }
+  .bubble ul { margin: 6px 0 0; padding-left: 20px; }
+  .acts { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tool { border: 1px solid var(--border); border-radius: 10px; background: var(--card); overflow: hidden; }
+  .tool-head { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+  .tool-head:hover { background: var(--card-muted); }
+  .tool-ic { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; flex: none; }
+  .tool-ic svg { width: 14px; height: 14px; }
+  .tool-ic.ctx { background: #ede9fe; color: #6d28d9; }
+  .tool-ic.make { background: #dcfce7; color: #15803d; }
+  html.dark .tool-ic.ctx { background: #4c1d9555; color: #c4b5fd; }
+  html.dark .tool-ic.make { background: #14532d55; color: #86efac; }
+  .tool-name { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--ink-1); }
+  .tool-params { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tool-info { flex: 1; min-width: 0; }
+  .tool .chev { width: 7px; height: 7px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform .15s; flex: none; margin-right: 4px; }
+  .tool.open .chev { transform: rotate(45deg); }
+  .tool-out { display: none; margin: 0; padding: 10px 12px; border-top: 1px solid var(--border); background: var(--card-muted); font-family: var(--font-mono); font-size: 12px; line-height: 1.55; color: var(--ink-2); white-space: pre-wrap; overflow-x: auto; }
+  .tool.open .tool-out { display: block; }
+
+  .made { display: flex; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 10px; background: var(--card); }
+  .made .doc-ic { width: 32px; height: 32px; border-radius: 8px; background: #e0e7ff; color: #4338ca; display: grid; place-items: center; flex: none; }
+  html.dark .made .doc-ic { background: #312e8155; color: #a5b4fc; }
+  .made .doc-ic svg { width: 16px; height: 16px; }
+
+  .composer { position: sticky; bottom: 0; padding: 12px 32px 20px; background: linear-gradient(transparent, var(--page) 30%); max-width: 780px; }
+  .composer .input { gap: 8px; padding-right: 6px; }
+  .composer input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink-1); font-size: 14px; }
+  .composer input::placeholder { color: var(--ink-3); font-weight: 300; }
+
+  .dock { position: absolute; inset: 0; pointer-events: none; overflow: clip; z-index: 5; }
+  .shade { position: absolute; inset: 0; background: rgba(0,0,0,.25); opacity: 0; transition: opacity .2s; }
+  .dock.open .shade { opacity: 1; pointer-events: auto; }
+  .panel { position: sticky; top: 49px; margin-left: auto; width: min(440px, 100%); height: calc(100vh - 49px); background: var(--card); border-left: 1px solid var(--border); box-shadow: -10px 0 30px rgba(0,0,0,.08); transform: translateX(100%); transition: transform .25s; pointer-events: auto; display: flex; flex-direction: column; visibility: hidden; }
+  .dock.open .panel { transform: none; visibility: visible; }
+  .panel-head { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .panel-body { padding: 16px 20px 32px; overflow-y: auto; }
+  .panel-body h3 { margin: 18px 0 6px; }
+  .panel-body ul { margin: 6px 0 0; padding-left: 20px; }
+  .panel-body li + li { margin-top: 4px; }
+  @media (max-width: 760px) { .chat, .composer { padding-left: 16px; padding-right: 16px; } }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">MVP chat with Clara</span>
+  <span class="t-meta" style="color:#9ca3af">February 26, 2026 · Early MVP concept · agent-first project chat</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+
+<div class="review-layout">
+<div class="split-wrap">
+
+<div data-variant="proposed" class="pro">
+<div class="variant-tag">Proposed</div>
+<div class="app">
+  <aside class="side">
+    <div class="side-head"><span class="side-logo"></span>Clara Studio</div>
+    <div class="row" style="gap:0"><div class="scope" role="group" aria-label="Conversation scope" style="flex:1">
+      <button type="button" data-scope="Global">Global</button><button type="button" data-scope="Client">Client</button><button type="button" data-scope="Project" class="on">Project</button>
+    </div><span class="pin" style="margin-bottom:12px">1</span></div>
+
+    <div class="side-group tree-head"><span>Clients<span class="pin">2</span></span><button class="add" type="button" title="Ask Clara to create a client">+</button></div>
+    <div class="node" id="tree">
+      <div class="node">
+        <div class="side-item" data-toggle><span class="tri"></span><span class="nm">Globex Corporation</span></div>
+        <div class="kids">
+          <div class="node">
+            <div class="side-item" data-toggle><span class="tri"></span><span class="nm">Data Platform</span><span class="t-meta">asset</span></div>
+            <div class="kids">
+              <div class="node"><div class="side-item active" data-project="Analytics Hub" data-state="Active"><span class="nm">Analytics Hub</span><span class="chip green t-badge">Active</span></div></div>
+              <div class="node"><div class="side-item" data-project="API Migration" data-state="Draft"><span class="nm">API Migration</span><span class="chip amber t-badge">Draft</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="node closed">
+        <div class="side-item" data-toggle><span class="tri"></span><span class="nm">Acme Corp</span></div>
+        <div class="kids">
+          <div class="node"><div class="side-item" data-project="Website Rebuild" data-state="Closed"><span class="nm">Website Rebuild</span><span class="chip t-badge">Closed</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn new-chat" id="newChat">✦ New chat with Clara</button>
+
+    <div class="side-foot">
+      <span class="av-u">DW</span>
+      <div style="min-width:0"><div class="t-value">Dana Wu</div><div class="t-meta">dana.wu@example.com</div></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="ctx">
+        <span class="chip blue t-badge" id="scopeLabel">Project</span>
+        <b id="ctxTitle">Analytics Hub</b>
+        <span class="chip green t-badge" id="ctxState">Active</span>
+      </div>
+      <div class="row" style="gap:2px">
+        <button type="button" class="icon-btn" title="Documents" data-panel aria-label="Open documents"></button><span class="pin">5</span>
+        <button type="button" class="icon-btn" title="Project settings" aria-label="Project settings"></button>
+      </div>
+    </div>
+
+    <div class="chat" id="chat">
+      <div class="msg">
+        <span class="av-c" aria-label="Clara"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></span>
+        <div class="body">
+          <div class="bubble t-body">Hi Dana! I'm working on the <b>Analytics Hub</b> project for Globex Corporation. What would you like to tackle?</div>
+          <div class="acts"><button type="button" class="btn sm">Create a spec</button><button type="button" class="btn sm">Draft an estimate</button><button type="button" class="btn sm">Review project context</button></div>
+        </div>
+      </div>
+
+      <div class="msg user">
+        <span class="av-u">DW</span>
+        <div class="body">
+          <div class="bubble t-body">Let's create a spec for the ETL pipeline. It should pull subscription data from PayCo and AppMart, transform it, and load it into WarehouseDB.</div>
+        </div>
+      </div>
+
+      <div class="msg">
+        <span class="av-c" aria-label="Clara"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></span>
+        <div class="body">
+          <div class="bubble t-body">Great! Let me first check the project context to understand what we're working with.</div>
+
+          <div class="tool open">
+            <button type="button" class="tool-head" aria-expanded="true">
+              <span class="tool-ic ctx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></span>
+              <span class="tool-info"><span class="tool-name">getProjectContext</span><span class="pin">3</span><span class="tool-params" style="display:block">projectId: "proj_analytics_hub"</span></span>
+              <span class="chip green t-badge">✓ Done</span><span class="chev"></span>
+            </button>
+<pre class="tool-out">{
+  "project": { "name": "Analytics Hub", "state": "active" },
+  "client": { "name": "Globex Corporation" },
+  "assets": [{ "name": "Data Platform", "repoUrl": "git.example.com/globex/data-platform" }],
+  "recentArtifacts": []
+}</pre>
+          </div>
+
+          <div class="bubble t-body">This is a new project with no documents yet. Let me create the ETL Pipeline Specification.</div>
+
+          <div class="tool">
+            <button type="button" class="tool-head" aria-expanded="false">
+              <span class="tool-ic make"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16m8-8H4"/></svg></span>
+              <span class="tool-info"><span class="tool-name">createArtifact</span><span class="tool-params" style="display:block">type: "spec", title: "ETL Pipeline Specification"</span></span>
+              <span class="chip green t-badge">✓ Created</span><span class="chev"></span>
+            </button>
+<pre class="tool-out">Created artifact: art_etl_spec_001</pre>
+          </div>
+
+          <div class="made">
+            <span class="doc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.6a1 1 0 01.7.3l5.4 5.4a1 1 0 01.3.7V19a2 2 0 01-2 2z"/></svg></span>
+            <div>
+              <p class="t-card-title">ETL Pipeline Specification<span class="pin">4</span></p>
+              <p class="t-meta">Spec · just created</p>
+              <p class="t-body-2" style="margin-top:6px">Multi-source subscription data pipeline pulling from the PayCo and AppMart APIs into WarehouseDB.</p>
+            </div>
+          </div>
+
+          <div class="bubble t-body">I've created the spec. It covers:
+            <ul>
+              <li>PayCo subscription sync (webhooks and polling)</li>
+              <li>AppMart store integration</li>
+              <li>Data transformation layer</li>
+              <li>WarehouseDB loading with incremental updates</li>
+            </ul>
+          </div>
+          <div class="acts"><button type="button" class="btn sm primary" data-panel>View full spec</button><button type="button" class="btn sm">Create estimate</button><button type="button" class="btn sm">Revise scope</button><span class="pin">6</span></div>
+        </div>
+      </div>
+    </div>
+
+    <form class="composer" id="composer" autocomplete="off">
+      <div class="input"><input type="text" id="composerInput" placeholder="Ask Clara anything…" aria-label="Message Clara"><button type="submit" class="btn sm primary">Send</button></div>
+    </form>
+  </div>
+
+  <div class="dock" id="dock">
+    <div class="shade" data-panel></div>
+    <aside class="panel" aria-label="ETL Pipeline Specification">
+      <div class="panel-head">
+        <span class="doc-ic" style="width:32px;height:32px;border-radius:8px;background:#e0e7ff;color:#4338ca;display:grid;place-items:center;flex:none">✎</span>
+        <div style="flex:1;min-width:0"><h2 class="t-panel-title" style="font-size:16px;line-height:24px">ETL Pipeline Specification</h2><p class="t-meta">Spec · Analytics Hub</p></div>
+        <button type="button" class="btn sm ghost" data-panel aria-label="Close">✕</button>
+      </div>
+      <div class="panel-body">
+        <h3 class="t-section">Overview</h3>
+        <p class="t-body">This specification defines the ETL pipeline that consolidates subscription data from two payment providers into WarehouseDB.</p>
+        <h3 class="t-section">Data sources</h3>
+        <ul class="t-body">
+          <li><b>PayCo</b>: subscription events via webhooks, with hourly reconciliation polling</li>
+          <li><b>AppMart</b>: server-to-server notifications plus daily reports</li>
+        </ul>
+        <h3 class="t-section">Pipeline architecture</h3>
+        <p class="t-body">A workflow scheduler orchestrates three stages:</p>
+        <ul class="t-body">
+          <li><b>Extract</b>: pull raw events into an object-storage staging area</li>
+          <li><b>Transform</b>: normalize to one subscription schema</li>
+          <li><b>Load</b>: upsert into the WarehouseDB analytics tables</li>
+        </ul>
+        <h3 class="t-section">Data model</h3>
+        <p class="t-body">Each subscription event has <span class="mono" style="font-size:12px">subscriber_id, provider, plan_id, status, mrr, event_timestamp, provider_metadata</span>.</p>
+        <h3 class="t-section">Success criteria</h3>
+        <ul class="t-body">
+          <li>Under 15 minutes of latency for webhook events</li>
+          <li>99.9% accuracy against the source systems</li>
+          <li>At least 100k events a day</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+</div>
+
+</div>
+
+<aside class="notes">
+  <h2>What this proposes and why</h2>
+  <p class="notes-sub">The first MVP of Clara Studio as a chat: you pick what the conversation is about, ask Clara for something, watch the tools she calls, and get the document she wrote in a side panel. There is no form to fill in.</p>
+  <ol>
+    <li><b>Pick the conversation's scope first: Global, Client or Project.</b> The header badge follows the choice. <span class="why">What Clara can see and change depends on scope, so it is set before the first message, not guessed from it.</span></li>
+    <li><b>The sidebar tree is the context.</b> Client › asset › project, each project with one of three states: Draft, Active or Closed. "+" asks Clara to create a client. <span class="why">Choosing a project in the tree is how you tell Clara what you are working on.</span></li>
+    <li><b>Clara shows her work as tool cards.</b> Each card names the tool and its arguments, says Done or Created, and opens to show the raw result. <span class="why">People can check what Clara looked at before trusting what she wrote.</span></li>
+    <li><b>What Clara creates comes back as a card in the chat.</b> Title, type, when, and a one-line summary. <span class="why">The result of the conversation is visible where it happened, not hidden in another list.</span></li>
+    <li><b>The document opens in a side panel over the chat.</b> From "View full spec" or the Documents button in the header. <span class="why">You read the spec without losing your place in the conversation.</span></li>
+    <li><b>Next steps are offered as quick replies.</b> Create estimate, Revise scope. <span class="why">The usual follow-ups are one click away, and they show what Clara can do next.</span></li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+<script>
+// Concept page: there is no Current view, so keep the proposed block visible whatever another page stored.
+(function () {
+  function fix() {
+    var b = document.body;
+    if (b.dataset.show !== 'proposed') {
+      b.dataset.show = 'proposed';
+      b.classList.toggle('hide-pins', !!document.querySelector('.review-layout.no-notes'));
+    }
+  }
+  document.addEventListener('click', fix);
+  document.addEventListener('keydown', fix);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fix); else fix();
+})();
+</script>
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const stateChip = { Active: 'green', Draft: 'amber', Closed: '' };
+  const dock = $('#dock');
+
+  document.querySelectorAll('[data-scope]').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-scope]').forEach((x) => x.classList.toggle('on', x === b));
+    $('#scopeLabel').textContent = b.dataset.scope;
+  }));
+
+  $('#tree').addEventListener('click', (e) => {
+    const t = e.target.closest('[data-toggle]');
+    if (t) { t.parentElement.classList.toggle('closed'); return; }
+    const p = e.target.closest('[data-project]');
+    if (!p) return;
+    document.querySelectorAll('[data-project]').forEach((x) => x.classList.toggle('active', x === p));
+    $('#ctxTitle').textContent = p.dataset.project;
+    const s = $('#ctxState');
+    s.hidden = false;
+    s.textContent = p.dataset.state;
+    s.className = 'chip t-badge ' + stateChip[p.dataset.state];
+  });
+
+  $('#newChat').addEventListener('click', () => {
+    document.querySelectorAll('[data-scope]').forEach((x) => x.classList.toggle('on', x.dataset.scope === 'Global'));
+    $('#scopeLabel').textContent = 'Global';
+    $('#ctxTitle').textContent = 'New conversation';
+    $('#ctxState').hidden = true;
+  });
+
+  document.querySelectorAll('.tool-head').forEach((h) => h.addEventListener('click', () => {
+    const open = h.parentElement.classList.toggle('open');
+    h.setAttribute('aria-expanded', String(open));
+  }));
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-panel]')) dock.classList.toggle('open');
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') dock.classList.remove('open'); });
+
+  $('#composer').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = $('#composerInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const el = document.createElement('div');
+    el.className = 'msg user';
+    el.innerHTML = '<span class="av-u">DW</span><div class="body"><div class="bubble t-body"></div></div>';
+    el.querySelector('.bubble').textContent = text;
+    $('#chat').appendChild(el);
+    input.value = '';
+    el.scrollIntoView({ block: 'nearest' });
+  });
+})();
+</script>
+</body>
+</html>

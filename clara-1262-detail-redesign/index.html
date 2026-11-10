@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workspace and Project Detail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  [hidden] { display: none !important; }
+  body[data-page='ws'] .app[data-pg='proj'], body[data-page='proj'] .app[data-pg='ws'] { display: none; }
+  .side { display: flex; flex-direction: column; }
+  @media (min-width: 761px) { body[data-show='split'] .main { grid-column: 2; } }
+  .side-item .n { margin-left: auto; font-size: 12px; font-weight: 300; color: var(--ink-3); }
+  .tabs { display: flex; align-items: center; border-bottom: 1px solid var(--border); margin-top: 20px; overflow-x: auto; }
+  .tabs button { background: none; border-width: 0 0 2px; border-style: solid; border-color: transparent; cursor: pointer; white-space: nowrap; flex: none; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; flex: none; display: inline-grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #6bc9f0, #43b6e7); }
+  .avatar.s20 { width: 20px; height: 20px; font-size: 9px; }
+  .avatar.s16 { width: 16px; height: 16px; font-size: 7px; }
+  .avatar.b { background: linear-gradient(135deg, #fcd34d, #f59e0b); }
+  .avatar.c { background: linear-gradient(135deg, #c4b5fd, #8b5cf6); }
+  .avatar.d { background: linear-gradient(135deg, #86efac, #16a34a); }
+  .chip.red { background: #fee2e2; color: #b91c1c; }
+  .chip.purple { background: #ede9fe; color: #6d28d9; }
+  html.dark .chip.red { background: #7f1d1d55; color: #fca5a5; }
+  html.dark .chip.purple { background: #4c1d9555; color: #c4b5fd; }
+  .notes li[data-goto] { cursor: pointer; }
+  .notes li[data-goto]:hover b { text-decoration: underline; }
+  .notes .where { display: block; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #7c3aed; margin-bottom: 2px; }
+  html.dark .notes .where { color: #c4b5fd; }
+
+  /* ---------- current: today's pages (same rebuild as the visual-hierarchy 04 and 08 mock-ups) ---------- */
+  .cur .c-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+  .cur .c-badge.green { background: #dcfce7; color: #15803d; }
+  .cur .c-badge.amber { background: #ffedd5; color: #c2410c; }
+  .cur .c-badge.blue { background: #dbeafe; color: #1d4ed8; }
+  html.dark .cur .c-badge.green { background: #14532d55; color: #86efac; }
+  html.dark .cur .c-badge.amber { background: #7c2d1255; color: #fdba74; }
+  html.dark .cur .c-badge.blue { background: #1e3a8a55; color: #93c5fd; }
+  .cur .btn.red { background: #dc2626; border-color: #dc2626; color: #fff; padding: 0 9px; }
+  .cur .grid3 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 16px; }
+  .cur .rollup { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 12px; padding: 18px 20px; }
+  .cur .rollup.blue { border-left-color: #3b82f6; }
+  html.dark .cur .rollup { background: #27272f; }
+  .cur .qpanel { border: 1px solid var(--border); border-radius: 8px; background: var(--card); padding: 16px; }
+  .cur .c-link13 { font-size: 13px; font-weight: 600; color: #2a9fd0; }
+  .cur .c-meta125 { font-size: 12.5px; color: var(--gray-500); }
+  .cur .kv { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .cur .kv:last-child { border-bottom: 0; }
+  .cur .kv > span:first-child { color: var(--gray-600); }
+  .cur .kv > span:last-child { color: var(--gray-800); text-align: right; }
+  html.dark .cur .kv > span:first-child { color: var(--gray-400); }
+  html.dark .cur .kv > span:last-child { color: var(--gray-300); }
+  .cur .tot { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+  .cur .tcard { border: 1px solid var(--border); border-radius: 8px; background: var(--card); padding: 10px 12px; }
+  .cur .tcard .lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-500); }
+  .cur .tcard .amt { font-size: 18px; font-weight: 700; color: var(--gray-900); margin: 2px 0; }
+  html.dark .cur .tcard .amt { color: #fff; }
+  .cur .scope-row { border-top: 1px solid var(--border); padding: 10px 0; }
+  .cur .ghost-links { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .cur .ghost-links span { font-size: 12px; border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; color: var(--gray-600); }
+  html.dark .cur .ghost-links span { color: var(--gray-400); }
+  .cur .ucard { border: 1px solid var(--border); border-radius: 8px; background: var(--card); padding: 12px; display: flex; gap: 12px; margin-top: 12px; }
+  .cur .composer { border: 1px solid var(--border-strong); border-radius: 8px; background: var(--card); }
+  .cur .composer .tb { display: flex; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--gray-500); font-size: 12px; font-weight: 600; }
+  .cur .composer .area { padding: 12px; min-height: 64px; }
+  .cur .tbl { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 8px; }
+  .cur .tbl > div { padding: 9px 12px; border-top: 1px solid var(--border); background: var(--card); }
+  .cur .tbl > div:first-child { border-top: 0; background: var(--card-muted); }
+  .cur .usel { height: 30px; border: 1px solid var(--border); border-radius: 8px; background: var(--gray-100); display: flex; align-items: center; gap: 8px; padding: 0 10px; font-size: 13px; color: var(--gray-700); margin-top: 8px; }
+  html.dark .cur .usel { background: #16161e; color: var(--gray-300); }
+  .cur .wait li { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; color: var(--gray-700); }
+  html.dark .cur .wait li { color: var(--gray-300); }
+  .cur .ph { margin-top: 20px; }
+  .cur .ph-note { font-size: 12px; color: var(--gray-500); font-style: italic; margin: 12px 0 0; }
+
+  /* ---------- proposed: the redesign in the shared type roles ---------- */
+  .pro p { margin: 0; }
+  .pro .cols { display: grid; grid-template-columns: minmax(0, 1fr) 320px; margin-top: 4px; }
+  .pro .maincol { padding-right: 40px; min-width: 0; }
+  .pro .rail { padding-left: 32px; border-left: 1px solid var(--border); min-width: 0; }
+  .pro .blk, .pro .rblk { padding: 24px 0; border-bottom: 1px solid var(--border); }
+  .pro .blk:last-child, .pro .rblk:last-child { border-bottom: 0; }
+  .pro .blk-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+  .pro .blk-head .acts { display: flex; gap: 16px; align-items: center; }
+  .pro .read { font-size: 16px; line-height: 26px; font-weight: 400; color: var(--ink-1); max-width: 68ch; }
+  .pro .read p + p { margin-top: 10px; }
+  .pro .new { display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; background: var(--tint); color: var(--accent-text); margin-left: 8px; vertical-align: middle; }
+  html.dark .pro .new { background: #16313e; color: #7dd3fc; }
+  .pro .facts { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 0; align-items: baseline; }
+  .pro .facts dt, .pro .facts dd { margin: 0; }
+  .pro .facts dd { min-width: 0; overflow-wrap: anywhere; }
+  .pro .hover-edit { opacity: 0; transition: opacity .12s; }
+  .pro .blk:hover .hover-edit, .pro .blk:focus-within .hover-edit, .pro .rblk:hover .hover-edit, .pro .rblk:focus-within .hover-edit { opacity: 1; }
+  @media (hover: none) { .pro .hover-edit { opacity: 1; } }
+
+  /* rollup: neutral numbers, the battery keeps the status colours and every segment is a link */
+  .pro .stats { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 32px; }
+  .pro .stat { background: none; border: 0; padding: 0; text-align: left; cursor: pointer; }
+  .pro .stat:hover .t-stat-label { text-decoration: underline; }
+  .pro .battery { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--gray-200); margin-top: 12px; }
+  html.dark .pro .battery { background: #27272f; }
+  .pro .battery button { border: 0; padding: 0; height: 100%; cursor: pointer; }
+  .pro .battery button:hover { filter: brightness(1.15); }
+  .s-backlog { background: #a3a3a3; } .s-ready { background: #3b82f6; } .s-active { background: #f59e0b; } .s-done { background: #22c55e; }
+  .pro .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px; }
+  .pro .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* list rows */
+  .pro .lrow { display: flex; align-items: baseline; gap: 12px; padding: 8px; margin: 0 -8px; border-radius: 6px; }
+  .pro .lrow:hover { background: var(--card-muted); }
+  .pro .lrow .grow { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pro .lrow .t-meta { white-space: nowrap; }
+  .pro .lrow .dot { align-self: center; }
+  .pro .lrow .avatar { align-self: center; }
+  .pro .more { display: inline-block; margin-top: 8px; font-size: 12px; }
+
+  /* stage requirements */
+  .pro .ready { display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 8px; border-radius: 999px; background: #dcfce7; color: #15803d; font-size: 12px; font-weight: 600; }
+  html.dark .pro .ready { background: #14532d55; color: #86efac; }
+  .pro .stage { border: 1px solid var(--border); border-radius: 8px; margin-top: 8px; overflow: hidden; }
+  .pro .stage.current { border-color: #7dd3fc; }
+  html.dark .pro .stage.current { border-color: #0e7490; }
+  .pro .stage-hd { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 14px; background: none; border: 0; cursor: pointer; text-align: left; color: var(--ink-1); }
+  .pro .stage.current .stage-hd { background: var(--tint); }
+  html.dark .pro .stage.current .stage-hd { background: #16313e; }
+  .pro .sdot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border-strong); flex: none; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: transparent; }
+  .pro .stage.done .sdot, .pro .req.met .sdot { border-color: #22c55e; background: #dcfce7; color: #15803d; }
+  html.dark .pro .stage.done .sdot, html.dark .pro .req.met .sdot { background: #14532d55; color: #86efac; }
+  .pro .stage.current .sdot { border-color: var(--accent); color: var(--accent-text); }
+  .pro .stage-hd .t-meta { margin-left: auto; }
+  .pro .chev { display: inline-block; width: 6px; height: 6px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: translateY(-2px) rotate(45deg); transition: transform .12s; flex: none; }
+  .pro .stage.open .chev, .pro [aria-expanded='true'] .chev { transform: translateY(1px) rotate(-135deg); }
+  .pro .stage-body { padding: 4px 14px 10px; }
+  .pro .req { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); }
+  .pro .req:first-child { border-top: 0; }
+  .pro .req .sdot { border-radius: 5px; margin-top: 1px; }
+  .pro .req .opt { margin-left: 8px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); }
+
+  /* toolbar, filters, tables, pager */
+  .pro .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 20px 0 8px; }
+  .pro .toolbar .input { width: 240px; height: 34px; }
+  .pro .toolbar .spacer { flex: 1; }
+  .pro .fchips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .pro .fchip { height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--border-strong); background: transparent; color: var(--ink-2); font-size: 12px; font-weight: 500; cursor: pointer; font-variant-numeric: tabular-nums; }
+  .pro .fchip.on { border-color: var(--accent); background: var(--tint); color: var(--ink-1); }
+  html.dark .pro .fchip.on { background: #16313e; }
+  .pro .checkrow { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+  .pro .checkrow input { accent-color: var(--accent); margin: 0; }
+  .pro .twrap { overflow-x: auto; }
+  .pro table.ptbl { width: 100%; min-width: 560px; border-collapse: collapse; }
+  .pro .ptbl th { padding: 8px; border-bottom: 1px solid var(--border); }
+  .pro .ptbl td { padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: baseline; }
+  .pro .ptbl tbody tr:hover td { background: var(--card-muted); }
+  .pro .ptbl .key { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+  .pro .pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+  .pro .pager .row button { height: 28px; min-width: 28px; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--card); color: var(--ink-1); cursor: pointer; }
+  .pro .pager .row button:disabled { opacity: .4; cursor: default; }
+  .pro .empty { padding: 24px 0; text-align: center; }
+  .pro .callout { border-left: 3px solid #f59e0b; background: #fffbeb; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; }
+  html.dark .pro .callout { background: #451a0355; }
+  .pro .doc-folder { font-weight: 600; }
+  .pro .doc-nested { padding-left: 32px; }
+  .pro .fold { width: 16px; height: 13px; border-radius: 2px 3px 3px 3px; background: var(--accent); opacity: .8; flex: none; align-self: center; }
+  .pro .file { width: 12px; height: 15px; border: 1.5px solid var(--ink-3); border-radius: 2px; flex: none; align-self: center; }
+  .pro .act { display: flex; align-items: baseline; gap: 16px; padding: 8px 0; }
+  .pro .act .t-meta { margin-left: auto; white-space: nowrap; }
+  .pro .act b { font-weight: 500; }
+  .pro .deal-hd { display: flex; align-items: center; gap: 8px; width: 100%; background: none; border: 0; padding: 0; cursor: pointer; color: var(--ink-1); text-align: left; }
+  .pro .deal-hd .chev { margin-left: auto; }
+  .pro .muted { opacity: .8; }
+
+  @media (max-width: 1100px) {
+    .pro .cols, .cur .grid3 { grid-template-columns: minmax(0, 1fr); }
+    .pro .maincol { padding-right: 0; }
+    .pro .rail { padding-left: 0; border-left: 0; border-top: 1px solid var(--border); }
+  }
+  @media (max-width: 760px) {
+    .side { display: none; }
+    .page > .between { flex-wrap: wrap; }
+    .cur .ws-rollups { grid-template-columns: minmax(0, 1fr) !important; }
+    .pro .toolbar .input { width: 100%; }
+  }
+</style>
+</head>
+<body data-show="proposed" data-page="ws">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">Workspace and project detail</span>
+  <span class="t-meta" style="color:#9ca3af">September 4, 2026 · Clara-1262 · /w/… and /p/… Overview and tabs</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Page"><button type="button" data-page-set="ws">Workspace</button><button type="button" data-page-set="proj">Project</button></span>
+  <span class="seg" role="group" aria-label="Variant"><button data-set="show:current">Current</button><button data-set="show:proposed">Proposed</button><button data-set="show:split">Side by side</button></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+
+<div class="review-layout">
+<div class="split-wrap">
+
+<!-- ============================== CURRENT ============================== -->
+<div data-variant="current" class="cur">
+<div class="variant-tag">Current</div>
+
+<!-- current: workspace -->
+<div class="app" data-pg="ws">
+  <aside class="side">
+    <div class="side-head"><span class="side-logo"></span>Clara Studio</div>
+    <div class="side-ws"><span class="av">A</span><div><b>Acme Corp</b><small>Workspace · 4 projects</small></div></div>
+    <div class="side-item"><i></i>Dashboard</div>
+    <div class="side-item active"><i></i>Overview</div>
+    <div class="side-item"><i></i>Issue Board</div>
+    <div class="side-item"><i></i>Project Board</div>
+    <hr><div class="side-group">Projects (4)</div>
+    <div class="side-item"><i></i>Website Rebuild</div>
+    <div class="side-item"><i></i>Brand Refresh</div>
+    <div class="side-item"><i></i>Spring Campaign</div>
+    <div class="side-item"><i></i>Support Retainer</div>
+  </aside>
+  <div class="main">
+    <div class="topbar"><b>Acme Corp</b></div>
+    <div class="page">
+      <div class="between" style="align-items:flex-start">
+        <div><h1 class="c-h1">Acme Corp</h1><p class="c-sub16">Marketing site rebuild and brand refresh for Acme's spring launch.</p></div>
+        <div class="row"><span class="btn primary">💬 Start Conversation</span><span class="btn">Archive</span><span class="icon-btn"></span></div>
+      </div>
+      <div class="tabs" data-tabs="cur-ws" role="tablist">
+        <button type="button" class="c-tab on" data-tab="overview">Overview</button><button type="button" class="c-tab" data-tab="agreements">▢ Agreements</button><button type="button" class="c-tab" data-tab="documents">▢ Documents</button><button type="button" class="c-tab" data-tab="conversations">▢ Conversations</button><button type="button" class="c-tab" data-tab="activity">◷ Activity</button><button type="button" class="c-tab" data-tab="ai">▢ AI Activity</button><button type="button" class="c-tab" data-tab="connectors">Connectors</button><button type="button" class="c-tab" data-tab="assets">▢ Assets</button><button type="button" class="c-tab" data-tab="settings">Settings</button>
+      </div>
+
+      <section data-panel="cur-ws:overview">
+        <div class="ws-rollups" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px">
+          <div class="rollup">
+            <div class="between"><span class="c-h-15">Projects</span><span class="c-link">View projects →</span></div>
+            <div class="row" style="gap:16px;margin:10px 0;align-items:baseline">
+              <span><span class="c-stat" style="color:#3b82f6">3</span> <span class="c-statlbl">open</span></span>
+              <span><span class="c-stat" style="color:#eab308">1</span> <span class="c-statlbl">in progress</span></span>
+              <span><span class="c-stat" style="color:#22c55e">0</span> <span class="c-statlbl">done</span></span>
+            </div>
+            <div class="bar" style="height:8px"><span style="width:75%;background:#3b82f6"></span><span style="width:25%;background:#eab308"></span></div>
+          </div>
+          <div class="rollup">
+            <div class="between"><span class="c-h-15">Issues</span><span class="c-link">View issues →</span></div>
+            <div class="row" style="gap:16px;margin:10px 0;align-items:baseline">
+              <span><span class="c-stat" style="color:#3b82f6">12</span> <span class="c-statlbl">open</span></span>
+              <span><span class="c-stat" style="color:#eab308">4</span> <span class="c-statlbl">in progress</span></span>
+              <span><span class="c-stat" style="color:#22c55e">27</span> <span class="c-statlbl">done</span></span>
+            </div>
+            <div class="bar" style="height:8px"><span style="width:28%;background:#3b82f6"></span><span style="width:9%;background:#eab308"></span><span style="width:63%;background:#22c55e"></span></div>
+          </div>
+        </div>
+
+        <div class="grid-main" style="margin-top:28px;gap:24px">
+          <div class="stack" style="--gap:24px">
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Description</h2><span class="icon-btn"></span></div>
+              <p class="c-body" style="margin:6px 0 4px">Marketing site rebuild and brand refresh for Acme's spring launch.</p>
+              <div class="c-help500">URL slug: <span class="mono">acme-corp</span></div>
+              <div class="c-help500">Workspace code: <span class="mono">ACME</span> · permanent</div>
+            </div>
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Notes</h2><span class="icon-btn"></span></div>
+              <p class="c-body" style="margin:6px 0 0">Weekly check-in Tuesdays at 10:00 with Jane. Invoices go to the accounts team, not to Jane. Brand assets live in their shared drive; ask before reusing anything from last year's campaign.</p>
+            </div>
+            <div>
+              <div class="between" style="margin-bottom:10px"><h2 class="c-h2-18">▢ Projects <span class="c-count">(4)</span></h2><span class="c-link500">View all</span></div>
+              <div class="tbl">
+                <div class="c-th">Name</div>
+                <div class="row c-body" style="font-weight:500"><span class="dot" style="background:#22c55e"></span>Website Rebuild</div>
+                <div class="row c-body" style="font-weight:500"><span class="dot" style="background:#22c55e"></span>Brand Refresh</div>
+                <div class="row c-body" style="font-weight:500"><span class="dot" style="background:#71717a"></span>Spring Campaign</div>
+                <div class="row c-body" style="font-weight:500"><span class="dot" style="background:#22c55e"></span>Support Retainer</div>
+              </div>
+            </div>
+            <div>
+              <div class="between" style="margin-bottom:6px"><h2 class="c-h2-18">▢ Recent documents <span class="c-count">(5)</span></h2><span class="c-link500">View all</span></div>
+              <div class="stack" style="--gap:6px">
+                <div class="c-body">Website Rebuild SOW</div><div class="c-body">Solution design v2</div><div class="c-body">Brand voice guide</div>
+              </div>
+            </div>
+          </div>
+          <div class="stack" style="--gap:16px">
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Workspace details</h2><span class="icon-btn"></span></div>
+              <div class="between" style="padding:8px 0;border-bottom:1px solid var(--border)"><span class="c-term">Harvest ID</span><span class="c-val">6399284</span></div>
+              <div class="between" style="padding:8px 0"><span class="c-term">Created</span><span class="c-val">Mar 2, 2025</span></div>
+            </div>
+            <div class="c-card">
+              <h2 class="c-uc14">Recent conversations</h2>
+              <div style="margin-top:8px" class="stack">
+                <div><div class="c-body">Login redirect after password reset</div><div class="c-meta11">Dana Wu · Nov 2</div></div>
+                <div><div class="c-body">SOW phases and acceptance window</div><div class="c-meta11">Sam Lee · Oct 30</div></div>
+                <div><div class="c-body">CMS migration estimate</div><div class="c-meta11">Marco Ruiz · Oct 28</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ph" data-panel="cur-ws:agreements" hidden>
+        <h2 class="c-h2-18">Agreements <span class="c-count">(2)</span></h2>
+        <div class="tbl"><div class="c-th">Name</div><div class="c-body">Master Services Agreement</div><div class="c-body">Website Rebuild SOW</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-ws:documents" hidden>
+        <h2 class="c-h2-18">Documents <span class="c-count">(8)</span></h2>
+        <div class="tbl"><div class="c-th">Name</div><div class="c-body">📁 Legal Documents</div><div class="c-body">Investigation Handoff: Missing Form Submissions</div><div class="c-body">Campaign Tracking Map</div><div class="c-body">Website Rebuild SOW</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-ws:conversations" hidden>
+        <h2 class="c-h2-18">Conversations <span class="c-count">(91)</span></h2>
+        <div class="tbl"><div class="c-th">Title</div><div class="c-body">Login redirect after password reset</div><div class="c-body">Remove footer social icons</div><div class="c-body">Contact form error triage</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-ws:activity" hidden>
+        <h2 class="c-h2-18">Activity</h2>
+        <div class="tbl"><div class="c-th">Event</div><div class="c-body">Dana Wu replied in Login redirect after password reset · 1d</div><div class="c-body">Marco Ruiz moved ACME-47 to QA in Progress · 2d</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-ws:ai" hidden>
+        <h2 class="c-h2-18">AI Activity</h2>
+        <div class="tbl"><div class="c-th">Action</div><div class="c-body">Clara updated Investigation Handoff: Missing Form Submissions · 2d</div><div class="c-body">Clara drafted Monthly Support Report · 1w</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-ws:connectors" hidden>
+        <h2 class="c-h2-18">Connectors <span class="c-count">(2)</span></h2>
+        <div class="tbl"><div class="c-th">Connector</div><div class="c-body">GitHub · acme-web <span class="c-badge green">healthy</span></div><div class="c-body">analytics-db <span class="c-badge blue">inherited</span></div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-ws:assets" hidden>
+        <h2 class="c-h2-18">▢ Assets <span class="c-count">(5)</span></h2>
+        <div class="tbl"><div class="c-th">Name</div><div><div class="c-body" style="font-weight:600">Acme marketing site</div><div class="c-help500">Production site on the headless CMS.</div></div><div><div class="c-body" style="font-weight:600">Acme CMS</div><div class="c-help500">Content editing workspace for the marketing team.</div></div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-ws:settings" hidden>
+        <div class="c-card"><h2 class="c-uc14">Context</h2><p class="c-body-500" style="margin:6px 0 0">Standing guidance Clara applies to this workspace.</p></div>
+        <div class="c-card" style="margin-top:12px"><h2 class="c-uc14">Skills</h2><p class="c-body-500" style="margin:6px 0 0">2 skills enabled.</p></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- current: project -->
+<div class="app" data-pg="proj">
+  <aside class="side">
+    <div class="side-head"><span class="side-logo"></span>Clara Studio</div>
+    <div class="side-ws"><span class="av">A</span><div><b>Acme Corp</b><small>Workspace · 4 projects</small></div></div>
+    <div class="side-item"><i></i>Dashboard</div>
+    <div class="side-item"><i></i>Overview</div>
+    <div class="side-item"><i></i>Issue Board</div>
+    <div class="side-item"><i></i>Project Board</div>
+    <hr><div class="side-group">Projects (4)</div>
+    <div class="side-item"><i></i>Website Rebuild</div>
+    <div class="side-item"><i></i>Brand Refresh</div>
+    <div class="side-item"><i></i>Spring Campaign</div>
+    <div class="side-item active"><i></i>Support Retainer</div>
+  </aside>
+  <div class="main">
+    <div class="topbar">Acme Corp <span class="c-meta11" style="font-size:10px">(workspace)</span> › <b>Support Retainer</b></div>
+    <div class="page">
+      <div class="between" style="align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <div class="row"><h1 class="c-h1">Support Retainer</h1><span class="c-badge green">active</span></div>
+          <p class="c-sub16">Workspace: Acme Corp</p>
+        </div>
+        <div class="row" style="flex-wrap:wrap;justify-content:flex-end;max-width:640px">
+          <span class="btn primary">💬 Start Conversation</span><span class="btn">+ New credit request</span>
+          <span class="input select" style="width:96px;height:34px;color:var(--gray-700)">Active</span><span class="input select" style="width:110px;height:34px;color:var(--gray-700)">Medium</span>
+          <span class="btn">Archive</span><span class="btn red" aria-label="Delete project"><svg aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></span>
+        </div>
+      </div>
+      <div class="tabs" data-tabs="cur-proj" role="tablist">
+        <button type="button" class="c-tab on" data-tab="overview">Overview</button><button type="button" class="c-tab" data-tab="issues">⊙ Issues</button><button type="button" class="c-tab" data-tab="documents">▢ Documents</button><button type="button" class="c-tab" data-tab="conversations">▢ Conversations</button><button type="button" class="c-tab" data-tab="activity">◷ Activity</button><button type="button" class="c-tab" data-tab="connectors">Connectors</button><button type="button" class="c-tab" data-tab="settings">Settings</button>
+      </div>
+
+      <section data-panel="cur-proj:overview">
+        <div class="grid3">
+          <div class="stack" style="--gap:32px">
+            <div class="rollup blue">
+              <div class="between"><span class="c-h-15">Issues</span><span class="c-link">View issues →</span></div>
+              <div class="row" style="gap:16px;margin:10px 0;align-items:baseline">
+                <span><span class="c-stat" style="color:#3b82f6">9</span> <span class="c-statlbl">open</span></span>
+                <span><span class="c-stat" style="color:#f97316">2</span> <span class="c-statlbl">in progress</span></span>
+                <span><span class="c-stat" style="color:#22c55e">30</span> <span class="c-statlbl">done</span></span>
+              </div>
+              <div class="bar" style="height:8px"><span style="width:22%;background:#3b82f6"></span><span style="width:5%;background:#f97316"></span><span style="width:73%;background:#22c55e"></span></div>
+            </div>
+
+            <div class="qpanel">
+              <div class="between" style="margin-bottom:12px"><h2 class="c-h2-18">Questions</h2><span class="c-link13">+ Ask a question</span></div>
+              <div class="between" style="align-items:flex-start;padding:12px 0">
+                <div><div class="c-body" style="font-weight:600">Should after-hours fixes bill at the standard rate?</div>
+                <div class="row c-meta125" style="margin-top:6px;gap:6px"><span class="avatar s16 b">S</span>You → <span class="avatar s16">D</span>Dana Wu · <span style="color:#dc2626;font-weight:600">Blocking</span> · due Nov 6 · 1 comment</div></div>
+                <span class="row"><span class="btn sm">Answer</span><span class="c-body-500" style="padding:0 8px">…</span></span>
+              </div>
+              <div class="between" style="align-items:flex-start;padding:12px 0;border-top:1px solid var(--border)">
+                <div><div class="c-body" style="font-weight:600">Can Acme approve October's scope items in one batch?</div>
+                <div class="row c-meta125" style="margin-top:6px;gap:6px"><span class="avatar s16 c">M</span>Marco Ruiz → <span class="avatar s16 b">S</span>You · asked 2 days ago</div></div>
+                <span class="row"><span class="btn sm">Answer</span><span class="c-body-500" style="padding:0 8px">…</span></span>
+              </div>
+              <div class="c-link13" style="padding-top:10px;border-top:1px solid var(--border)">Show 1 answered or withdrawn</div>
+            </div>
+
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Engagement</h2><span class="icon-btn"></span></div>
+              <div class="kv" style="margin-top:6px"><span>Billing engagement</span><span>ACME-SUP · Acme support retainer <span class="c-badge green">Verified</span></span></div>
+            </div>
+
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Scope</h2><span class="btn sm">+ Add scope item</span></div>
+              <div class="tcard" style="margin-top:10px"><div class="lbl">Total</div><div class="amt" style="font-size:28px">46 h</div><div class="c-help500">Sum of all non-void hours across every stage</div><div class="bar" style="margin-top:8px"><span style="width:17%;background:#a3a3a3"></span><span style="width:30%;background:#3b82f6"></span><span style="width:53%;background:#22c55e"></span></div></div>
+              <div class="tot">
+                <div class="tcard"><div class="lbl"><span class="dot" style="background:#a3a3a3"></span> Estimated</div><div class="amt">8 h</div><div class="c-help500">8 hours at this stage: quoted, not yet approved</div></div>
+                <div class="tcard"><div class="lbl"><span class="dot" style="background:#3b82f6"></span> Approved</div><div class="amt">14 h</div><div class="c-help500">14 hours approved, not yet delivered</div></div>
+                <div class="tcard"><div class="lbl"><span class="dot" style="background:#22c55e"></span> Completed</div><div class="amt">24 h</div><div class="c-help500">24 hours delivered</div></div>
+              </div>
+              <div style="margin-top:12px">
+                <div class="scope-row"><div class="between"><span class="c-body" style="font-weight:600">#1 Monthly site maintenance <span class="c-badge blue">12 h</span> <span class="c-badge green">Approved</span></span><span class="c-help500">Completed Oct 31, 2026</span></div><div class="ghost-links"><span>Record approval</span><span>Correct</span><span>Edit</span><span>Delete</span></div></div>
+                <div class="scope-row"><div class="between"><span class="c-body" style="font-weight:600">#2 Fix login redirect after password reset <span class="c-badge blue">12 h</span> <span class="c-badge green">Approved</span></span><span class="c-help500">Completed Nov 2, 2026</span></div><div class="ghost-links"><span>Record approval</span><span>Correct</span><span>Edit</span><span>Delete</span></div></div>
+                <div class="scope-row"><div class="between"><span class="c-body" style="font-weight:600">#3 Spring landing page tweaks <span class="c-badge blue">14 h</span> <span class="c-badge green">Approved</span></span><span class="c-help500">Not completed</span></div><div class="ghost-links"><span>Mark completed</span><span>Edit</span><span>Re-quote</span><span>Withdraw</span><span>Delete</span></div></div>
+                <div class="scope-row"><div class="between"><span class="c-body" style="font-weight:600">#4 Accessibility audit follow-ups <span class="c-badge blue">8 h</span> <span class="c-badge amber">Provisional</span></span><span class="c-help500">Not delivered</span></div><div class="ghost-links"><span>Approve</span><span>Mark completed</span><span>Edit</span><span>Re-quote</span><span>Withdraw</span><span>Delete</span></div></div>
+              </div>
+            </div>
+
+            <div class="c-card">
+              <h2 class="c-uc14">Updates</h2>
+              <div class="composer" style="margin-top:10px"><div class="tb">B I S H1 H2 H3 • 1. ☐ “ — / &lt;&gt;</div><div class="area c-body-500">Add a comment... (Markdown supported, Ctrl+Enter to submit)</div></div>
+              <div class="row" style="justify-content:flex-end;margin-top:8px"><span class="btn sm primary disabled">Comment</span></div>
+              <div class="ucard"><span class="avatar">D</span><div style="flex:1"><div class="row"><b class="c-body">Dana Wu</b><span class="c-help500">2 hours ago</span><span style="margin-left:auto" class="row"><span class="icon-btn"></span><span class="icon-btn"></span></span></div><p class="c-body" style="margin:6px 0 0">October's maintenance is done and the login redirect fix shipped to sandbox. Two scope items are waiting on Acme's approval.</p></div></div>
+              <div class="ucard"><span class="avatar b">S</span><div style="flex:1"><div class="row"><b class="c-body">Sam Lee</b><span class="c-help500">3 days ago</span><span class="c-help500">(edited)</span></div><p class="c-body" style="margin:6px 0 0">Kicked off the November cycle with Jane. Priorities: the spring landing page tweaks first, then the accessibility follow-ups.</p></div></div>
+            </div>
+
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Description</h2><span class="icon-btn"></span></div>
+              <p class="c-body" style="margin:8px 0 0;color:var(--gray-800)">Ongoing support for Acme's marketing site after the rebuild: monthly maintenance, small fixes and campaign changes, billed against the support retainer.</p>
+            </div>
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Notes</h2><span class="icon-btn"></span></div>
+              <p class="c-body" style="margin:8px 0 0;color:var(--gray-800)">Jane approves scope items by email; record her approval with the email as evidence. After-hours work needs her OK first. The monthly report goes out on the first working day.</p>
+            </div>
+          </div>
+
+          <div class="stack" style="--gap:16px">
+            <div>
+              <h3 class="c-body" style="font-weight:600;margin:0 0 8px">Waiting on</h3>
+              <ul class="wait" style="list-style:none;padding:0;margin:0"><li><span class="avatar s16">D</span><span><b style="font-weight:500">Dana Wu</b> Should after-hours fixes bill at the standard rate?</span></li></ul>
+            </div>
+            <div class="c-card"><h2 class="c-uc14">Assignee</h2><div class="usel"><span class="avatar s20">D</span>Dana Wu</div></div>
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Contact</h2><span class="icon-btn"></span></div>
+              <div class="kv"><span>Name</span><span>Jane Smith</span></div>
+              <div class="kv"><span>Email</span><span>jane.smith@acme.example</span></div>
+              <div class="kv"><span>Phone</span><span>+1 555 0142</span></div>
+              <div class="kv"><span>Preferred contact</span><span>Email</span></div>
+            </div>
+            <div class="c-card">
+              <div class="between"><h2 class="c-uc14">Lineage &amp; dates</h2><span class="icon-btn"></span></div>
+              <div class="kv"><span>Planned start</span><span>2026-01-19</span></div>
+              <div class="kv"><span>Planned completion</span><span>2026-12-18</span></div>
+              <div class="kv"><span>Graduated from</span><span style="color:var(--accent)">View source deal</span></div>
+              <div class="kv"><span>Closed (sale)</span><span>Jan 12, 2026, 4:10 PM</span></div>
+              <div class="kv"><span>Created</span><span>Jan 13, 2026</span></div>
+              <div class="kv"><span>Updated</span><span>Nov 4, 2026</span></div>
+            </div>
+            <div>
+              <div class="between"><h2 class="c-h2-18">▢ Assets <span class="c-count">(2)</span></h2><span class="icon-btn"></span></div>
+              <div class="tbl"><div class="c-th">Name</div><div><div class="c-body" style="font-weight:600">Acme marketing site</div><div class="c-help500">Production site on the headless CMS.</div></div><div><div class="c-body" style="font-weight:600">Acme CMS</div><div class="c-help500">Content editing workspace for the marketing team.</div></div></div>
+            </div>
+            <div class="c-card"><h2 class="c-uc14">› Deal</h2></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ph" data-panel="cur-proj:issues" hidden>
+        <h2 class="c-h2-18">⊙ Issues <span class="c-count">(11)</span></h2>
+        <div class="tbl"><div class="c-th">Title</div><div class="c-body">ACME-48 Confirm the contact form fix with the CMS vendor</div><div class="c-body">ACME-47 Login redirect drops the deep link after password reset</div><div class="c-body">ACME-46 Checkout loops back to the cart on payment confirmation</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-proj:documents" hidden>
+        <h2 class="c-h2-18">▢ Documents <span class="c-count">(3)</span></h2>
+        <div class="tbl"><div class="c-th">Name</div><div class="c-body">📁 Reporting</div><div class="c-body">📁 SOW</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-proj:conversations" hidden>
+        <h2 class="c-h2-18">▢ Conversations <span class="c-count">(29)</span></h2>
+        <div class="tbl"><div class="c-th">Title</div><div class="c-body">Team blocked on staging QA</div><div class="c-body">Hide the pricing banner for logged-in users</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-proj:activity" hidden>
+        <h2 class="c-h2-18">◷ Activity</h2>
+        <div class="tbl"><div class="c-th">Event</div><div class="c-body">Marco Ruiz updated Next step · 2d</div><div class="c-body">Dana Wu changed state Draft → Active · 12w</div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-proj:connectors" hidden>
+        <h2 class="c-h2-18">Connectors <span class="c-count">(1)</span></h2>
+        <div class="tbl"><div class="c-th">Connector</div><div class="c-body">GitHub · acme-web <span class="c-badge blue">inherited</span></div></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+      <section class="ph" data-panel="cur-proj:settings" hidden>
+        <div class="c-card"><h2 class="c-uc14">Project instructions</h2><p class="c-body-500" style="margin:6px 0 0">Guidance Clara applies within this project.</p></div>
+        <p class="ph-note">Light placeholder: only the Overview tab is reproduced in detail.</p>
+      </section>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================== PROPOSED ============================== -->
+<div data-variant="proposed" class="pro">
+<div class="variant-tag">Proposed</div>
+
+<!-- proposed: workspace -->
+<div class="app" data-pg="ws">
+  <aside class="side">
+    <div class="side-head"><span class="side-logo"></span>Clara Studio</div>
+    <div class="side-ws"><span class="av">A</span><div><b>Acme Corp</b><small>Workspace · 13 projects</small></div></div>
+    <div class="side-item"><i></i>Dashboard</div>
+    <div class="side-item active"><i></i>Overview</div>
+    <div class="side-item"><i></i>Issue Board</div>
+    <div class="side-item"><i></i>Project Board</div>
+    <hr><div class="side-group">Projects (13)</div>
+    <div class="side-item"><i></i>Support Retainer</div>
+    <div class="side-item"><i></i>Website Rebuild</div>
+    <div class="side-item"><i></i>Brand Refresh</div>
+    <div class="side-item"><i></i>Spring Campaign</div>
+  </aside>
+  <div class="main">
+    <div class="topbar"><b>Acme Corp</b></div>
+    <div class="page">
+      <div class="between" style="align-items:flex-start;gap:16px">
+        <div>
+          <div class="row" style="gap:10px"><h1 class="t-page-title">Acme Corp</h1><span class="chip t-badge"><span class="dot" style="background:#16a34a;margin-right:6px"></span>Active</span></div>
+          <p class="t-page-context">Client workspace · Acme Holdings account</p>
+        </div>
+        <div class="row" style="gap:8px;flex-wrap:wrap;justify-content:flex-end">
+          <span class="btn primary">Start conversation</span>
+          <span class="input select" style="width:104px;height:34px">Active</span>
+          <span class="btn ghost">Archive</span>
+        </div>
+      </div>
+      <div class="tabs" data-tabs="pro-ws" role="tablist">
+        <button type="button" class="t-tab on" data-tab="overview">Overview</button><button type="button" class="t-tab" data-tab="projects">Projects</button><button type="button" class="t-tab" data-tab="documents">Documents</button><button type="button" class="t-tab" data-tab="conversations">Conversations</button><button type="button" class="t-tab" data-tab="activity">Activity</button><button type="button" class="t-tab" data-tab="connectors">Connectors</button><button type="button" class="t-tab" data-tab="assets">Assets</button><button type="button" class="t-tab" data-tab="settings">Settings</button><span class="pin">1</span>
+      </div>
+
+      <!-- ws: overview -->
+      <section data-panel="pro-ws:overview">
+        <div class="cols">
+          <div class="maincol">
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Issues<span class="pin">2</span></h2><a class="t-link" href="#">Open board →</a></div>
+              <div class="stats">
+                <button type="button" class="stat" aria-label="7 open issues, open board"><div class="t-stat">7</div><div class="t-stat-label">open</div></button>
+                <button type="button" class="stat" aria-label="2 in-progress issues, open board"><div class="t-stat">2</div><div class="t-stat-label">in progress</div></button>
+                <button type="button" class="stat" aria-label="82 done issues, open board"><div class="t-stat">82</div><div class="t-stat-label">done</div></button>
+              </div>
+              <div class="battery" role="group" aria-label="Issue status">
+                <button type="button" class="s-backlog" style="width:4.4%" title="4 backlog. Opens the board filtered to Backlog."></button>
+                <button type="button" class="s-ready" style="width:3.3%" title="3 ready. Opens the board filtered to Ready."></button>
+                <button type="button" class="s-active" style="width:2.2%" title="2 in progress. Opens the board filtered to In Progress."></button>
+                <button type="button" class="s-done" style="width:90.1%" title="82 done. Opens the board filtered to Closed."></button>
+              </div>
+              <div class="legend t-meta"><span><span class="dot s-backlog"></span>4 backlog</span><span><span class="dot s-ready"></span>3 ready</span><span><span class="dot s-active"></span>2 in progress</span><span><span class="dot s-done"></span>82 done</span></div>
+            </section>
+
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Description<span class="pin">3</span></h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <div class="read"><p>Marketing site rebuild and brand refresh for Acme's spring launch, followed by a long-running support retainer and periodic campaign projects.</p></div>
+            </section>
+
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Notes<span class="new">New field</span></h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <div class="read"><p>Jane prefers email over calls. Invoicing runs monthly.</p><p>Renewal conversation due in Q4; Alex owns the relationship.</p></div>
+            </section>
+
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Projects<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">13</span></h2><span class="btn sm">+ New project</span></div>
+              <div class="lrow"><span class="dot" style="background:#22c55e"></span><span class="t-body grow" style="font-weight:500">Support Retainer</span><span class="t-meta">Active · 2d</span></div>
+              <div class="lrow"><span class="dot" style="background:#22c55e"></span><span class="t-body grow" style="font-weight:500">Website Rebuild</span><span class="t-meta">Active · 5d</span></div>
+              <div class="lrow"><span class="dot" style="background:#22c55e"></span><span class="t-body grow" style="font-weight:500">Brand Refresh</span><span class="t-meta">Active · 1w</span></div>
+              <div class="lrow"><span class="dot" style="background:#22c55e"></span><span class="t-body grow" style="font-weight:500">Spring Campaign</span><span class="t-meta">Active · 2w</span></div>
+              <div class="lrow"><span class="dot" style="background:#f59e0b"></span><span class="t-body grow" style="font-weight:500">Newsletter Signup Flow</span><span class="t-meta">Draft · 3w</span></div>
+              <a class="t-link more" href="#" data-jump="projects">View all 13 →</a>
+            </section>
+
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Recent documents<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">8</span></h2><a class="t-link" href="#" data-jump="documents">View all</a></div>
+              <div class="lrow"><span class="file"></span><span class="t-body grow">Investigation Handoff: Missing Form Submissions</span><span class="t-meta">2d</span></div>
+              <div class="lrow"><span class="file"></span><span class="t-body grow">Campaign Tracking Map</span><span class="t-meta">1w</span></div>
+              <div class="lrow"><span class="file"></span><span class="t-body grow">Testing Handoff: Checkout Payment Step</span><span class="t-meta">3w</span></div>
+              <div class="lrow"><span class="file"></span><span class="t-body grow">Acme Integration Points Reference</span><span class="t-meta">8w</span></div>
+              <div class="lrow"><span class="file"></span><span class="t-body grow">Estimate: Pause Newsletter Sends</span><span class="t-meta">12w</span></div>
+            </section>
+          </div>
+
+          <aside class="rail">
+            <section class="rblk">
+              <h2 class="t-section" style="margin-bottom:10px">Account owner<span class="new">New field</span><span class="pin">4</span></h2>
+              <span class="input select"><span class="avatar s16" style="width:18px;height:18px;margin-right:8px">A</span>Alex Kim</span>
+            </section>
+            <section class="rblk">
+              <div class="blk-head" style="margin-bottom:10px"><h2 class="t-section">Primary contact<span class="new">New field</span></h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <dl class="facts">
+                <dt class="t-term">Name</dt><dd class="t-value">Jane Smith</dd>
+                <dt class="t-term">Email</dt><dd><a class="t-link" href="#">jane.smith@acme.example</a></dd>
+                <dt class="t-term">Phone</dt><dd class="t-value">+1 555 0142</dd>
+              </dl>
+            </section>
+            <section class="rblk">
+              <div class="blk-head" style="margin-bottom:10px"><h2 class="t-section">Key facts</h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <dl class="facts">
+                <dt class="t-term">Status<span class="new">New</span></dt><dd><span class="chip t-badge"><span class="dot" style="background:#16a34a;margin-right:6px"></span>Active</span></dd>
+                <dt class="t-term">Industry<span class="new">New</span></dt><dd class="t-value">Retail</dd>
+                <dt class="t-term">Website<span class="new">New</span></dt><dd><a class="t-link" href="#">acme.example</a></dd>
+                <dt class="t-term">Harvest ID</dt><dd class="t-value">6399284</dd>
+                <dt class="t-term">Created</dt><dd class="t-value">Mar 2, 2025</dd>
+              </dl>
+            </section>
+            <section class="rblk">
+              <div class="blk-head" style="margin-bottom:6px"><h2 class="t-section">Recent conversations<span class="t-count">91</span></h2><a class="t-link" href="#" data-jump="conversations">View all</a></div>
+              <div class="lrow"><span class="t-body grow">Login redirect after password reset</span><span class="avatar s16">D</span><span class="t-meta">1d</span></div>
+              <div class="lrow"><span class="t-body grow">Remove footer social icons</span><span class="avatar s16 c">M</span><span class="t-meta">3d</span></div>
+              <div class="lrow"><span class="t-body grow">Team blocked on staging QA</span><span class="avatar s16 d">P</span><span class="t-meta">10w</span></div>
+              <div class="lrow"><span class="t-body grow">Analytics consent banner questions</span><span class="avatar s16">D</span><span class="t-meta">13w</span></div>
+              <div class="lrow"><span class="t-body grow">Hide the pricing banner</span><span class="avatar s16 b">S</span><span class="t-meta">15w</span></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ws: projects -->
+      <section data-panel="pro-ws:projects" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Projects<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">13</span><span class="pin">5</span></h2><span class="btn primary sm">+ New project</span></div>
+        <div class="stats">
+          <button type="button" class="stat"><div class="t-stat">9</div><div class="t-stat-label">open</div></button>
+          <button type="button" class="stat"><div class="t-stat">3</div><div class="t-stat-label">complete</div></button>
+          <button type="button" class="stat"><div class="t-stat">1</div><div class="t-stat-label">cancelled</div></button>
+        </div>
+        <div class="battery" role="group" aria-label="Project state">
+          <button type="button" class="s-done" style="width:69.2%" title="9 open. Filter to open states."></button>
+          <button type="button" class="s-ready" style="width:23.1%" title="3 complete. Filter to Complete."></button>
+          <button type="button" class="s-backlog" style="width:7.7%" title="1 cancelled. Filter to Cancelled."></button>
+        </div>
+        <div class="toolbar">
+          <span class="input placeholder">Search projects</span>
+          <div class="fchips" id="proj-filters">
+            <span class="t-meta" style="margin-right:4px">State</span>
+            <button type="button" class="fchip on" data-state="active" aria-pressed="true">Active 6</button>
+            <button type="button" class="fchip on" data-state="on-hold" aria-pressed="true">On hold 1</button>
+            <button type="button" class="fchip on" data-state="draft" aria-pressed="true">Draft 2</button>
+            <button type="button" class="fchip" data-state="complete" aria-pressed="false">Complete 3</button>
+            <button type="button" class="fchip" data-state="cancelled" aria-pressed="false">Cancelled 1</button>
+          </div>
+        </div>
+        <div class="twrap">
+          <table class="ptbl">
+            <thead><tr><th class="t-th">Name</th><th class="t-th" style="width:130px">State</th><th class="t-th" style="width:160px">Assignee</th><th class="t-th" style="width:100px">Updated</th></tr></thead>
+            <tbody id="proj-body">
+              <tr data-state="active"><td class="t-body" style="font-weight:500">Support Retainer</td><td><span class="chip green t-badge">Active</span></td><td class="t-body-2">Dana Wu</td><td class="t-meta">2d</td></tr>
+              <tr data-state="active"><td class="t-body" style="font-weight:500">Website Rebuild</td><td><span class="chip green t-badge">Active</span></td><td class="t-body-2">Marco Ruiz</td><td class="t-meta">5d</td></tr>
+              <tr data-state="active"><td class="t-body" style="font-weight:500">Brand Refresh</td><td><span class="chip green t-badge">Active</span></td><td class="t-body-2">Dana Wu</td><td class="t-meta">1w</td></tr>
+              <tr data-state="active"><td class="t-body" style="font-weight:500">Spring Campaign</td><td><span class="chip green t-badge">Active</span></td><td class="t-body-2" style="color:var(--ink-3)">Unassigned</td><td class="t-meta">2w</td></tr>
+              <tr data-state="active"><td class="t-body" style="font-weight:500">Checkout Redesign</td><td><span class="chip green t-badge">Active</span></td><td class="t-body-2">Marco Ruiz</td><td class="t-meta">2w</td></tr>
+              <tr data-state="on-hold"><td class="t-body" style="font-weight:500">Analytics Setup</td><td><span class="chip amber t-badge">On hold</span></td><td class="t-body-2">Sam Lee</td><td class="t-meta">4w</td></tr>
+              <tr data-state="draft"><td class="t-body" style="font-weight:500">Newsletter Signup Flow</td><td><span class="chip t-badge">Draft</span></td><td class="t-body-2" style="color:var(--ink-3)">Unassigned</td><td class="t-meta">3w</td></tr>
+              <tr data-state="draft"><td class="t-body" style="font-weight:500">Accessibility Audit</td><td><span class="chip t-badge">Draft</span></td><td class="t-body-2" style="color:var(--ink-3)">Unassigned</td><td class="t-meta">6w</td></tr>
+              <tr data-state="active"><td class="t-body" style="font-weight:500">CMS Upgrade</td><td><span class="chip green t-badge">Active</span></td><td class="t-body-2">Marco Ruiz</td><td class="t-meta">1w</td></tr>
+              <tr data-state="complete"><td class="t-body" style="font-weight:500">Holiday Campaign</td><td><span class="chip blue t-badge">Complete</span></td><td class="t-body-2">Dana Wu</td><td class="t-meta">18w</td></tr>
+              <tr data-state="complete"><td class="t-body" style="font-weight:500">Blog Relaunch</td><td><span class="chip blue t-badge">Complete</span></td><td class="t-body-2">Sam Lee</td><td class="t-meta">22w</td></tr>
+              <tr data-state="complete"><td class="t-body" style="font-weight:500">Hosting Migration</td><td><span class="chip blue t-badge">Complete</span></td><td class="t-body-2">Marco Ruiz</td><td class="t-meta">30w</td></tr>
+              <tr data-state="cancelled"><td class="t-body" style="font-weight:500">Partner Portal</td><td><span class="chip t-badge">Cancelled</span></td><td class="t-body-2" style="color:var(--ink-3)">Unassigned</td><td class="t-meta">36w</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="t-body-2 empty" id="proj-empty" hidden>No projects match the selected states. Turn a state filter back on above.</p>
+        <p class="t-meta" id="proj-showing" style="margin-top:10px"></p>
+      </section>
+
+      <!-- ws: documents -->
+      <section data-panel="pro-ws:documents" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Documents<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">8</span></h2><span class="btn primary sm">+ New document</span></div>
+        <div class="lrow doc-folder"><span class="fold"></span><span class="t-body grow" style="font-weight:600">Legal Documents</span><span class="t-meta">1 item</span></div>
+        <div class="lrow doc-nested"><span class="file"></span><span class="t-body grow">Master Services Agreement</span><span class="t-meta">21w</span></div>
+        <div class="lrow"><span class="file"></span><span class="t-body grow">Investigation Handoff: Missing Form Submissions</span><span class="t-meta">2d</span></div>
+        <div class="lrow"><span class="file"></span><span class="t-body grow">Campaign Tracking Map</span><span class="t-meta">1w</span></div>
+        <div class="lrow"><span class="file"></span><span class="t-body grow">Testing Handoff: Checkout Payment Step</span><span class="t-meta">3w</span></div>
+        <div class="lrow"><span class="file"></span><span class="t-body grow">Acme Integration Points Reference</span><span class="t-meta">8w</span></div>
+        <div class="lrow"><span class="file"></span><span class="t-body grow">Estimate: Pause Newsletter Sends</span><span class="t-meta">12w</span></div>
+        <div class="lrow"><span class="file"></span><span class="t-body grow">Support Retainer Runbook</span><span class="t-meta">14w</span></div>
+      </section>
+
+      <!-- ws: conversations -->
+      <section data-panel="pro-ws:conversations" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Conversations<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">91</span></h2></div>
+        <div class="twrap">
+          <table class="ptbl">
+            <thead><tr><th class="t-th">Title</th><th class="t-th" style="width:200px">Last active by</th><th class="t-th" style="width:90px">Updated</th></tr></thead>
+            <tbody>
+              <tr><td class="t-body" style="font-weight:500">Login redirect after password reset</td><td><span class="row t-body-2"><span class="avatar s20">D</span>Dana Wu</span></td><td class="t-meta">1d</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Remove footer social icons</td><td><span class="row t-body-2"><span class="avatar s20 c">M</span>Marco Ruiz</span></td><td class="t-meta">3d</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Contact form error triage</td><td><span class="row t-body-2"><span class="avatar s20">D</span>Dana Wu</span></td><td class="t-meta">4d</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Hours reconciliation for October</td><td><span class="row t-body-2"><span class="avatar s20 b">S</span>Sam Lee</span></td><td class="t-meta">1w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">CMS vendor call prep</td><td><span class="row t-body-2"><span class="avatar s20">D</span>Dana Wu</span></td><td class="t-meta">2w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Pricing page copy review</td><td><span class="row t-body-2"><span class="avatar s20 d">P</span>Priya Shah</span></td><td class="t-meta">3w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Team blocked on staging QA</td><td><span class="row t-body-2"><span class="avatar s20 d">P</span>Priya Shah</span></td><td class="t-meta">10w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Analytics setup follow-ups</td><td><span class="row t-body-2"><span class="avatar s20">D</span>Dana Wu</span></td><td class="t-meta">13w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Hide the pricing banner for logged-in users</td><td><span class="row t-body-2"><span class="avatar s20 b">S</span>Sam Lee</span></td><td class="t-meta">15w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Sprint planning notes</td><td><span class="row t-body-2"><span class="avatar s20">D</span>Dana Wu</span></td><td class="t-meta">16w</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pager"><span class="t-meta">1–10 of 91</span><span class="row"><button type="button" disabled aria-label="Previous page">‹</button><span class="t-meta">1 / 10</span><button type="button" aria-label="Next page">›</button></span></div>
+      </section>
+
+      <!-- ws: activity -->
+      <section data-panel="pro-ws:activity" hidden>
+        <div class="blk-head" style="margin-top:24px;margin-bottom:4px"><h2 class="t-panel-title">Activity<span class="pin">6</span></h2></div>
+        <p class="t-section-desc" style="margin:0 0 12px">Recent activity across this workspace's projects, issues, documents and conversations. Not a full audit log.</p>
+        <div class="act"><span class="t-body"><b>Dana Wu</b> replied in <b>Login redirect after password reset</b></span><span class="t-meta">Conversation · 1d</span></div>
+        <div class="act"><span class="t-body"><b>Clara</b> updated <b>Investigation Handoff: Missing Form Submissions</b></span><span class="t-meta">Document · 2d</span></div>
+        <div class="act"><span class="t-body"><b>Marco Ruiz</b> moved <b>ACME-47 Login redirect drops the deep link</b> to QA in Progress</span><span class="t-meta">Issue · 2d</span></div>
+        <div class="act"><span class="t-body"><b>Marco Ruiz</b> replied in <b>Remove footer social icons</b></span><span class="t-meta">Conversation · 3d</span></div>
+        <div class="act"><span class="t-body"><b>Dana Wu</b> set <b>Website Rebuild</b> to Active</span><span class="t-meta">Project · 5d</span></div>
+        <div class="act"><span class="t-body"><b>Sam Lee</b> created <b>Campaign Tracking Map</b></span><span class="t-meta">Document · 1w</span></div>
+      </section>
+
+      <!-- ws: connectors -->
+      <section data-panel="pro-ws:connectors" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Connectors<span class="pin">7</span></h2><span class="btn sm">+ Add connector</span></div>
+        <div class="lrow"><span class="t-body grow" style="font-weight:500">GitHub · acme-web</span><span class="chip green t-badge">Healthy</span></div>
+        <div class="lrow"><span class="t-body grow" style="font-weight:500">analytics-db</span><span class="chip t-badge">Inherited from organization</span></div>
+        <p class="t-meta" style="margin-top:10px">Scope-aware connector management. Unchanged by this redesign.</p>
+      </section>
+
+      <!-- ws: assets -->
+      <section data-panel="pro-ws:assets" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Assets<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">5</span><span class="pin">8</span></h2><span class="btn primary sm">+ New asset</span></div>
+        <div class="callout"><p class="t-body-2">Assets are being restructured as Connectors. This tab keeps its current behaviour for now; integrations are managed on the <a class="t-link" href="#" data-jump="connectors">Connectors</a> tab. The Assets view will be revisited once that migration reaches production.</p></div>
+        <div class="twrap">
+          <table class="ptbl">
+            <thead><tr><th class="t-th" style="width:220px">Name</th><th class="t-th">Description</th></tr></thead>
+            <tbody>
+              <tr><td class="t-body mono" style="font-size:13px">acme-site</td><td class="t-body-2">Production marketing site on the headless CMS</td></tr>
+              <tr><td class="t-body mono" style="font-size:13px">acme-cms</td><td class="t-body-2">Content editing workspace for the marketing team</td></tr>
+              <tr><td class="t-body mono" style="font-size:13px">acme-forms</td><td class="t-body-2">Form handling service behind the contact and signup forms</td></tr>
+              <tr><td class="t-body mono" style="font-size:13px">analytics-db</td><td class="t-body-2">Analytics replica, read only</td></tr>
+              <tr><td class="t-body mono" style="font-size:13px">reporting-warehouse</td><td class="t-body-2">BI warehouse fed by a nightly sync</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ws: settings -->
+      <section data-panel="pro-ws:settings" hidden>
+        <section class="blk"><div class="blk-head" style="margin-bottom:4px"><h2 class="t-panel-title">Workspace instructions</h2><a class="t-link" href="#">Edit</a></div><p class="t-body-2">Standing guidance Clara applies to every conversation and document in this workspace.</p></section>
+        <section class="blk"><div class="blk-head" style="margin-bottom:4px"><h2 class="t-panel-title">Rules</h2><a class="t-link" href="#">Edit</a></div><p class="t-body-2">3 rules configured.</p></section>
+        <section class="blk"><div class="blk-head" style="margin-bottom:4px"><h2 class="t-panel-title">Skills</h2><a class="t-link" href="#">Edit</a></div><p class="t-body-2">2 skills enabled.</p></section>
+        <p class="t-meta">This tab is unchanged in the redesign; shown for completeness.</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- proposed: project -->
+<div class="app" data-pg="proj">
+  <aside class="side">
+    <div class="side-head"><span class="side-logo"></span>Clara Studio</div>
+    <div class="side-ws"><span class="av">A</span><div><b>Acme Corp</b><small>Workspace · 13 projects</small></div></div>
+    <div class="side-item"><i></i>Dashboard</div>
+    <div class="side-item"><i></i>Overview</div>
+    <div class="side-item"><i></i>Issue Board</div>
+    <div class="side-item"><i></i>Project Board</div>
+    <hr><div class="side-group">Projects (13)</div>
+    <div class="side-item active"><i></i>Support Retainer</div>
+    <div class="side-item"><i></i>Website Rebuild</div>
+    <div class="side-item"><i></i>Brand Refresh</div>
+    <div class="side-item"><i></i>Spring Campaign</div>
+  </aside>
+  <div class="main">
+    <div class="topbar">Acme Corp › <b>Support Retainer</b></div>
+    <div class="page">
+      <div class="between" style="align-items:flex-start;gap:16px">
+        <div>
+          <div class="row" style="gap:10px"><h1 class="t-page-title">Support Retainer</h1><span class="chip t-badge"><span class="dot" style="background:#16a34a;margin-right:6px"></span>Active</span></div>
+          <p class="t-page-context">Project in <a class="t-link" href="#" style="font-weight:400">Acme Corp</a></p>
+        </div>
+        <div class="row" style="gap:8px;flex-wrap:wrap;justify-content:flex-end">
+          <span class="btn primary">Start conversation</span>
+          <span class="input select" style="width:104px;height:34px">Active</span>
+          <span class="btn ghost">Archive</span>
+        </div>
+      </div>
+      <div class="tabs" data-tabs="pro-proj" role="tablist">
+        <button type="button" class="t-tab on" data-tab="overview">Overview</button><button type="button" class="t-tab" data-tab="issues">Issues</button><button type="button" class="t-tab" data-tab="documents">Documents</button><button type="button" class="t-tab" data-tab="conversations">Conversations</button><button type="button" class="t-tab" data-tab="activity">Activity</button><button type="button" class="t-tab" data-tab="connectors">Connectors</button><button type="button" class="t-tab" data-tab="settings">Settings</button><span class="pin">1</span>
+      </div>
+
+      <!-- proj: overview -->
+      <section data-panel="pro-proj:overview">
+        <div class="cols">
+          <div class="maincol">
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Stage requirements<span class="pin">9</span></h2><span class="ready">✓ Ready to advance</span></div>
+              <p class="t-section-desc" style="margin:0 0 6px">Documents required across all stages for this project. The current stage is highlighted.</p>
+              <div data-stagereq></div>
+            </section>
+
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Issues<span class="pin">2</span></h2><a class="t-link" href="#" data-jump="issues">View issues →</a></div>
+              <div class="stats">
+                <button type="button" class="stat" data-jump="issues"><div class="t-stat">9</div><div class="t-stat-label">open</div></button>
+                <button type="button" class="stat" data-jump="issues"><div class="t-stat">2</div><div class="t-stat-label">in progress</div></button>
+                <button type="button" class="stat" data-jump="issues"><div class="t-stat">30</div><div class="t-stat-label">done</div></button>
+              </div>
+              <div class="battery" role="group" aria-label="Issue status">
+                <button type="button" class="s-backlog" style="width:9.8%" title="4 backlog. Opens Issues filtered to Backlog." data-jump="issues"></button>
+                <button type="button" class="s-ready" style="width:12.2%" title="5 ready. Opens Issues filtered to Ready." data-jump="issues"></button>
+                <button type="button" class="s-active" style="width:4.9%" title="2 in progress. Opens Issues filtered to In Progress." data-jump="issues"></button>
+                <button type="button" class="s-done" style="width:73.1%" title="30 done. Opens Issues filtered to Closed." data-jump="issues"></button>
+              </div>
+              <div class="legend t-meta"><span><span class="dot s-backlog"></span>4 backlog</span><span><span class="dot s-ready"></span>5 ready</span><span><span class="dot s-active"></span>2 in progress</span><span><span class="dot s-done"></span>30 done</span></div>
+            </section>
+
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Next step</h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <div class="read"><p>Confirm the contact form fix with the CMS vendor, then close out the October cycle.</p></div>
+            </section>
+
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Description</h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <div class="read"><p>Ongoing support for Acme's marketing site after the rebuild: triage, hotfixes, vendor coordination and small enhancements across the site, the CMS and the forms service.</p></div>
+            </section>
+
+            <section class="blk">
+              <div class="blk-head"><h2 class="t-panel-title">Notes</h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <div class="read"><p>Vendor call cadence moved to Tuesdays.</p><p>Investigation handoff sent to Jane on Oct 28; awaiting vendor confirmation before closing the October cycle.</p></div>
+            </section>
+          </div>
+
+          <aside class="rail">
+            <section class="rblk">
+              <h2 class="t-section" style="margin-bottom:10px">Assignee</h2>
+              <span class="input select" style="color:var(--ink-3)">Unassigned</span>
+            </section>
+            <section class="rblk">
+              <div class="blk-head" style="margin-bottom:10px"><h2 class="t-section">Contact</h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <dl class="facts">
+                <dt class="t-term">Name</dt><dd class="t-value">Tom Becker</dd>
+                <dt class="t-term">Email</dt><dd><a class="t-link" href="#">tom.becker@acme.example</a></dd>
+              </dl>
+            </section>
+            <section class="rblk">
+              <h2 class="t-section" style="margin-bottom:10px">Lineage &amp; dates</h2>
+              <dl class="facts">
+                <dt class="t-term">Origin lead</dt><dd><a class="t-link" href="#">Acme support renewal</a></dd>
+                <dt class="t-term">Planned start</dt><dd class="t-value">Jan 19, 2026</dd>
+                <dt class="t-term">Planned completion</dt><dd class="t-value">Dec 18, 2026</dd>
+                <dt class="t-term">Created</dt><dd class="t-value">Jan 13, 2026</dd>
+                <dt class="t-term">Updated</dt><dd class="t-value">2d ago</dd>
+              </dl>
+            </section>
+            <section class="rblk">
+              <div class="blk-head" style="margin-bottom:10px"><h2 class="t-section">Assets</h2><a class="t-link hover-edit" href="#">Edit</a></div>
+              <div class="row" style="flex-wrap:wrap;gap:6px"><span class="chip mono" style="height:22px;font-size:11px">acme-site</span><span class="chip mono" style="height:22px;font-size:11px">acme-cms</span><span class="chip mono" style="height:22px;font-size:11px">acme-forms</span></div>
+            </section>
+            <section class="rblk">
+              <button type="button" class="deal-hd" id="deal-toggle" aria-expanded="false" aria-controls="deal-body"><h2 class="t-section">Deal<span class="pin">10</span></h2><span class="chev"></span></button>
+              <div id="deal-body" hidden style="margin-top:12px">
+                <dl class="facts">
+                  <dt class="t-term">Deal type</dt><dd class="t-value">Support request</dd>
+                  <dt class="t-term">Harvest ID</dt><dd class="t-value">41822930</dd>
+                </dl>
+                <p class="t-meta" style="margin-top:8px">4 empty fields hidden</p>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <!-- proj: issues -->
+      <section data-panel="pro-proj:issues" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Issues<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">11</span><span class="pin">11</span></h2><span class="btn primary sm">+ Add issue</span></div>
+        <div class="stats">
+          <button type="button" class="stat"><div class="t-stat">9</div><div class="t-stat-label">open</div></button>
+          <button type="button" class="stat"><div class="t-stat">2</div><div class="t-stat-label">in progress</div></button>
+          <button type="button" class="stat"><div class="t-stat">30</div><div class="t-stat-label">done</div></button>
+        </div>
+        <div class="battery" role="group" aria-label="Issue status">
+          <button type="button" class="s-backlog" style="width:9.8%" title="4 backlog. Board filtered to Backlog."></button>
+          <button type="button" class="s-ready" style="width:12.2%" title="5 ready. Board filtered to Ready."></button>
+          <button type="button" class="s-active" style="width:4.9%" title="2 in progress. Board filtered to In Progress."></button>
+          <button type="button" class="s-done" style="width:73.1%" title="30 done. Board filtered to Closed."></button>
+        </div>
+        <div class="toolbar">
+          <span class="input placeholder">Search issues</span>
+          <label class="checkrow t-body-2"><input type="checkbox" id="show-closed">Show closed (30)</label>
+          <span class="spacer"></span>
+          <a class="t-link" href="#">View on board →</a>
+        </div>
+        <div class="twrap">
+          <table class="ptbl" style="min-width:640px">
+            <thead><tr><th class="t-th" style="width:90px">Key</th><th class="t-th">Title</th><th class="t-th" style="width:200px">Status</th><th class="t-th" style="width:110px">Priority</th></tr></thead>
+            <tbody id="issues-body"></tbody>
+          </table>
+        </div>
+        <div class="pager"><span class="t-meta" id="issues-range"></span><span class="row"><button type="button" id="tk-prev" aria-label="Previous page">‹</button><span class="t-meta" id="issues-page"></span><button type="button" id="tk-next" aria-label="Next page">›</button></span></div>
+      </section>
+
+      <!-- proj: documents -->
+      <section data-panel="pro-proj:documents" hidden>
+        <section class="blk">
+          <div class="blk-head"><h2 class="t-panel-title">Stage requirements<span class="pin">12</span></h2><span class="ready">✓ Ready to advance</span></div>
+          <p class="t-section-desc" style="margin:0 0 6px">Documents required across all stages for this project. The current stage is highlighted.</p>
+          <div data-stagereq></div>
+        </section>
+        <section class="blk">
+          <div class="blk-head"><h2 class="t-panel-title">Documents<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">3</span></h2><span class="btn primary sm">+ New document</span></div>
+          <div class="lrow"><span class="fold"></span><span class="t-body grow" style="font-weight:600">Reporting</span><span class="t-meta">1 item</span></div>
+          <div class="lrow doc-nested"><span class="file"></span><span class="t-body grow">Monthly Support Report</span><span class="t-meta">1w</span></div>
+          <div class="lrow"><span class="fold"></span><span class="t-body grow" style="font-weight:600">SOW</span><span class="t-meta">2 items</span></div>
+          <div class="lrow doc-nested"><span class="file"></span><span class="t-body grow">Support Retainer SOW</span><span class="t-meta">40w</span></div>
+          <div class="lrow doc-nested"><span class="file"></span><span class="t-body grow">SOW Addendum A</span><span class="t-meta">3w</span></div>
+        </section>
+      </section>
+
+      <!-- proj: conversations -->
+      <section data-panel="pro-proj:conversations" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Conversations<span class="t-count" style="font-weight:300;color:var(--ink-3);margin-left:6px">29</span></h2></div>
+        <div class="twrap">
+          <table class="ptbl">
+            <thead><tr><th class="t-th">Title</th><th class="t-th" style="width:200px">Last active by</th><th class="t-th" style="width:90px">Updated</th></tr></thead>
+            <tbody>
+              <tr><td class="t-body" style="font-weight:500">Team blocked on staging QA</td><td><span class="row t-body-2"><span class="avatar s20 d">P</span>Priya Shah</span></td><td class="t-meta">10w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Hide the pricing banner for logged-in users</td><td><span class="row t-body-2"><span class="avatar s20 b">S</span>Sam Lee</span></td><td class="t-meta">15w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Newsletter signup consent wording</td><td><span class="row t-body-2"><span class="avatar s20">D</span>Dana Wu</span></td><td class="t-meta">18w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Hide the maintenance notice</td><td><span class="row t-body-2"><span class="avatar s20 c">M</span>Marco Ruiz</span></td><td class="t-meta">21w</td></tr>
+              <tr><td class="t-body" style="font-weight:500">Missing form status</td><td><span class="row t-body-2"><span class="avatar s20 d">P</span>Priya Shah</span></td><td class="t-meta">24w</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pager"><span class="t-meta">1–5 of 29</span><span class="row"><button type="button" disabled aria-label="Previous page">‹</button><span class="t-meta">1 / 6</span><button type="button" aria-label="Next page">›</button></span></div>
+        <section class="blk muted" style="margin-top:16px;border-top:1px solid var(--border)">
+          <div class="blk-head"><h2 class="t-section">Origin conversations, from the sales lead<span class="pin">13</span></h2><span class="chip t-badge">Read only</span></div>
+          <div class="lrow"><span class="t-body-2 grow">Retainer scoping call</span><span class="t-meta">44w</span></div>
+          <div class="lrow"><span class="t-body-2 grow">Support SLA and pricing discussion</span><span class="t-meta">43w</span></div>
+        </section>
+      </section>
+
+      <!-- proj: activity -->
+      <section data-panel="pro-proj:activity" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Activity</h2></div>
+        <div class="act"><span class="t-body"><b>Marco Ruiz</b> updated <b>Next step</b></span><span class="t-meta">2d</span></div>
+        <div class="act"><span class="t-body"><b>Dana Wu</b> linked document <b>SOW Addendum A</b></span><span class="t-meta">3w</span></div>
+        <div class="act"><span class="t-body"><b>Dana Wu</b> changed state <b>Draft → Active</b></span><span class="t-meta">12w</span></div>
+        <div class="act"><span class="t-body"><b>Clara</b> set <b>Harvest ID</b> to 41822930</span><span class="t-meta">12w</span></div>
+        <div class="act"><span class="t-body"><b>Dana Wu</b> set <b>planned completion</b> to Dec 18, 2026</span><span class="t-meta">30w</span></div>
+        <div class="act"><span class="t-body"><b>Dana Wu</b> created the project from lead <b>Acme support renewal</b></span><span class="t-meta">43w</span></div>
+      </section>
+
+      <!-- proj: connectors -->
+      <section data-panel="pro-proj:connectors" hidden>
+        <div class="blk-head" style="margin-top:24px"><h2 class="t-panel-title">Connectors</h2><span class="btn sm">+ Add connector</span></div>
+        <div class="lrow"><span class="t-body grow" style="font-weight:500">GitHub · acme-web</span><span class="chip t-badge">Inherited from workspace</span></div>
+        <p class="t-meta" style="margin-top:10px">Scope-aware connector management. Unchanged by this redesign.</p>
+      </section>
+
+      <!-- proj: settings -->
+      <section data-panel="pro-proj:settings" hidden>
+        <section class="blk"><div class="blk-head" style="margin-bottom:4px"><h2 class="t-panel-title">Project instructions</h2><a class="t-link" href="#">Edit</a></div><p class="t-body-2">Guidance Clara applies within this project, layered on top of the workspace instructions.</p></section>
+        <section class="blk"><div class="blk-head" style="margin-bottom:4px"><h2 class="t-panel-title">Rules</h2><a class="t-link" href="#">Edit</a></div><p class="t-body-2">1 rule configured.</p></section>
+        <section class="blk"><div class="blk-head" style="margin-bottom:4px"><h2 class="t-panel-title">Skills</h2><a class="t-link" href="#">Edit</a></div><p class="t-body-2">Inherited from the workspace.</p></section>
+        <p class="t-meta">This tab is unchanged in the redesign; shown for completeness.</p>
+      </section>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /split-wrap -->
+
+<aside class="notes">
+  <h2>What changed and why</h2>
+  <p class="notes-sub">The workspace and project detail pages share one skeleton: the project's general fields mirrored onto the workspace, the same rollup and table components, stage readiness at the centre of the project, and a recency feed. Use Workspace / Project in the bar to switch pages, and click a note to open its tab. Live pages: nine workspace tabs and seven project tabs in different orders; the proposal does not cover the Questions, Engagement, Scope and Updates sections that today's project page shows on support projects.</p>
+  <ol>
+    <li data-goto="pro-ws:overview"><span class="where">Both pages · tab row</span><b>One tab order on both pages.</b> Overview, the work tab (Projects or Issues), Documents, Conversations, Activity, Connectors, then Settings; the workspace adds Assets before Settings. <span class="why">Today the two tab bars differ in order and length, so the same tab is in a different place on each page.</span></li>
+    <li data-goto="pro-ws:overview"><span class="where">Both pages · Overview</span><b>The same rollup on both pages.</b> A title, an Open board link, the counts and a status bar; every number and bar segment opens the board already filtered to that status. <span class="why">One component to learn and maintain, and the summary becomes a way in rather than a dead end.</span></li>
+    <li data-goto="pro-ws:overview"><span class="where">Workspace · Overview</span><b>The project's general fields are mirrored onto the workspace.</b> Description and Notes (a new workspace field) sit in the main column; deal and next-step fields are left out because they don't apply to a workspace. <span class="why">The two overviews read alike, and what someone knows about the client has a place to live.</span></li>
+    <li data-goto="pro-ws:overview"><span class="where">Workspace · Overview rail</span><b>The rail leads with the internal owner, then the external contact.</b> Account owner and Primary contact are new workspace fields, in the same order as the project's Assignee and Contact; Key facts adds Status, Industry and Website. <span class="why">Contacts belong in the rail, never in the top strip, and both pages answer "who owns this, who do we talk to" in the same spot.</span></li>
+    <li data-goto="pro-ws:projects"><span class="where">Workspace · Projects tab</span><b>Projects and Issues share one skeleton.</b> Header with the create action, rollup, toolbar (search and filter), table, pager. The filter differs on purpose: state chips here, Show closed on Issues. <span class="why">Issues hand detailed filtering to the board; projects have no board, so they filter here.</span></li>
+    <li data-goto="pro-ws:activity"><span class="where">Workspace · Activity tab</span><b>A light recency feed, not a full audit log.</b> Recent conversations, document updates and issue and project changes, gathered from the workspace's projects. <span class="why">Workspaces have no event store of their own; this gives the workspace an Activity tab so its tabs line up with the project's.</span></li>
+    <li data-goto="pro-ws:connectors"><span class="where">Workspace · Connectors tab</span><b>Connectors stay as they are.</b> They ship from the connectors work already on dev; the redesign only places the tab. <span class="why">No reason to redesign something that just landed.</span></li>
+    <li data-goto="pro-ws:assets"><span class="where">Workspace · Assets tab</span><b>Assets are left as they are until the connectors migration reaches production.</b> Name and description only, after the shared tabs. <span class="why">Their integrations already live on Connectors, so redesigning Assets now would create two competing places for the same thing.</span></li>
+    <li data-goto="pro-proj:overview"><span class="where">Project · Overview</span><b>Stage readiness leads the project overview.</b> The same component as the sales pipeline: required document types (Project Scope, Business Requirements, Solution Design) gate advancement, SOW is optional. Click a stage to open it. <span class="why">Whether a project can move to its next stage is the most important thing on it, and both surfaces should show it the same way.</span></li>
+    <li data-goto="pro-proj:overview"><span class="where">Project · Overview rail</span><b>Deal fields collapse after the sale.</b> Click Deal to open it; empty fields stay hidden. <span class="why">Delivery work isn't taxed with sales fields nobody edits any more.</span></li>
+    <li data-goto="pro-proj:issues"><span class="where">Project · Issues tab</span><b>Issues get a header with the create action.</b> "+ Add issue" reassigns an existing issue rather than creating a duplicate; the rest follows the Projects skeleton. Tick Show closed to see closed issues. <span class="why">Every list tab now starts the same way: title, count, primary action.</span></li>
+    <li data-goto="pro-proj:documents"><span class="where">Project · Documents tab</span><b>The same stage requirements on the Documents tab.</b> Requirements are met by the project's own documents; linked workspace documents no longer count. <span class="why">The tab where documents are made shows what still has to be made.</span></li>
+    <li data-goto="pro-proj:conversations"><span class="where">Project · Conversations tab</span><b>Origin conversations stay, read only.</b> The sales-lead conversations sit under the project's own, dimmed. <span class="why">They are provenance: useful context, not ongoing work.</span></li>
+  </ol>
+</aside>
+</div>
+
+<script src="../assets/mockup.js"></script>
+<script>
+(function () {
+  const store = {
+    get(k, d) { try { return localStorage.getItem('jm-1262-' + k) || d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem('jm-1262-' + k, v); } catch { /* private mode */ } },
+  };
+
+  function setPage(p) {
+    document.body.dataset.page = p;
+    document.querySelectorAll('[data-page-set]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pageSet === p)));
+    store.set('page', p);
+  }
+
+  function setTab(group, tab) {
+    document.querySelectorAll('[data-tabs="' + group + '"] [data-tab]').forEach((b) => {
+      const on = b.dataset.tab === tab;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-selected', String(on));
+    });
+    document.querySelectorAll('[data-panel^="' + group + ':"]').forEach((p) => { p.hidden = p.dataset.panel !== group + ':' + tab; });
+  }
+
+  // Stage requirements: one template rendered on the Overview and the Documents tab.
+  const STAGES = [
+    { name: 'Draft', state: 'done', count: '1 / 1', reqs: [{ n: 'Project intake', doc: 'Intake notes' }] },
+    { name: 'Active', state: 'current', count: '3 / 3 required', reqs: [
+      { n: 'Project Scope', doc: 'Support Retainer Project Scope' },
+      { n: 'Business Requirements', doc: 'Support Retainer Business Requirements' },
+      { n: 'Solution Design', doc: 'Support Retainer Solution Design' },
+      { n: 'SOW', optional: true, add: 'Create SOW' },
+    ] },
+    { name: 'Complete', state: '', count: '0 / 1', reqs: [{ n: 'Final report', add: 'Create final report' }] },
+  ];
+  const stageHTML = STAGES.map((s) => {
+    const open = s.state === 'current';
+    const reqs = s.reqs.map((r) => '<div class="req' + (r.doc ? ' met' : '') + '"><span class="sdot">' + (r.doc ? '✓' : '') + '</span><div><div class="t-body" style="font-weight:500">' + r.n + (r.optional ? '<span class="opt">Optional</span>' : '') + '</div>' +
+      (r.doc ? '<div class="t-meta" style="margin-top:2px">' + r.doc + '</div>' : '<a class="t-link" href="#" style="font-size:12px">+ ' + r.add + '</a>') + '</div></div>').join('');
+    return '<div class="stage ' + s.state + (open ? ' open' : '') + '"><button type="button" class="stage-hd" aria-expanded="' + open + '"><span class="sdot">' + (s.state ? '✓' : '') + '</span><span class="t-card-title">' + s.name + '</span>' +
+      (open ? '<span class="chip blue t-badge">Current</span>' : '') + '<span class="t-meta">' + s.count + '</span><span class="chev"></span></button><div class="stage-body"' + (open ? '' : ' hidden') + '>' + reqs + '</div></div>';
+  }).join('');
+  document.querySelectorAll('[data-stagereq]').forEach((el) => { el.innerHTML = stageHTML; });
+
+  // Issues table
+  const KIND = { backlog: '', ready: 'blue', active: 'amber', waiting: 'purple', blocked: 'red', closed: 'green' };
+  const PRI = { Urgent: 'red', High: 'amber', Medium: 'blue', Low: '', 'No priority': '' };
+  const OPEN = [
+    ['ACME-48', 'Confirm the contact form fix with the CMS vendor', 'Dev in Progress', 'active', 'High'],
+    ['ACME-47', 'Login redirect drops the deep link after password reset', 'QA in Progress', 'active', 'High'],
+    ['ACME-46', 'Checkout loops back to the cart on payment confirmation', 'Blocked / Needs Attention', 'blocked', 'Urgent'],
+    ['ACME-45', 'Campaign tracking audit for the quarterly report', 'Ready for Dev', 'ready', 'Medium'],
+    ['ACME-44', 'Keep the return URL through the reset email', 'Ready for QA', 'ready', 'Medium'],
+    ['ACME-41', 'Spam filter for the contact form (spike)', 'Backlog', 'backlog', 'Low'],
+    ['ACME-39', 'Past-due invoice banner copy update', 'Client Approval Needed', 'waiting', 'Low'],
+    ['ACME-37', 'Payment step regression sweep', 'Ready for Release', 'ready', 'Medium'],
+    ['ACME-35', 'Remove footer social icons', 'Ready for Dev', 'ready', 'Low'],
+    ['ACME-33', 'Maintenance notice cleanup', 'Backlog', 'backlog', 'No priority'],
+    ['ACME-31', 'Analytics consent export', 'Ready for Dev', 'ready', 'Medium'],
+  ];
+  const CLOSED_NAMED = ['Hide the pricing banner for logged-in users', 'Snapshot the site before the CMS upgrade', 'Add analytics to the landing pages', 'Create the spring campaign pages', 'Remove the old banner from the homepage', 'Report empty document folders', 'Move documents into the new folders', 'Archive last year\'s campaign assets', 'Re-enable the past-due notice', 'Re-tag support conversations'];
+  const FILLER = ['Weekly support triage', 'Hotfix deploy verification', 'Vendor sync follow-up', 'Error log audit', 'Monitoring alert tune-up'];
+  const CLOSED = [];
+  for (let i = 0; i < 30; i++) CLOSED.push(['ACME-' + (30 - i), i < 10 ? CLOSED_NAMED[i] : FILLER[i % 5], 'Closed - Work Completed', 'closed', 'Medium']);
+  const tk = { page: 0, closed: false, size: 10 };
+  const chip = (cls, text) => '<span class="chip t-badge' + (cls ? ' ' + cls : '') + '">' + text + '</span>';
+  function renderIssues() {
+    const data = tk.closed ? OPEN.concat(CLOSED) : OPEN;
+    const pages = Math.max(1, Math.ceil(data.length / tk.size));
+    tk.page = Math.min(tk.page, pages - 1);
+    const start = tk.page * tk.size;
+    document.getElementById('issues-body').innerHTML = data.slice(start, start + tk.size).map((r) =>
+      '<tr><td class="key">' + r[0] + '</td><td class="t-body" style="font-weight:500">' + r[1] + '</td><td>' + chip(KIND[r[3]], r[2]) + '</td><td>' + chip(PRI[r[4]], r[4]) + '</td></tr>').join('');
+    document.getElementById('issues-range').textContent = (start + 1) + '–' + Math.min(start + tk.size, data.length) + ' of ' + data.length;
+    document.getElementById('issues-page').textContent = (tk.page + 1) + ' / ' + pages;
+    document.getElementById('tk-prev').disabled = tk.page === 0;
+    document.getElementById('tk-next').disabled = tk.page >= pages - 1;
+  }
+  document.getElementById('show-closed').addEventListener('change', (e) => { tk.closed = e.target.checked; tk.page = 0; renderIssues(); });
+  renderIssues();
+
+  // Projects state filter
+  const projRows = Array.from(document.querySelectorAll('#proj-body tr'));
+  function applyProjFilter() {
+    const on = Array.from(document.querySelectorAll('#proj-filters .fchip.on')).map((c) => c.dataset.state);
+    let shown = 0;
+    projRows.forEach((row) => { const m = on.includes(row.dataset.state); row.hidden = !m; if (m) shown++; });
+    document.getElementById('proj-showing').textContent = 'Showing ' + shown + ' of ' + projRows.length;
+    document.getElementById('proj-empty').hidden = shown !== 0;
+  }
+  applyProjFilter();
+
+  document.addEventListener('click', (e) => {
+    const ps = e.target.closest('[data-page-set]');
+    if (ps) { setPage(ps.dataset.pageSet); return; }
+
+    const tab = e.target.closest('[data-tabs] [data-tab]');
+    if (tab) { setTab(tab.closest('[data-tabs]').dataset.tabs, tab.dataset.tab); return; }
+
+    const jump = e.target.closest('[data-jump]');
+    if (jump) {
+      e.preventDefault();
+      const tabs = jump.closest('.page').querySelector('[data-tabs]');
+      setTab(tabs.dataset.tabs, jump.dataset.jump);
+      return;
+    }
+
+    const hd = e.target.closest('.stage-hd');
+    if (hd) {
+      const item = hd.closest('.stage');
+      const open = !item.classList.contains('open');
+      item.classList.toggle('open', open);
+      hd.setAttribute('aria-expanded', String(open));
+      item.querySelector('.stage-body').hidden = !open;
+      return;
+    }
+
+    if (e.target.closest('#deal-toggle')) {
+      const btn = document.getElementById('deal-toggle');
+      const body = document.getElementById('deal-body');
+      body.hidden = !body.hidden;
+      btn.setAttribute('aria-expanded', String(!body.hidden));
+      return;
+    }
+
+    const fc = e.target.closest('#proj-filters .fchip');
+    if (fc) { fc.classList.toggle('on'); fc.setAttribute('aria-pressed', String(fc.classList.contains('on'))); applyProjFilter(); return; }
+
+    if (e.target.id === 'tk-prev' && tk.page > 0) { tk.page--; renderIssues(); return; }
+    if (e.target.id === 'tk-next') { tk.page++; renderIssues(); return; }
+
+    const note = e.target.closest('.notes li[data-goto]');
+    if (note) {
+      const [group, t] = note.dataset.goto.split(':');
+      if (document.body.dataset.show === 'current') document.querySelector('[data-set="show:proposed"]').click();
+      setPage(group === 'pro-ws' ? 'ws' : 'proj');
+      setTab(group, t);
+      const n = Array.from(note.parentNode.children).indexOf(note) + 1;
+      const pin = Array.from(document.querySelectorAll('[data-variant="proposed"] .app[data-pg="' + document.body.dataset.page + '"] .pin')).find((p) => p.textContent === String(n) && p.offsetParent);
+      if (pin) pin.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  setPage(store.get('page', 'ws'));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juan's Clara Studio Mocks</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--fg:#1c1c24;--muted:#737373;--line:#e5e5e5;--card:#fafafa;--accent:#1578A3}
+@media (prefers-color-scheme:dark){:root{--bg:#0d0d12;--fg:#f5f5f5;--muted:#a3a3a3;--line:#27272f;--card:#16161e;--accent:#43B6E7}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 "Plus Jakarta Sans",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:48px 16px}
+h1{font-size:26px;margin:0 0 6px}
+p.lead{color:var(--muted);margin:0 0 32px}
+a.card{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:18px 20px;margin-bottom:12px}
+a.card:hover{border-color:var(--accent)}
+.card h2{font-size:17px;margin:0 0 4px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.meta{font-size:12px;color:var(--muted);margin-top:8px}
+footer{margin-top:40px;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Clara Studio mock-ups</h1>
+  <p class="lead">Juan Arce's front-end mock-ups for Clara Studio: working proposals, not decided standards. All data is synthetic.</p>
+  <a class="card" href="documents-navigation/">
+    <h2>Documents navigation</h2>
+    <p>Getting back to the folder you opened a document from: a "Back to" link, a breadcrumb that names Documents and the folder, and the folder kept in the address so browser Back works. Shown for workspace and project documents, today and proposed.</p>
+    <div class="meta">November 5, 2026</div>
+  </a>
+  <a class="card" href="documents-tree-view/">
+    <h2>Documents tree view</h2>
+    <p>The Documents tab as one foldable tree, the same for the organization library, a workspace and a project. Rows show names only; shelves run 1. Intake to 4. Handover. Compares today's List, Grid and Tree views with the proposal.</p>
+    <div class="meta">October 1, 2026</div>
+  </a>
+  <a class="card" href="global-search/">
+    <h2>Global search</h2>
+    <p>A search page and a ⌘K search bar: workspaces and projects by name, and documents, issues and comments in full text. Concept only.</p>
+    <div class="meta">September 22, 2026</div>
+  </a>
+  <a class="card" href="clara-1262-detail-redesign/">
+    <h2>Workspace and project detail</h2>
+    <p>Both detail pages on one layout: shared fields, the same issue rollup and list, and stage readiness leading the project page. Each page compares today and proposed.</p>
+    <div class="meta">September 4, 2026 · Clara-1262</div>
+  </a>
+  <a class="card" href="clara-1072-stage-requirements/">
+    <h2>Stage requirements stepper</h2>
+    <p>Every sales stage as a stepper with the current one open; "+ Link" and "Ready to advance" on the current stage only. Shipped (Clara-1072).</p>
+    <div class="meta">July 2, 2026 · Clara-1072</div>
+  </a>
+  <a class="card" href="mvp-chat/">
+    <h2>MVP chat with Clara</h2>
+    <p>The first MVP as a chat: pick the scope, see the tools Clara calls as cards, and open the specification she writes in a side panel. Early concept.</p>
+    <div class="meta">February 26, 2026</div>
+  </a>
+  <a class="card" href="studio-shell/">
+    <h2>Studio shell</h2>
+    <p>An early app shell: a client tree with project states, four views in one header, and Clara as a floating chat bubble. Early concept.</p>
+    <div class="meta">February 26, 2026</div>
+  </a>
+  <footer>Juan Arce</footer>
+</main>
+</body>
+</html>
