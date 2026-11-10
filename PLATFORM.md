@@ -4,7 +4,7 @@
 
 **How to start it.** `python3 -m http.server 8096` in this folder, then open <http://localhost:8096>. No build, no dependencies.
 
-**Publishing.** GitHub repository `gnomorv/juan-mocks`, GitHub Pages from `main`, root. The site is public: keep all data synthetic.
+**Publishing.** GitHub repository `gnomorv/juan-mocks`, GitHub Pages from `main`, root, live since 2026-11-10 at https://gnomorv.github.io/juan-mocks/. The site is public: keep all data synthetic. Pushing to `main` republishes it in about a minute.
 
 **Sources.** Converted from `docs-nav-mockup/`, the `gnomorv/clara-documents-mockups` repo, `notes/clara-studio-misc/` and `api-reference-scalar/docs/`. The originals are unchanged.
 
