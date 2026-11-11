@@ -41,15 +41,18 @@
   .d-step { display: grid; grid-template-columns: 28px 1fr; gap: 10px; margin-bottom: 14px; }
   .d-step b { width: 24px; height: 24px; border-radius: 50%; background: var(--d-tint); color: var(--d-accent); display: grid; place-items: center; font-size: 12px; }
 
-  /* Docusaurus-styled <details> (Infima "alert--info" look) */
-  .d-main details { border: 1px solid var(--d-rule); border-left: 4px solid var(--d-accent); background: var(--d-surface); border-radius: 8px; margin: 0 0 10px; }
-  .d-main summary { cursor: pointer; padding: 12px 14px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+  /* Docusaurus-styled <details>, as the built site renders it */
+  .doc { --d-det-bg: #eef8fd; --d-det-line: #43b6e7; --d-det-ink: #193c47; }
+  html.dark .doc { --d-det-bg: #16313e; --d-det-line: #43b6e7; --d-det-ink: #e6f6fd; }
+  .d-main details { background: var(--d-det-bg); border: 1px solid var(--d-det-line); border-radius: 6px; margin: 0 0 16px; color: var(--d-det-ink); }
+  .d-main summary { cursor: pointer; padding: 16px; font-weight: 400; list-style: none; display: flex; align-items: center; gap: 10px; }
   .d-main summary::-webkit-details-marker { display: none; }
-  .d-main summary::before { content: ''; width: 0; height: 0; border-left: 6px solid var(--d-ink); border-top: 5px solid transparent; border-bottom: 5px solid transparent; transition: transform .15s; flex: none; }
+  .d-main summary::before { content: ''; width: 0; height: 0; border-left: 6px solid var(--d-det-line); border-top: 4px solid transparent; border-bottom: 4px solid transparent; transition: transform .15s; flex: none; }
   .d-main details[open] > summary::before { transform: rotate(90deg); }
-  .d-main details > div { padding: 0 14px 12px 30px; border-top: 1px solid var(--d-rule); padding-top: 12px; }
+  .d-main details > div { margin: 0 16px; padding: 16px 0; border-top: 1px solid var(--d-det-line); }
+  .d-main details > div p { color: var(--d-det-ink); }
   .d-main details > div p:last-child { margin-bottom: 0; }
-  .d-main details details { border-left-width: 1px; margin-top: 10px; }
+  .d-main details details { margin: 12px 0 0; }
   .d-main code { font-family: var(--font-mono); font-size: 13px; background: var(--d-code); border: 1px solid var(--d-rule); border-radius: 4px; padding: 1px 5px; }
   .d-note { border-left: 4px solid var(--d-accent); background: var(--d-tint); border-radius: 8px; padding: 10px 14px; font-size: 14px; margin: 0 0 20px; color: var(--d-ink); }
   .d-tools { display: flex; gap: 8px; margin: 0 0 18px; align-items: center; }
