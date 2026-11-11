@@ -6,6 +6,7 @@ Juan Arce's collection of front-end mock-ups for Clara Studio, served with GitHu
 
 | Mock-up | Path | Notes |
 |---|---|---|
+| Help site FAQ | [/help-site-faq/](https://gnomorv.github.io/juan-mocks/help-site-faq/) | FAQ page for the Clara Learning help site with Docusaurus `<details>` collapsibles; placeholder content |
 | Documents navigation | [/documents-navigation/](https://gnomorv.github.io/juan-mocks/documents-navigation/) | Return to the folder you opened a document from; current vs proposed for workspace and project documents |
 | Documents tree view | [/documents-tree-view/](https://gnomorv.github.io/juan-mocks/documents-tree-view/) | Documents tab as one foldable tree for the library, a workspace and a project. Moved from the retired clara-documents-mockups repo |
 | Global search | [/global-search/](https://gnomorv.github.io/juan-mocks/global-search/) | Concept: search page and ⌘K search bar |
