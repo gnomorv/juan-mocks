@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Help Site Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  /* Clara Learning (help-site/) look: tokens from help-site/src/css/custom.css */
+  .doc { --d-bg: #fafafa; --d-surface: #ffffff; --d-ink: #1a1a1a; --d-mute: #525252; --d-faint: #737373; --d-rule: #e5e5e5; --d-accent: #2a9fd0; --d-tint: #f0f9ff; --d-code: #f5f5f5; }
+  html.dark .doc { --d-bg: #0d0d12; --d-surface: #16161e; --d-ink: #f5f5f5; --d-mute: #d4d4d4; --d-faint: #a3a3a3; --d-rule: #27272f; --d-accent: #43b6e7; --d-tint: #16313e; --d-code: #0d0d12; }
+  .doc { background: var(--d-bg); color: var(--d-ink); min-height: calc(100vh - 49px); font-size: 15px; }
+
+  .d-nav { height: 64px; display: flex; align-items: center; gap: 22px; padding: 0 20px; background: var(--d-surface); border-bottom: 1px solid var(--d-rule); }
+  .d-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; }
+  .d-mark { display: inline-flex; gap: 2px; align-items: flex-end; }
+  .d-mark i { width: 4px; background: var(--d-accent); border-radius: 1px; transform: skewX(-14deg); }
+  .d-mark i:nth-child(1) { height: 9px; opacity: .45; } .d-mark i:nth-child(2) { height: 14px; opacity: .7; } .d-mark i:nth-child(3) { height: 19px; }
+  .d-nav a { color: var(--d-ink); text-decoration: none; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; cursor: default; }
+  .d-nav a.on { color: var(--d-accent); }
+  .d-nav .sp { flex: 1; }
+  .d-search { width: 200px; height: 34px; border-radius: 6px; border: 1px solid var(--d-rule); background: var(--d-bg); color: var(--d-faint); font-size: 13px; display: flex; align-items: center; padding: 0 10px; }
+
+  /* Current: docs layout */
+  .d-body { display: grid; grid-template-columns: 250px minmax(0, 1fr); }
+  .d-side { border-right: 1px solid var(--d-rule); padding: 14px 10px; font-size: 14px; min-height: calc(100vh - 113px); }
+  .d-cat { padding: 7px 10px; font-weight: 600; display: flex; justify-content: space-between; }
+  .d-cat::after { content: '›'; color: var(--d-faint); }
+  .d-cat.open::after { transform: rotate(90deg); }
+  .d-link { padding: 6px 10px 6px 22px; border-radius: 6px; color: var(--d-mute); }
+  .d-link.on { background: var(--d-tint); color: var(--d-accent); font-weight: 600; }
+  .d-main { padding: 28px 40px 64px; max-width: 820px; min-width: 0; }
+  .d-crumb { font-size: 13px; color: var(--d-faint); margin-bottom: 14px; }
+  .d-main h1 { font-size: 34px; line-height: 1.2; margin: 0 0 10px; letter-spacing: -.01em; }
+  .d-main h2 { font-size: 22px; margin: 30px 0 12px; }
+  .d-main p, .d-main li { color: var(--d-mute); line-height: 1.65; }
+  .d-main p { margin: 0 0 14px; }
+  .d-info { font-size: 13px; color: var(--d-faint); border: 1px solid var(--d-rule); border-radius: 8px; padding: 8px 12px; margin: 0 0 20px; background: var(--d-surface); }
+  .d-main table { border-collapse: collapse; font-size: 14px; margin: 0 0 16px; }
+  .d-main th, .d-main td { border: 1px solid var(--d-rule); padding: 7px 12px; text-align: left; }
+  .d-main th { background: var(--d-surface); }
+
+  /* Proposed: Docusaurus blog layout (sidebar "Recent posts" + post column) */
+  .b-body { display: grid; grid-template-columns: 250px minmax(0, 1fr); max-width: 1140px; margin: 0 auto; padding: 32px 20px 64px; gap: 24px; }
+  .b-side h3 { font-size: 14px; font-weight: 700; margin: 0 0 12px; display: flex; align-items: center; }
+  .b-side a { display: block; font-size: 14px; color: var(--d-mute); padding: 5px 0; text-decoration: none; cursor: pointer; line-height: 1.4; }
+  .b-side a.on { color: var(--d-accent); font-weight: 600; }
+  .b-side .yr { font-size: 12px; font-weight: 700; color: var(--d-faint); margin: 12px 0 2px; }
+  .b-col { max-width: 760px; min-width: 0; }
+  .b-head { margin: 0 0 28px; padding-bottom: 18px; border-bottom: 1px solid var(--d-rule); }
+  .b-head h1 { font-size: 34px; margin: 0 0 6px; }
+  .b-head p { margin: 0; color: var(--d-mute); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .b-head .feed { font-size: 13px; color: var(--d-accent); margin-left: 6px; }
+
+  article.b-post { margin: 0 0 44px; }
+  .b-post h2 { font-size: 28px; line-height: 1.25; margin: 0 0 6px; }
+  .b-post h2 a { color: var(--d-ink); text-decoration: none; cursor: pointer; }
+  .b-post h2 a:hover { color: var(--d-accent); }
+  .b-meta { font-size: 14px; color: var(--d-faint); margin: 0 0 14px; display: flex; align-items: center; }
+  .b-authors { display: flex; flex-wrap: wrap; gap: 14px 28px; margin: 0 0 16px; align-items: center; }
+  .b-author { display: flex; gap: 10px; align-items: center; }
+  .b-av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 14px; flex: none; }
+  .b-author b { display: block; font-size: 14px; color: var(--d-accent); }
+  .b-author small { display: block; font-size: 12px; color: var(--d-faint); }
+  .b-post p, .b-post li { color: var(--d-mute); line-height: 1.7; }
+  .b-post p { margin: 0 0 14px; }
+  .b-post h3 { font-size: 20px; margin: 26px 0 10px; }
+  .b-post table { border-collapse: collapse; font-size: 14px; margin: 0 0 16px; }
+  .b-post th, .b-post td { border: 1px solid var(--d-rule); padding: 7px 12px; text-align: left; }
+  .b-post th { background: var(--d-surface); }
+  .b-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+  .b-tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--d-faint); }
+  .b-tag { border: 1px solid var(--d-rule); background: var(--d-surface); color: var(--d-mute); border-radius: 6px; padding: 3px 9px; font-size: 13px; }
+  .b-more { color: var(--d-accent); font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; }
+  .b-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+  .b-pager div { border: 1px solid var(--d-rule); border-radius: 8px; padding: 12px 14px; background: var(--d-surface); font-size: 14px; }
+  .b-pager small { display: block; color: var(--d-faint); font-size: 12px; }
+  .b-pager b { color: var(--d-accent); }
+  .b-pager .r { text-align: right; grid-column: 2; }
+  .b-note { border: 1px solid #43b6e7; background: #eef8fd; color: #193c47; border-radius: 6px; padding: 12px 16px; margin: 0 0 16px; font-size: 14px; }
+  html.dark .b-note { background: #16313e; color: #e6f6fd; }
+  .b-back { font-size: 14px; color: var(--d-accent); cursor: pointer; margin: 0 0 18px; display: inline-block; }
+  [data-page] { display: none; }
+  .doc[data-at='list'] [data-page='list'], .doc[data-at='post'] [data-page='post'] { display: block; }
+
+  body[data-show='split'] .d-body, body[data-show='split'] .b-body { grid-template-columns: minmax(0, 1fr); }
+  body[data-show='split'] .d-side, body[data-show='split'] .b-side, body[data-show='split'] .d-search { display: none; }
+  body[data-show='split'] .d-main { padding: 22px 22px 48px; }
+  @media (max-width: 900px) { .b-body { grid-template-columns: minmax(0, 1fr); } .b-side { display: none; } }
+  @media (max-width: 760px) { .d-body { grid-template-columns: minmax(0, 1fr); } .d-side, .d-search { display: none; } .d-main { padding: 20px 16px 48px; } .b-body { padding: 20px 16px 48px; } .d-nav { gap: 14px; overflow-x: auto; } .b-pager { grid-template-columns: 1fr; } .b-pager .r { grid-column: 1; } }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">Help site blog</span>
+  <span class="t-meta" style="color:#9ca3af">November 11, 2026 · Clara Learning help site (/docs/), new Blog section</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Variant"><button data-set="show:current">Current</button><button data-set="show:proposed">Proposed</button><button data-set="show:split">Side by side</button></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+
+<div class="review-layout">
+<div class="split-wrap">
+
+  <!-- CURRENT: blog is disabled; news lives inside the guides -->
+  <div data-variant="current" class="cur"><div class="variant-tag">Current</div>
+  <div class="doc">
+    <div class="d-nav">
+      <span class="d-brand"><span class="d-mark"><i></i><i></i><i></i></span>Clara Learning</span>
+      <a class="on">Guides</a><a>System Reference</a><a>Connect Clara</a>
+      <span class="sp"></span><span class="d-search">Search</span>
+    </div>
+    <div class="d-body">
+      <nav class="d-side">
+        <div class="d-cat">Start Here</div>
+        <div class="d-cat">Working in Clara Studio</div>
+        <div class="d-cat">Intake &amp; Sales Pipeline</div>
+        <div class="d-cat">Connecting Clara to Your Tools</div>
+        <div class="d-cat">Administration</div>
+        <div class="d-cat">Data &amp; Architecture</div>
+        <div class="d-cat">Operations &amp; Runbooks</div>
+        <div class="d-cat open">Contributing to the Docs</div>
+        <div class="d-link">Markdown Style Guide</div>
+        <div class="d-link on">Feature Inventory</div>
+      </nav>
+      <main class="d-main">
+        <div class="d-crumb">Contributing to the Docs › Feature Inventory</div>
+        <h1>Feature Inventory</h1>
+        <div class="d-info">Document Info · Reference · Docs contributors</div>
+        <p>The list of shipped features and the guide that covers each. There is no place for announcements, release notes or tips: <code>blog: false</code> in <code>docusaurus.config.ts</code>, so what changed and when is only visible by comparing guides or reading pull requests.</p>
+        <h2>Recently added</h2>
+        <table>
+          <thead><tr><th>Feature</th><th>Guide</th><th>Added</th></tr></thead>
+          <tbody>
+            <tr><td>Starred items</td><td>Starred</td><td>2026-04</td></tr>
+            <tr><td>Clara MCP connector</td><td>Connect Clara</td><td>2026-06</td></tr>
+            <tr><td>Session capture</td><td>Session Capture</td><td>2026-09</td></tr>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+  </div>
+
+  <!-- PROPOSED: the Docusaurus blog turned on -->
+  <div data-variant="proposed" class="pro"><div class="variant-tag">Proposed</div>
+  <div class="doc" data-at="list">
+    <div class="d-nav">
+      <span class="d-brand"><span class="d-mark"><i></i><i></i><i></i></span>Clara Learning</span>
+      <a>Guides</a><a>System Reference</a><a>Connect Clara</a><a class="on">Blog<span class="pin">1</span></a>
+      <span class="sp"></span><span class="d-search">Search</span>
+    </div>
+    <div class="b-body">
+      <nav class="b-side">
+        <h3>Recent posts<span class="pin">2</span></h3>
+        <div class="yr">2026</div>
+        <a data-go="post" class="p1">Release Notes: November 2026</a>
+        <a data-go="list">Session capture is here</a>
+        <a data-go="list">Five ways to find your work faster</a>
+        <a data-go="list">Connect Clara to Claude Code in two minutes</a>
+        <a data-go="list">Welcome to the Clara Learning blog</a>
+      </nav>
+
+      <div class="b-col">
+        <!-- List page -->
+        <div data-page="list">
+          <div class="b-head">
+            <h1>Blog</h1>
+            <p>Release notes, new features and tips for Clara Studio. <span class="feed">RSS · Atom</span><span class="pin">6</span></p>
+          </div>
+
+          <article class="b-post">
+            <h2><a data-go="post">Release Notes: November 2026</a></h2>
+            <div class="b-meta">November 10, 2026 · 3 min read<span class="pin">3</span></div>
+            <div class="b-authors">
+              <div class="b-author"><span class="b-av" style="background:#0369a1">MR</span><span><b>Maya Reyes</b><small>Product Manager (sample)</small></span></div>
+              <div class="b-author"><span class="b-av" style="background:#7c3aed">DK</span><span><b>Dan Kowalski</b><small>Engineering Lead (sample)</small></span></div>
+              <span class="pin">4</span>
+            </div>
+            <p>Global search, a redesigned project page and faster document loading. Here is everything that shipped this month.</p>
+            <div class="b-foot">
+              <div class="b-tags">Tags: <span class="b-tag">Release notes</span><span class="b-tag">Search</span><span class="pin">5</span></div>
+              <a class="b-more" data-go="post">Read more</a>
+            </div>
+          </article>
+
+          <article class="b-post">
+            <h2><a>Session capture is here</a></h2>
+            <div class="b-meta">October 22, 2026 · 4 min read</div>
+            <div class="b-authors">
+              <div class="b-author"><span class="b-av" style="background:#7c3aed">DK</span><span><b>Dan Kowalski</b><small>Engineering Lead (sample)</small></span></div>
+            </div>
+            <p>Work you do with Clara in Claude Code can now be recorded on the issue it belongs to, so the team sees what was tried and why.</p>
+            <div class="b-foot">
+              <div class="b-tags">Tags: <span class="b-tag">Announcements</span><span class="b-tag">Connectors</span></div>
+              <a class="b-more">Read more</a>
+            </div>
+          </article>
+
+          <article class="b-post">
+            <h2><a>Five ways to find your work faster</a></h2>
+            <div class="b-meta">September 30, 2026 · 2 min read</div>
+            <div class="b-authors">
+              <div class="b-author"><span class="b-av" style="background:#0f766e">LS</span><span><b>Lena Soto</b><small>Customer Success (sample)</small></span></div>
+            </div>
+            <p>Stars, My Issues, filters and two keyboard shortcuts that save a few clicks every day.</p>
+            <div class="b-foot">
+              <div class="b-tags">Tags: <span class="b-tag">Tips</span></div>
+              <a class="b-more">Read more</a>
+            </div>
+          </article>
+
+          <div class="b-pager"><div class="r"><small>Next page</small><b>Older entries »</b></div></div>
+        </div>
+
+        <!-- Post page -->
+        <div data-page="post">
+          <span class="b-back" data-go="list">← Back to Blog</span>
+          <article class="b-post">
+            <h2 style="font-size:34px">Release Notes: November 2026</h2>
+            <div class="b-meta">November 10, 2026 · 3 min read</div>
+            <div class="b-authors">
+              <div class="b-author"><span class="b-av" style="background:#0369a1">MR</span><span><b>Maya Reyes</b><small>Product Manager (sample)</small></span></div>
+              <div class="b-author"><span class="b-av" style="background:#7c3aed">DK</span><span><b>Dan Kowalski</b><small>Engineering Lead (sample)</small></span></div>
+            </div>
+            <p>Global search, a redesigned project page and faster document loading. Here is everything that shipped this month.</p>
+            <h3>Highlights</h3>
+            <ul>
+              <li><strong>Global search</strong>: find workspaces, projects, documents and issues from one box. Press <code>⌘K</code> anywhere.</li>
+              <li><strong>Project page</strong>: one layout for workspaces and projects, with the details panel on the right.</li>
+              <li><strong>Documents</strong>: large documents open twice as fast.</li>
+            </ul>
+            <h3>By the numbers</h3>
+            <table>
+              <thead><tr><th>Metric</th><th>October</th><th>November</th></tr></thead>
+              <tbody>
+                <tr><td>Document open time</td><td>1.8 s</td><td>0.9 s</td></tr>
+                <tr><td>Issues fixed</td><td>21</td><td>34</td></tr>
+              </tbody>
+            </table>
+            <div class="b-note">Want the details? Each feature links to its guide: see <strong>Workspaces and Projects</strong> and <strong>Global search</strong>.</div>
+            <div class="b-foot">
+              <div class="b-tags">Tags: <span class="b-tag">Release notes</span><span class="b-tag">Search</span></div>
+            </div>
+          </article>
+          <div class="b-pager"><div class="r"><small>Older post</small><b>Session capture is here »</b></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<aside class="notes">
+  <h2>What changed and why</h2>
+  <p class="notes-sub">Today the Clara Learning help site has the blog turned off (<code>blog: false</code>), so release notes, announcements and tips have no home. The proposal turns on the blog that comes with Docusaurus, set up the way its documentation recommends. No plugin to add. Posts, people and numbers here are placeholder content. Try it: select a post title or "Read more", then go back.</p>
+  <ol>
+    <li><b>Blog link in the top navigation.</b> <code>{to: '/blog', label: 'Blog'}</code> next to Guides. <span class="why">The Docusaurus setup step: a <code>blog/</code> folder plus one navbar item.</span></li>
+    <li><b>"Recent posts" sidebar.</b> The newest five posts, grouped by year. <span class="why">Built in (<code>blogSidebarCount</code>, default 5). Set it to <code>'ALL'</code> to list every post.</span></li>
+    <li><b>Date and reading time on every post.</b> The date comes from the file name, <code>blog/2026-11-10-release-notes.md</code>. <span class="why"><code>showReadingTime: true</code>. One naming pattern for every file keeps the order right.</span></li>
+    <li><b>Authors with name, role and picture.</b> Defined once in <code>blog/authors.yml</code> and referenced by key in each post. <span class="why">Global authors can each get an author page listing their posts (<code>page: true</code>).</span></li>
+    <li><b>Tags from a fixed list.</b> <code>blog/tags.yml</code> holds Release notes, Announcements, Tips, Search, Connectors. <span class="why">With <code>onInlineTags: 'throw'</code> a typo in a tag fails the build instead of creating a new tag.</span></li>
+    <li><b>Short summaries with "Read more", and feeds.</b> Each post ends its summary with <code>{/* truncate */}</code>; RSS and Atom feeds are generated. <span class="why">The site parses Markdown strictly (<code>future: v4</code>), so the HTML-comment form <code>&lt;!-- truncate --&gt;</code> breaks the build. <code>onUntruncatedBlogPosts: 'warn'</code> catches posts with no marker. People can follow releases from a feed reader.</span></li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+<script>
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('[data-go]');
+  if (!a) return;
+  const doc = a.closest('.doc');
+  doc.dataset.at = a.dataset.go;
+  doc.querySelectorAll('.b-side a').forEach((l) => l.classList.toggle('on', a.dataset.go === 'post' && l.classList.contains('p1')));
+  doc.scrollIntoView({ block: 'start' });
+});
+</script>
+</body>
+</html>
