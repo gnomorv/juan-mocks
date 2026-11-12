@@ -57,6 +57,13 @@
   .d-note { border-left: 4px solid var(--d-accent); background: var(--d-tint); border-radius: 8px; padding: 10px 14px; font-size: 14px; margin: 0 0 20px; color: var(--d-ink); }
   .d-tools { display: flex; gap: 8px; margin: 0 0 18px; align-items: center; }
   .d-tools button { font: inherit; font-size: 13px; border: 1px solid var(--d-rule); background: var(--d-surface); color: var(--d-ink); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+  .d-main h1.center { text-align: center; }
+  .d-info.bottom { margin: 36px 0 0; }
+  .d-faqsearch { display: flex; flex-direction: column; align-items: center; margin: 8px 0 16px; }
+  .d-faqsearch input { width: 100%; max-width: 32rem; padding: 10px 16px; font: inherit; font-size: 15px; color: var(--d-ink); background: var(--d-surface); border: 1px solid var(--d-rule); border-radius: 6px; }
+  .d-faqsearch input::placeholder { color: var(--d-faint); }
+  .d-faqsearch input:focus { outline: none; border-color: var(--d-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--d-accent) 25%, transparent); }
+  .d-faqsearch p { min-height: 1.4em; margin: 6px 0 0; font-size: 13px; text-align: center; color: var(--d-faint); }
   .d-feedback { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--d-rule); font-size: 14px; color: var(--d-mute); display: flex; align-items: center; gap: 10px; }
   .d-feedback span.b { border: 1px solid var(--d-rule); border-radius: 6px; padding: 3px 10px; background: var(--d-surface); }
 
@@ -75,9 +82,9 @@
 <div class="review-bar">
   <a href="../">← All mock-ups</a>
   <span class="rb-title">Help site FAQ</span>
-  <span class="t-meta" style="color:#9ca3af">November 11, 2026 · Clara Learning help site (/docs/), new FAQ page</span>
+  <span class="t-meta" style="color:#9ca3af">November 12, 2026 · User Guide help site, FAQ page as built on dev</span>
   <span class="rb-spacer"></span>
-  <span class="seg" role="group" aria-label="Variant"><button data-set="show:current">Current</button><button data-set="show:proposed">Proposed</button><button data-set="show:split">Side by side</button></span>
+  <span class="seg" role="group" aria-label="Variant"><button data-set="show:current">Before</button><button data-set="show:proposed">As built</button><button data-set="show:split">Side by side</button></span>
   <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
   <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
 </div>
@@ -86,7 +93,7 @@
 <div class="split-wrap">
 
   <!-- CURRENT: Start Here has no FAQ; the closest page is Common Workflows -->
-  <div data-variant="current" class="cur"><div class="variant-tag">Current</div>
+  <div data-variant="current" class="cur"><div class="variant-tag">Before (Nov 11)</div>
   <div class="doc">
     <div class="d-nav">
       <span class="d-brand"><span class="d-mark"><i></i><i></i><i></i></span>Clara Learning</span>
@@ -128,11 +135,11 @@
   </div>
   </div>
 
-  <!-- PROPOSED: a FAQ page using Docusaurus <details> collapsibles -->
-  <div data-variant="proposed" class="pro"><div class="variant-tag">Proposed</div>
+  <!-- AS BUILT: the FAQ page on the docs repo's dev branch -->
+  <div data-variant="proposed" class="pro"><div class="variant-tag">As built</div>
   <div class="doc">
     <div class="d-nav">
-      <span class="d-brand"><span class="d-mark"><i></i><i></i><i></i></span>Clara Learning</span>
+      <span class="d-brand"><span class="d-mark"><i></i><i></i><i></i></span>User Guide<span class="pin">7</span></span>
       <a>Guides</a><a>System Reference</a><a>Connect Clara</a><a class="on">FAQ<span class="pin">1</span></a>
       <span class="sp"></span><span class="d-search">Search</span>
     </div>
@@ -153,10 +160,11 @@
       </nav>
       <main class="d-main">
         <div class="d-crumb">Start Here › FAQ</div>
-        <h1>Frequently Asked Questions</h1>
-        <div class="d-info">Document Info · User Guide · All Clara Studio users</div>
-        <p>Select a question to see the answer. Each answer links to the guide that covers it in full.</p>
-        <div class="d-tools"><button type="button" data-all="open">Expand all</button><button type="button" data-all="close">Collapse all</button><span class="pin">5</span></div>
+        <h1 class="center">Frequently Asked Questions<span class="pin">8</span></h1>
+        <div class="d-faqsearch">
+          <div style="display:flex;align-items:center;gap:8px;width:100%;max-width:32rem"><input type="search" placeholder="Search the questions" aria-label="Search the frequently asked questions" data-faq-search><span class="pin">5</span></div>
+          <p role="status" aria-live="polite" data-faq-status></p>
+        </div>
 
         <h2 id="getting-started">Getting started<span class="pin">3</span></h2>
         <details open>
@@ -188,6 +196,12 @@
           </div>
         </details>
 
+        <h2 id="questions">Questions</h2>
+        <details>
+          <summary>What is a Question in Clara Studio?</summary>
+          <div><p>A question someone needs answered before work can continue. Open questions waiting on you appear on your Dashboard.</p></div>
+        </details>
+
         <h2 id="conversations">Conversations with Clara</h2>
         <details>
           <summary>Does Clara remember earlier conversations?</summary>
@@ -210,10 +224,11 @@
           <div><p>You only see workspaces you're a member of. Ask the workspace's admin to add you.</p></div>
         </details>
 
-        <div class="d-feedback">Didn't find your answer? <span class="b">Ask in #clara-support</span><span class="pin">6</span></div>
+        <div class="d-feedback">Didn't find your answer? <span class="b">Ask Clara</span> from your project's Conversations tab.<span class="pin">6</span></div>
+        <div class="d-info bottom">Document Info · User Guide · All Clara Studio users<span class="pin">9</span></div>
       </main>
       <aside class="d-toc">
-        <div class="on">Getting started</div><div>Issues and projects</div><div>Conversations with Clara</div><div>Connecting tools</div><div>Account and access</div>
+        <div class="on">Getting started</div><div>Issues and projects</div><div>Questions</div><div>Conversations with Clara</div><div>Connecting tools</div><div>Account and access</div>
       </aside>
     </div>
   </div>
@@ -222,23 +237,44 @@
 
 <aside class="notes">
   <h2>What changed and why</h2>
-  <p class="notes-sub">Today the Clara Learning help site has no FAQ: quick questions are answered somewhere inside the long section guides, so people ask in chat instead. The proposal adds one FAQ page built the way the Docusaurus documentation recommends for collapsible content: plain <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code> in Markdown, which Docusaurus styles itself. No plugin and no custom component. Questions and answers here are placeholder content. Try it: open and close the questions.</p>
+  <p class="notes-sub">Before, the help site had no FAQ. The FAQ page is now built on the docs repo's <code>dev</code> branch (<code>clara-studio-docs</code>, <code>docs/faq.md</code>) with plain <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code>, styled by Docusaurus. Questions and answers here are placeholder content. Try it: type in the search box, and open and close the questions.</p>
   <ol>
-    <li><b>FAQ link in the top navigation.</b> Next to Guides, System Reference and Connect Clara. <span class="why">One click from any page; today the only entry points are the guides themselves.</span></li>
-    <li><b>FAQ is the last item of Start Here.</b> One file, <code>help-site/docs/faq.md</code>, plus one line in <code>sidebars.ts</code> under Start Here. <span class="why">The sidebar is explicit, so a page not listed there appears in no menu. Start Here is where new users already look.</span></li>
+    <li><b>FAQ link in the top navigation.</b> Next to Guides, System Reference and Connect Clara. <span class="why">One click from any page.</span></li>
+    <li><b>FAQ is the last item of Start Here.</b> One file, <code>docs/faq.md</code>, plus one line in <code>sidebars.ts</code> under Start Here. <span class="why">The sidebar is explicit, so a page not listed there appears in no menu.</span></li>
     <li><b>Questions are grouped under normal headings.</b> Getting started, Issues and projects, Conversations, Connecting tools, Account and access. <span class="why">Headings sit outside the collapsibles, so they appear in the "On this page" table of contents and have links of their own.</span></li>
     <li><b>Each question is a <code>&lt;details&gt;</code> block; the summary stays on one line.</b> Answers can hold links, lists, code and even a nested question. <span class="why">Docusaurus's own tip: a line break inside <code>&lt;summary&gt;</code> makes MDX add extra paragraphs. Built-in styling means the page matches light and dark themes with no CSS. The site's strict-MDX rules (no bare <code>{ }</code>, no HTML comments) still apply.</span></li>
-    <li><b>Expand all / Collapse all (optional).</b> A small client component. <span class="why">Useful once the list grows; also makes the browser's find-in-page work across every answer. Not needed for a first version.</span></li>
-    <li><b>A way out when the answer is missing.</b> A footer line pointing to the support channel. <span class="why">Unanswered questions become the next FAQ entries.</span></li>
+    <li><b>Search box under the title.</b> Replaces Expand all / Collapse all. Filters as you type: a question stays when every word appears in its question or answer, empty sections hide, accents are ignored, Escape clears. <span class="why">Finds an answer without opening each question.</span></li>
+    <li><b>A way out when the answer is missing.</b> The footer sends people to ask Clara from their project's Conversations tab. <span class="why">That is where Clara has the most context.</span></li>
+    <li><b>Site renamed User Guide.</b> Was Clara Learning. <span class="why">Names what the site is for.</span></li>
+    <li><b>Centered title.</b> On the FAQ page only. <span class="why">The search box under it centers too.</span></li>
+    <li><b>Document Info at the bottom.</b> On every guide, after the content. <span class="why">The page opens on the content, not on metadata.</span></li>
   </ol>
 </aside>
 </div>
 <script src="../assets/mockup.js"></script>
 <script>
-document.addEventListener('click', (e) => {
-  const b = e.target.closest('[data-all]');
-  if (!b) return;
-  b.closest('.d-main').querySelectorAll('details').forEach((d) => { d.open = b.dataset.all === 'open'; });
+const norm = (s) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+function filterFaq(input) {
+  const main = input.closest('.d-main');
+  const terms = norm(input.value).split(/\s+/).filter(Boolean);
+  let visible = 0, heading = null, hit = false;
+  const close = () => { if (heading) heading.style.display = terms.length && !hit ? 'none' : ''; };
+  for (const el of main.children) {
+    if (el.tagName === 'H2') { close(); heading = el; hit = false; }
+    else if (el.tagName === 'DETAILS') {
+      const m = terms.every((t) => norm(el.textContent).includes(t));
+      el.style.display = m ? '' : 'none';
+      if (m) { visible++; hit = true; }
+    }
+  }
+  close();
+  main.querySelector('[data-faq-status]').textContent = !terms.length ? ''
+    : visible === 0 ? 'No questions match. Try other words, or use the site search at the top.'
+    : `${visible} ${visible === 1 ? 'question matches' : 'questions match'}`;
+}
+document.addEventListener('input', (e) => { if (e.target.matches('[data-faq-search]')) filterFaq(e.target); });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && e.target.matches('[data-faq-search]')) { e.target.value = ''; filterFaq(e.target); }
 });
 </script>
 </body>
