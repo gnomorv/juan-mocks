@@ -7,7 +7,9 @@
   };
 
   function apply() {
-    const show = store.get('show', 'proposed');
+    // A concept page has no Current view: a stored 'current' or 'split' would leave it blank.
+    const hasCurrent = !!document.querySelector('[data-variant="current"]');
+    const show = hasCurrent ? store.get('show', 'proposed') : 'proposed';
     const theme = store.get('theme', 'light');
     const notes = store.get('notes', 'on');
     document.body.dataset.show = show;

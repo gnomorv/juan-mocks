@@ -1,6 +1,6 @@
 # Page format
 
-Every mock-up page follows the review format used in `razorvision/cs-mocks` (Luciana Oliveira's mock-ups), so the two collections look and behave the same. The shared styles and script in `assets/` are copied from her `visual-hierarchy/assets/` unchanged, except that the script stores choices under `jm-` instead of `vh-`.
+Every mock-up page follows the review format used in `razorvision/cs-mocks` (Luciana Oliveira's mock-ups), so the two collections look and behave the same. The shared styles and script in `assets/` are copied from her `visual-hierarchy/assets/` unchanged, except that the script stores choices under `jm-` instead of `vh-` and always shows the Proposed view on a page that has no Current view.
 
 ## Folder and files
 
