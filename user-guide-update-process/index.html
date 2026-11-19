@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Guide update process</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  .up {
+    --up-card: #ffffff; --up-ink: #1c2330; --up-muted: #5d6778; --up-line: #d5dae2;
+    --up-app: #2f6fde; --up-app-soft: #e8f0fd; --up-doc: #1d8a5f; --up-doc-soft: #e4f5ed;
+    --up-new: #b86a00; --up-new-soft: #fff3df; --up-wait: #7a5cc4; --up-wait-soft: #efeafb;
+    max-width: 1040px; margin: 0 auto; padding: 28px 20px 56px; color: var(--up-ink); font-size: 15px; line-height: 1.5;
+  }
+  html.dark .up {
+    --up-card: #1d2229; --up-ink: #e8ecf2; --up-muted: #9aa5b5; --up-line: #343c48;
+    --up-app: #7aa7f5; --up-app-soft: #1c2a44; --up-doc: #5fd0a0; --up-doc-soft: #173326;
+    --up-new: #f2b457; --up-new-soft: #3a2c12; --up-wait: #b6a0ee; --up-wait-soft: #2a2342;
+  }
+  .up h1 { font-size: 26px; margin: 0 0 6px; color: inherit; }
+  .up-lead { color: var(--up-muted); margin: 0 0 20px; max-width: 70ch; }
+  .up-example { background: var(--up-card); border: 1px solid var(--up-line); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
+  .up-example b { color: var(--up-app); }
+  .up-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 24px; color: var(--up-muted); font-size: 13px; }
+  .up-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
+  .up-tag.today { background: var(--up-line); color: var(--up-ink); }
+  .up-tag.new { background: var(--up-new-soft); color: var(--up-new); border: 1px solid var(--up-new); }
+
+  .up-lanes { display: grid; grid-template-columns: 1fr 64px 1fr; }
+  .up-head { font-weight: 700; padding: 10px 14px; border-radius: 10px 10px 0 0; }
+  .up-head small { display: block; font-weight: 400; color: var(--up-muted); }
+  .up-head.a { background: var(--up-app-soft); border-bottom: 3px solid var(--up-app); }
+  .up-head.d { background: var(--up-doc-soft); border-bottom: 3px solid var(--up-doc); }
+
+  .up-step { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin: 26px 0 10px; }
+  .up-num { width: 28px; height: 28px; border-radius: 50%; background: var(--up-ink); color: var(--up-card); display: grid; place-items: center; font-weight: 700; font-size: 14px; flex: none; }
+  .up-step h2 { font-size: 16px; margin: 0; color: inherit; }
+  .up-when { color: var(--up-muted); font-size: 13px; }
+  .up-skills { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: -4px 0 10px 38px; font-size: 13px; color: var(--up-muted); }
+  .up-skill { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; background: var(--up-card); color: var(--up-ink); border: 1px solid var(--up-line); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+  .up-skill.none { font-family: inherit; font-weight: 400; border-style: dashed; color: var(--up-muted); }
+
+  .up-box { position: relative; background: var(--up-card); border: 1px solid var(--up-line); border-radius: 10px; padding: 12px 14px; }
+  .up-box.a { border-left: 4px solid var(--up-app); }
+  .up-box.d { border-left: 4px solid var(--up-doc); }
+  .up-box.wait { border-left: 4px solid var(--up-wait); background: var(--up-wait-soft); }
+  .up-box.empty { background: transparent; border: 1px dashed var(--up-line); color: var(--up-muted); }
+  .up-box h3 { font-size: 14px; margin: 0 0 4px; color: inherit; }
+  .up-box p { margin: 0; }
+  .up-box ul { margin: 6px 0 0; padding-left: 18px; }
+  .up-box li { margin: 2px 0; }
+  .up-new { margin-top: 8px; padding: 6px 8px; border-radius: 6px; background: var(--up-new-soft); font-size: 14px; }
+  .up-new.first { margin-top: 0; }
+  .up-arrow { display: grid; place-items: center; color: var(--up-muted); font-size: 22px; text-align: center; }
+  .up-arrow small { display: block; font-size: 11px; line-height: 1.2; }
+  .up-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
+  .up-src { background: var(--up-doc-soft); border-radius: 8px; padding: 8px 10px; font-size: 14px; }
+  .up-src b { display: block; }
+
+  .up h2.up-section { font-size: 18px; margin: 40px 0 10px; color: inherit; }
+  .up table { width: 100%; border-collapse: collapse; background: var(--up-card); border: 1px solid var(--up-line); }
+  .up th, .up td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--up-line); vertical-align: top; }
+  .up th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--up-muted); }
+  .up-foot { color: var(--up-muted); font-size: 13px; margin-top: 14px; }
+  .up .pin { margin-right: 6px; }
+
+  @media (max-width: 720px) {
+    .up-lanes { grid-template-columns: 1fr; }
+    .up-head.d { margin-top: 8px; }
+    .up-arrow { padding: 4px 0; transform: rotate(90deg); }
+    .up-arrow small { display: none; }
+    .up-box { margin-bottom: 6px; }
+    .up-sources { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">User Guide update process</span>
+  <span class="t-meta" style="color:#9ca3af">November 19, 2026 · process diagram</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+<div class="review-layout">
+<div class="split-wrap">
+  <div data-variant="proposed" class="pro">
+  <div class="up">
+    <h1>How a change in Clara Studio updates the User Guide</h1>
+    <p class="up-lead">Every change that alters what a user sees opens two pull requests: one for the app and one for the User Guide. The guide is published the day the change reaches production.</p>
+
+    <div class="up-example">Example used below: the feature <b>"Add a button"</b>.</div>
+
+    <div class="up-legend">
+      <span><span class="up-tag today">Today</span> already works this way</span>
+      <span><span class="up-tag new">Proposed</span> does not exist yet</span>
+    </div>
+
+    <div class="up-lanes">
+      <div class="up-head a">Clara Studio <small>the app · the repo with the code and the skills</small></div>
+      <div></div>
+      <div class="up-head d">User Guide <small>the help site · its own repo</small></div>
+
+      <div class="up-step"><div class="up-num">1</div><h2>Plan</h2><span class="up-when">the agent reads the issue</span></div>
+      <div class="up-skills">Skill called: <span class="up-skill">/work-issue</span> when someone picks up the issue. It writes the plan and stops for approval.</div>
+      <div class="up-box a">
+        <h3>Issue: "Add a button"</h3>
+        <p>The plan must say which guides change: <code>Help docs: &lt;guide&gt;</code> or <code>none</code>.</p>
+        <div class="up-new"><span class="pin">1</span><span class="up-tag new">Proposed</span> A map tells the agent which guide belongs to the page, so no guide is forgotten.</div>
+      </div>
+      <div class="up-arrow"></div>
+      <div class="up-box empty">Nothing happens here yet.</div>
+
+      <div class="up-step"><div class="up-num">2</div><h2>Build</h2><span class="up-when">same agent, same session</span></div>
+      <div class="up-skills">Skill called: <span class="up-skill">/work-issue</span> continues after the plan is approved. It writes the code and the guide change, then stops before any pull request.</div>
+      <div class="up-box a">
+        <h3>Writes the code</h3>
+        <p>Adds the button to the page, with its tests.</p>
+      </div>
+      <div class="up-arrow">→<small>same agent writes both</small></div>
+      <div class="up-box d">
+        <h3>Writes the guide change</h3>
+        <p>Edits the page's <code>.md</code> file: what the button is for and how to use it.</p>
+        <div class="up-sources">
+          <div class="up-src"><b>The issue</b>what was asked</div>
+          <div class="up-src"><b>The new code</b>what the button does</div>
+          <div class="up-src"><b>The current guide</b>the text to edit</div>
+        </div>
+        <div class="up-new"><span class="pin">2</span><span class="up-tag new">Proposed</span> Also takes the new screenshot where the button appears. Today screenshots are taken by hand.</div>
+      </div>
+
+      <div class="up-step"><div class="up-num">3</div><h2>Two pull requests</h2><span class="up-when">opened together</span></div>
+      <div class="up-skills">Skills called: <span class="up-skill">/pr</span> when the work is ready. It opens the User Guide pull request first, then the app one with the link. Then <span class="up-skill">/pr-loop</span> reviews and fixes the app pull request until it is clean.</div>
+      <div class="up-box a">
+        <h3>Pull request to Clara Studio</h3>
+        <ul>
+          <li>Contains the code for the button.</li>
+          <li>Reviewed by developers.</li>
+          <li>Carries a link to the User Guide pull request.</li>
+        </ul>
+      </div>
+      <div class="up-arrow">↔<small>linked</small></div>
+      <div class="up-box d">
+        <h3>Pull request to the User Guide</h3>
+        <ul>
+          <li>Contains the updated text and screenshot.</li>
+          <li>Reviewed by whoever approves the docs.</li>
+          <li>Stays open. Nothing is published yet.</li>
+        </ul>
+      </div>
+
+      <div class="up-step"><div class="up-num">4</div><h2>Test</h2><span class="up-when">before release</span></div>
+      <div class="up-skills">Skills called: <span class="up-skill">/merge</span> when the app pull request is green. It merges the change and then calls <span class="up-skill">/sandbox-test</span>, which drives the test site and marks the issue ready for release. It also runs <span class="up-skill">/staleness-check</span> for outdated docs inside the app repo.</div>
+      <div class="up-box a">
+        <h3>Merged and tested on the test site</h3>
+        <p>The button is checked on the test site. The issue is marked ready for release.</p>
+      </div>
+      <div class="up-arrow"></div>
+      <div class="up-box wait">
+        <h3>Waiting</h3>
+        <p>If the guide were published now, it would describe a button users do not have yet.</p>
+      </div>
+
+      <div class="up-step"><div class="up-num">5</div><h2>Release to production</h2><span class="up-when">the trigger</span></div>
+      <div class="up-skills">Skills called: <span class="up-skill">/production-release</span> when a person decides to release. It calls <span class="up-skill">/release-notes</span>, closes the shipped issues and merges their User Guide pull requests.</div>
+      <div class="up-box a">
+        <h3>The button reaches users</h3>
+        <p>The release step checks which issues shipped, then merges their User Guide pull requests.</p>
+      </div>
+      <div class="up-arrow">→<small>release merges it</small></div>
+      <div class="up-box d">
+        <h3>The guide is published</h3>
+        <p>Users see the new button and the updated guide on the same day.</p>
+      </div>
+
+      <div class="up-step"><div class="up-num">6</div><h2>After the release</h2><span class="up-when">safety net</span></div>
+      <div class="up-skills">Skill called: <span class="up-skill none">none exists</span> The closest today is a hand-run audit that compares the guide text with the code.</div>
+      <div class="up-box a">
+        <div class="up-new first"><span class="pin">3</span><span class="up-tag new">Proposed</span> Open each page the release touched and compare it with the last approved version of that page.</div>
+      </div>
+      <div class="up-arrow">→</div>
+      <div class="up-box d">
+        <div class="up-new first"><span class="pin">4</span><span class="up-tag new">Proposed</span> A change nobody documented becomes a new User Guide pull request, or an issue if no ticket explains it.</div>
+      </div>
+    </div>
+
+    <h2 class="up-section">Existing skills and when each one is called</h2>
+    <table>
+      <tr><th>Skill</th><th>Called when</th><th>What it does for the User Guide</th></tr>
+      <tr><td><span class="up-skill">/work-issue</span></td><td>Someone picks up an issue</td><td>States which guides change, then writes the guide text next to the code</td></tr>
+      <tr><td><span class="up-skill">/pr</span></td><td>The work is ready to review</td><td>Opens the User Guide pull request first and links it from the app pull request</td></tr>
+      <tr><td><span class="up-skill">/pr-loop</span></td><td>Right after <span class="up-skill">/pr</span></td><td>Nothing: it reviews and fixes the app pull request</td></tr>
+      <tr><td><span class="up-skill">/merge</span></td><td>The app pull request is green</td><td>Nothing directly: the User Guide pull request stays open</td></tr>
+      <tr><td><span class="up-skill">/sandbox-test</span></td><td>Called by <span class="up-skill">/merge</span> after the test site deploys</td><td>Marks the issue ready for release, which later unlocks its guide</td></tr>
+      <tr><td><span class="up-skill">/staleness-check</span></td><td>Called by <span class="up-skill">/merge</span></td><td>Looks for outdated docs inside the app repo</td></tr>
+      <tr><td><span class="up-skill">/production-release</span></td><td>A person decides to release</td><td>Merges the User Guide pull requests whose issues shipped, which publishes them</td></tr>
+      <tr><td><span class="up-skill">/release-notes</span></td><td>Called by <span class="up-skill">/production-release</span></td><td>Nothing: it publishes the release notes inside the app</td></tr>
+    </table>
+
+    <h2 class="up-section">What is missing today</h2>
+    <table>
+      <tr><th>Part</th><th>Today</th><th>Proposed</th></tr>
+      <tr><td>Guide text</td><td>Written by the agent, automatic</td><td>No change</td></tr>
+      <tr><td>Screenshots</td><td>Taken by hand with local scripts</td><td>Taken by the agent in step 2</td></tr>
+      <tr><td>Choosing the guide</td><td>The agent reads an index and decides</td><td>A page → guide map</td></tr>
+      <tr><td>Changes nobody documented</td><td>Nobody notices</td><td>Caught by the check in step 6</td></tr>
+    </table>
+    <p class="up-foot">A working proposal, not a decided standard. The example feature is invented.</p>
+  </div>
+  </div>
+</div>
+<aside class="notes">
+  <h2>What changed and why</h2>
+  <p class="notes-sub">Today the guide text already travels with each change and is published at release. Four pieces are proposed to close what that leaves out.</p>
+  <ol>
+    <li><b>A page → guide map.</b> One small file linking each app page to its guide. <span class="why">Today the agent picks the guides from an index and can miss one.</span></li>
+    <li><b>The agent takes the screenshot.</b> The image is re-captured with the text, in the same pull request. <span class="why">Today images are taken by hand, so they fall behind the text.</span></li>
+    <li><b>A check after each release.</b> Each touched page is compared with its last approved version. <span class="why">Today nothing looks at the pages once a release is out.</span></li>
+    <li><b>Undocumented changes get reported.</b> A difference becomes a guide update, or an issue when no ticket explains it. <span class="why">Today a change nobody wrote down goes unnoticed.</span></li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>
