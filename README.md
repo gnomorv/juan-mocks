@@ -6,6 +6,7 @@ Juan Arce's collection of front-end mock-ups for Clara Studio, served with GitHu
 
 | Mock-up | Path | Notes |
 |---|---|---|
+| User Guide updates with ADP | [/user-guide-update-process-adp/](https://gnomorv.github.io/juan-mocks/user-guide-update-process-adp/) | Process diagram, not a screen mock-up: the same guide flow carried by the Autonomous Dev Pipeline with no new skill; marks what exists, what is proposed and what is not verified; concept page |
 | User Guide update process | [/user-guide-update-process/](https://gnomorv.github.io/juan-mocks/user-guide-update-process/) | Process diagram, not a screen mock-up: two linked pull requests per change, the skill behind each step, and four proposed pieces; concept page |
 | Help site blog | [/help-site-blog/](https://gnomorv.github.io/juan-mocks/help-site-blog/) | The Docusaurus blog turned on in the Clara Learning help site: list and post pages, authors, tags, feeds; placeholder posts |
 | Help site FAQ | [/help-site-faq/](https://gnomorv.github.io/juan-mocks/help-site-faq/) | FAQ page of the User Guide help site as built on dev: `<details>` collapsibles, search box, centered title; placeholder content |

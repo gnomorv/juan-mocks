@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User Guide updates with ADP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  .up {
+    --up-card: #ffffff; --up-ink: #1c2330; --up-muted: #5d6778; --up-line: #d5dae2;
+    --up-app: #2f6fde; --up-app-soft: #e8f0fd; --up-doc: #1d8a5f; --up-doc-soft: #e4f5ed;
+    --up-new: #b86a00; --up-new-soft: #fff3df; --up-wait: #7a5cc4; --up-wait-soft: #efeafb;
+    max-width: 1040px; margin: 0 auto; padding: 28px 20px 56px; color: var(--up-ink); font-size: 15px; line-height: 1.5;
+  }
+  html.dark .up {
+    --up-card: #1d2229; --up-ink: #e8ecf2; --up-muted: #9aa5b5; --up-line: #343c48;
+    --up-app: #7aa7f5; --up-app-soft: #1c2a44; --up-doc: #5fd0a0; --up-doc-soft: #173326;
+    --up-new: #f2b457; --up-new-soft: #3a2c12; --up-wait: #b6a0ee; --up-wait-soft: #2a2342;
+  }
+  .up h1 { font-size: 26px; margin: 0 0 6px; color: inherit; }
+  .up-lead { color: var(--up-muted); margin: 0 0 20px; max-width: 70ch; }
+  .up-example { background: var(--up-card); border: 1px solid var(--up-line); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
+  .up-example b { color: var(--up-app); }
+  .up-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 24px; color: var(--up-muted); font-size: 13px; }
+  .up-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
+  .up-tag.today { background: var(--up-line); color: var(--up-ink); }
+  .up-tag.new { background: var(--up-new-soft); color: var(--up-new); border: 1px solid var(--up-new); }
+
+  .up-lanes { display: grid; grid-template-columns: 1fr 64px 1fr; }
+  .up-head { font-weight: 700; padding: 10px 14px; border-radius: 10px 10px 0 0; }
+  .up-head small { display: block; font-weight: 400; color: var(--up-muted); }
+  .up-head.a { background: var(--up-app-soft); border-bottom: 3px solid var(--up-app); }
+  .up-head.d { background: var(--up-doc-soft); border-bottom: 3px solid var(--up-doc); }
+
+  .up-step { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin: 26px 0 10px; }
+  .up-num { width: 28px; height: 28px; border-radius: 50%; background: var(--up-ink); color: var(--up-card); display: grid; place-items: center; font-weight: 700; font-size: 14px; flex: none; }
+  .up-step h2 { font-size: 16px; margin: 0; color: inherit; }
+  .up-when { color: var(--up-muted); font-size: 13px; }
+  .up-skills { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: -4px 0 10px 38px; font-size: 13px; color: var(--up-muted); }
+  .up-skill { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; background: var(--up-card); color: var(--up-ink); border: 1px solid var(--up-line); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+  .up-skill.none { font-family: inherit; font-weight: 400; border-style: dashed; color: var(--up-muted); }
+
+  .up-box { position: relative; background: var(--up-card); border: 1px solid var(--up-line); border-radius: 10px; padding: 12px 14px; }
+  .up-box.a { border-left: 4px solid var(--up-app); }
+  .up-box.d { border-left: 4px solid var(--up-doc); }
+  .up-box.wait { border-left: 4px solid var(--up-wait); background: var(--up-wait-soft); }
+  .up-box.empty { background: transparent; border: 1px dashed var(--up-line); color: var(--up-muted); }
+  .up-box h3 { font-size: 14px; margin: 0 0 4px; color: inherit; }
+  .up-box p { margin: 0; }
+  .up-box ul { margin: 6px 0 0; padding-left: 18px; }
+  .up-box li { margin: 2px 0; }
+  .up-new { margin-top: 8px; padding: 6px 8px; border-radius: 6px; background: var(--up-new-soft); font-size: 14px; }
+  .up-new.first { margin-top: 0; }
+  .up-arrow { display: grid; place-items: center; color: var(--up-muted); font-size: 22px; text-align: center; }
+  .up-arrow small { display: block; font-size: 11px; line-height: 1.2; }
+  .up-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
+  .up-src { background: var(--up-doc-soft); border-radius: 8px; padding: 8px 10px; font-size: 14px; }
+  .up-src b { display: block; }
+
+  .up h2.up-section { font-size: 18px; margin: 40px 0 10px; color: inherit; }
+  .up table { width: 100%; border-collapse: collapse; background: var(--up-card); border: 1px solid var(--up-line); }
+  .up th, .up td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--up-line); vertical-align: top; }
+  .up th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--up-muted); }
+  .up-foot { color: var(--up-muted); font-size: 13px; margin-top: 14px; }
+  .up .pin { margin-right: 6px; }
+
+  @media (max-width: 720px) {
+    .up-lanes { grid-template-columns: 1fr; }
+    .up-head.d { margin-top: 8px; }
+    .up-arrow { padding: 4px 0; transform: rotate(90deg); }
+    .up-arrow small { display: none; }
+    .up-box { margin-bottom: 6px; }
+    .up-sources { grid-template-columns: 1fr; }
+  }
+  .up-tag.unv { background: transparent; color: var(--up-muted); border: 1px dashed var(--up-muted); }
+  .up-tag.out { background: var(--up-wait-soft); color: var(--up-wait); border: 1px solid var(--up-wait); }
+  .up-unv { margin-top: 8px; padding: 6px 8px; border-radius: 6px; border: 1px dashed var(--up-muted); font-size: 14px; }
+  .up-out { margin-top: 8px; padding: 6px 8px; border-radius: 6px; background: var(--up-wait-soft); font-size: 14px; }
+  .up-out.first, .up-unv.first { margin-top: 0; }
+  .up code { font: 13px 'JetBrains Mono', ui-monospace, Menlo, monospace; }
+  .up-foot a { color: var(--up-app); }
+  .up-lanes > * { min-width: 0; }
+  @media (max-width: 720px) {
+    .up-skill { white-space: normal; }
+    .up th, .up td, .up code { overflow-wrap: anywhere; }
+  }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">User Guide updates with ADP</span>
+  <span class="t-meta" style="color:#9ca3af">November 19, 2026 · process diagram</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+<div class="review-layout">
+<div class="split-wrap">
+  <div data-variant="proposed" class="pro">
+  <div class="up">
+    <h1>How ADP can keep the User Guide up to date</h1>
+    <p class="up-lead">A proposal that needs no new skill and no change to any skill. The guide requirement travels inside the story's own contract, and the story cannot close until the guide is published.</p>
+
+    <div class="up-example">Example used below: the feature <b>"Add a button"</b>. ADP is the Autonomous Dev Pipeline. Today nothing in ADP mentions the User Guide, so a story shipped through ADP has no guide step.</div>
+
+    <div class="up-legend">
+      <span><span class="up-tag today">Exists</span> an ADP mechanism that works today</span>
+      <span><span class="up-tag new">Proposed</span> a convention or change that does not exist yet</span>
+      <span><span class="up-tag unv">Not verified</span> assumed, not tested</span>
+      <span><span class="up-tag out">Outside ADP</span> stays with a person</span>
+    </div>
+
+    <div class="up-lanes">
+      <div class="up-head a">Clara Studio <small>the app · one ADP story</small></div>
+      <div></div>
+      <div class="up-head d">User Guide <small>its own repo · a second, linked ADP story</small></div>
+      <div class="up-step"><div class="up-num">1</div><h2>Plan</h2><span class="up-when">the issue becomes a contract</span></div>
+      <div class="up-skills">ADP stage: <span class="up-skill">adp-plan-issue</span> turns the issue into a contract with at most 5 acceptance criteria, then stops at the plan gate.</div>
+      <div class="up-box a">
+        <h3>Issue: "Add a button"</h3>
+        <p><span class="up-tag today">Exists</span> The planner reads the issue text and writes the criteria.</p>
+        <div class="up-new"><span class="pin">1</span><span class="up-tag new">Proposed</span> The issue carries <code>Help docs: &lt;pages&gt;</code> or <code>Help docs: none, &lt;why&gt;</code>, and the contract gets the two guide criteria of steps 3 and 6.</div>
+        <div class="up-new"><span class="pin">2</span><span class="up-tag new">Proposed</span> A page to guide map, kept as a data file, tells the issue writer which guide belongs to the page.</div>
+      </div>
+      <div class="up-arrow">→<small>two linked stories</small></div>
+      <div class="up-box d">
+        <h3>A guide story is created</h3>
+        <div class="up-new first"><span class="pin">3</span><span class="up-tag new">Proposed</span> A second story, linked to the app story. ADP works in one repository per run, so the guide needs its own.</div>
+      </div>
+      <div class="up-step"><div class="up-num">2</div><h2>Build</h2><span class="up-when">one run per repository</span></div>
+      <div class="up-skills">ADP stage: <span class="up-skill">adp-issue</span> runs the build steps. A <span class="up-skill">screenshot</span> criterion takes 4 captures per route (light and dark, 1440 and 390 px) and stores them in the story's captures document.</div>
+      <div class="up-box a">
+        <h3>Writes the code</h3>
+        <p><span class="up-tag today">Exists</span> Adds the button with its tests and takes the captures.</p>
+      </div>
+      <div class="up-arrow">→<small>capture reused</small></div>
+      <div class="up-box d">
+        <h3>Writes the guide change</h3>
+        <p>Edits the page's <code>.md</code> file: what the button is for and how to use it.</p>
+        <div class="up-unv"><span class="up-tag unv">Not verified</span> ADP has not been run in the User Guide repo. It needs a profile there, written by the existing <span class="up-skill">adp-setup</span>.</div>
+        <div class="up-unv"><span class="up-tag unv">Not verified</span> Reusing the light, desktop capture as the guide screenshot. Captures show seeded test data and are capped at 1568 px.</div>
+      </div>
+      <div class="up-step"><div class="up-num">3</div><h2>Two pull requests</h2><span class="up-when">one per story</span></div>
+      <div class="up-skills">ADP stage: <span class="up-skill">adp-pr</span> opens the pull request and waits for the checks. A <span class="up-skill">review</span> criterion is judged by a review seat.</div>
+      <div class="up-box a">
+        <h3>Pull request to Clara Studio</h3>
+        <p><span class="up-tag today">Exists</span> The <code>review</code> kind of criterion.</p>
+        <div class="up-new"><span class="pin">4</span><span class="up-tag new">Proposed</span> Criterion: "The guide change for this story covers the page with the button."</div>
+      </div>
+      <div class="up-arrow">↔<small>reviewed together</small></div>
+      <div class="up-box d">
+        <h3>Pull request to the User Guide</h3>
+        <p><span class="up-tag today">Exists</span> It stays open. ADP never merges into <code>main</code>, and no automatic decision can override that.</p>
+      </div>
+      <div class="up-step"><div class="up-num">4</div><h2>Test</h2><span class="up-when">before release</span></div>
+      <div class="up-skills">ADP stage: <span class="up-skill">adp-qa</span> checks the merged story against its contract. The profile setting <span class="up-skill">qa.release: main</span> is already in place.</div>
+      <div class="up-box a">
+        <h3>Merged to dev and checked</h3>
+        <p><span class="up-tag today">Exists</span> A passing story rests at <code>ready_for_release</code> until its code reaches production.</p>
+      </div>
+      <div class="up-arrow"></div>
+      <div class="up-box wait">
+        <h3>Waiting</h3>
+        <p>If the guide were published now, it would describe a button users do not have yet.</p>
+      </div>
+      <div class="up-step"><div class="up-num">5</div><h2>Release to production</h2><span class="up-when">the trigger</span></div>
+      <div class="up-skills">ADP stage: <span class="up-skill none">none</span> ADP follows a story up to the release but does not run the release.</div>
+      <div class="up-box a">
+        <div class="up-out first"><span class="up-tag out">Outside ADP</span> A person decides to release, as today.</div>
+      </div>
+      <div class="up-arrow">→<small>release publishes it</small></div>
+      <div class="up-box d">
+        <div class="up-out first"><span class="up-tag out">Outside ADP</span> The guide pull request is merged by a person, or by the existing release step that already merges guide pull requests whose issues shipped.</div>
+      </div>
+      <div class="up-step"><div class="up-num">6</div><h2>After the release</h2><span class="up-when">safety net</span></div>
+      <div class="up-skills">ADP stage: <span class="up-skill">adp-qa</span> runs each <span class="up-skill">post-merge</span> criterion. Only this stage closes a story.</div>
+      <div class="up-box a">
+        <h3>The story cannot close without the guide</h3>
+        <p><span class="up-tag today">Exists</span> An unmet post-merge criterion becomes an owed task and blocks the close.</p>
+        <div class="up-new"><span class="pin">5</span><span class="up-tag new">Proposed</span> Criterion: "The guide pull request for this story is merged."</div>
+      </div>
+      <div class="up-arrow">←<small>proves the criterion</small></div>
+      <div class="up-box d">
+        <h3>The guide is published</h3>
+        <p>Users see the new button and the updated guide on the same day.</p>
+        <div class="up-out"><span class="up-tag out">Outside ADP</span> A change nobody documented is not detected. When found, it is filed as an issue and runs as a guide story.</div>
+      </div>
+    </div>
+
+    <h2 class="up-section">ADP pieces this proposal uses</h2>
+    <table>
+      <tr><th>ADP piece</th><th>What it is</th><th>What it does for the User Guide</th></tr>
+      <tr><td>Issue text</td><td>The input the planner reads</td><td>Carries the <code>Help docs:</code> line</td></tr>
+      <tr><td><span class="up-skill">review</span> criterion</td><td>A review seat judges a written outcome</td><td>Confirms the guide change covers the page</td></tr>
+      <tr><td><span class="up-skill">screenshot</span> criterion</td><td>4 captures per route, kept in the captures document</td><td>Source for the guide screenshot (not verified)</td></tr>
+      <tr><td><span class="up-skill">post-merge</span> criterion</td><td>A proof only a deployed environment can give</td><td>Blocks the close until the guide pull request is merged</td></tr>
+      <tr><td><span class="up-skill">qa.release: main</span></td><td>A profile setting, already present</td><td>Holds the story at <code>ready_for_release</code> until production</td></tr>
+      <tr><td>Never merge into <code>main</code></td><td>An ADP rule no automatic decision can override</td><td>Keeps the guide unpublished until release</td></tr>
+    </table>
+    <p class="up-foot">The ADP stages (<span class="up-skill">adp-plan-issue</span>, <span class="up-skill">adp-issue</span>, <span class="up-skill">adp-pr</span>, <span class="up-skill">adp-qa</span>) are themselves skills served from Clara. This proposal adds no skill and edits none of them.</p>
+
+    <h2 class="up-section">Two phases</h2>
+    <table>
+      <tr><th>Phase</th><th>What changes</th><th>Result</th></tr>
+      <tr><td>1. Now</td><td>Nothing. Whoever writes the issue adds the <code>Help docs:</code> line and the two criteria by hand</td><td>Works story by story. Nothing enforces it</td></tr>
+      <tr><td>2. Automatic</td><td>One paragraph in the ADP Protocol, the reference document every run follows. It is a document, not a skill</td><td>The plan gate refuses a user-facing story that lacks the line and the two criteria</td></tr>
+    </table>
+
+    <h2 class="up-section">Compared with the process today</h2>
+    <table>
+      <tr><th>Part</th><th>Today, with the work-issue skills</th><th>With ADP, this proposal</th></tr>
+      <tr><td>Who states the guide</td><td>The plan written by <span class="up-skill">/work-issue</span></td><td>The issue text and the contract</td></tr>
+      <tr><td>Who writes the guide</td><td>The same agent, in the same session</td><td>A second ADP story in the docs repo</td></tr>
+      <tr><td>Screenshots</td><td>By hand, with local scripts</td><td>Reused from the ADP captures (not verified)</td></tr>
+      <tr><td>Publishing</td><td><span class="up-skill">/production-release</span> step 12a</td><td>Unchanged, outside ADP</td></tr>
+      <tr><td>Forgotten guide</td><td>Nobody notices</td><td>The story cannot close</td></tr>
+      <tr><td>Change nobody documented</td><td>Nobody notices</td><td>Still not detected</td></tr>
+    </table>
+
+    <h2 class="up-section">Not verified</h2>
+    <table>
+      <tr><th>Point</th><th>Why it matters</th></tr>
+      <tr><td>ADP running in the User Guide repo</td><td>The guide story depends on it. Never tested</td></tr>
+      <tr><td>ADP documents are all drafts</td><td>The mechanisms named here can still change</td></tr>
+      <tr><td>Seven ADP skills were not read</td><td><span class="up-skill">adp-epic</span>, <span class="up-skill">adp-plan-epic</span>, <span class="up-skill">adp-setup</span>, <span class="up-skill">adp-dispatch</span>, <span class="up-skill">adp-groom</span>, <span class="up-skill">adp-queue</span>, <span class="up-skill">adp-plan-project</span> may behave differently, above all for stories inside an epic</td></tr>
+      <tr><td>Target branch of the guide pull request</td><td>The written process says <code>main</code>. The User Guide repo also has a <code>dev</code> branch</td></tr>
+      <tr><td>Limit of 5 criteria per contract</td><td>The two guide criteria take two of the five places</td></tr>
+    </table>
+
+    <p class="up-foot">A working proposal, not a decided standard. The example feature is invented. The process as it works today is in <a href="../user-guide-update-process/">User Guide update process</a>.</p>
+  </div>
+  </div>
+</div>
+<aside class="notes">
+  <h2>What changed and why</h2>
+  <p class="notes-sub">Today nothing in ADP mentions the User Guide. This proposal carries the guide inside each story's contract, using pieces ADP already has, with no new skill.</p>
+  <ol>
+    <li><b>The issue names the guide.</b> A <code>Help docs:</code> line in the issue, and two guide criteria in the contract. <span class="why">The planner only acts on what the issue says, so the guide has to be stated there.</span></li>
+    <li><b>A page → guide map.</b> One small data file linking each app page to its guide. <span class="why">Whoever writes the issue can miss a guide without it.</span></li>
+    <li><b>A linked guide story.</b> The guide change is its own story in the User Guide repo. <span class="why">ADP works in one repository per run.</span></li>
+    <li><b>A reviewer checks the guide.</b> A review criterion asks whether the guide change covers the page. <span class="why">The guide is judged with the code, not after it.</span></li>
+    <li><b>The story cannot close without the guide.</b> A post-merge criterion waits for the guide pull request to be merged. <span class="why">Today a forgotten guide goes unnoticed.</span></li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>
