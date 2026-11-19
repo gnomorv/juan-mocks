@@ -28,7 +28,7 @@
   .up-tag.today { background: var(--up-line); color: var(--up-ink); }
   .up-tag.new { background: var(--up-new-soft); color: var(--up-new); border: 1px solid var(--up-new); }
 
-  .up-lanes { display: grid; grid-template-columns: 1fr 64px 1fr; }
+  .up-lanes { display: grid; grid-template-columns: 1fr 136px 1fr; }
   .up-head { font-weight: 700; padding: 10px 14px; border-radius: 10px 10px 0 0; }
   .up-head small { display: block; font-weight: 400; color: var(--up-muted); }
   .up-head.a { background: var(--up-app-soft); border-bottom: 3px solid var(--up-app); }
@@ -53,8 +53,8 @@
   .up-box li { margin: 2px 0; }
   .up-new { margin-top: 8px; padding: 6px 8px; border-radius: 6px; background: var(--up-new-soft); font-size: 14px; }
   .up-new.first { margin-top: 0; }
-  .up-arrow { display: grid; place-items: center; color: var(--up-muted); font-size: 22px; text-align: center; }
-  .up-arrow small { display: block; font-size: 11px; line-height: 1.2; }
+  .up-arrow { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0 14px; color: var(--up-muted); font-size: 40px; line-height: 1; text-align: center; }
+  .up-arrow small { display: block; font-size: 12.5px; line-height: 1.3; }
   .up-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
   .up-src { background: var(--up-doc-soft); border-radius: 8px; padding: 8px 10px; font-size: 14px; }
   .up-src b { display: block; }
@@ -69,7 +69,7 @@
   @media (max-width: 720px) {
     .up-lanes { grid-template-columns: 1fr; }
     .up-head.d { margin-top: 8px; }
-    .up-arrow { padding: 4px 0; transform: rotate(90deg); }
+    .up-arrow { padding: 10px 0; transform: rotate(90deg); }
     .up-arrow small { display: none; }
     .up-box { margin-bottom: 6px; }
     .up-sources { grid-template-columns: 1fr; }
