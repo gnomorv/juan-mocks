@@ -39,8 +39,8 @@
   .up-step { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; margin: 56px 0 12px; }
   .up-num { width: 28px; height: 28px; border-radius: 50%; background: var(--up-ink); color: var(--up-card); display: grid; place-items: center; font-weight: 700; font-size: 14px; flex: none; }
   .up-step h2 { font-size: 16px; margin: 0; color: inherit; }
-  .up-when { color: var(--up-ink); font-size: 16px; font-weight: 700; line-height: 1.5; }
-  .up-when::before { content: '·'; margin-right: 10px; color: var(--up-muted); }
+  .up-when { margin-left: -6px; color: var(--up-ink); font-size: 16px; font-weight: 700; line-height: 1.5; }
+  .up-when::before { content: '·'; margin-right: 4px; color: var(--up-muted); }
   .up-skills { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 20px 38px; font-size: 13.5px; line-height: 1.7; color: var(--up-muted); }
   .up-skill { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; background: var(--up-card); color: var(--up-ink); border: 1px solid var(--up-line); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
   .up-skill.none { font-family: inherit; font-weight: 400; border-style: dashed; color: var(--up-muted); }
@@ -135,7 +135,7 @@
       <div class="up-head a">Clara Studio <small>the app · one issue run by ADP</small></div>
       <div></div>
       <div class="up-head d">User Guide <small>its own repo · a second, linked issue run by ADP</small></div>
-      <div class="up-step"><div class="up-num">1</div><h2>Plan</h2><span class="up-when">the issue becomes a contract</span></div>
+      <div class="up-step"><div class="up-num">1</div><h2>Plan</h2><span class="up-when">The issue becomes a contract</span></div>
       <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-plan-issue</a> turns the issue into a testable contract with at most 5 acceptance criteria, then stops at the plan gate.</div>
       <div class="up-box a">
         <h3>Issue: "Add a button"</h3>
@@ -148,7 +148,7 @@
         <h3>A guide issue is created</h3>
         <div class="up-new first"><span class="pin">3</span><span class="up-tag new">Proposed</span> A second issue, linked to the app issue. ADP works in one repository per run, so the guide needs its own issue.</div>
       </div>
-      <div class="up-step"><div class="up-num">2</div><h2>Build</h2><span class="up-when">one run per repository</span></div>
+      <div class="up-step"><div class="up-num">2</div><h2>Build</h2><span class="up-when">One run per repository</span></div>
       <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-issue</a> runs the build steps. A <span class="up-skill">screenshot</span> criterion takes 4 captures per route (light and dark, 1440 and 390 px) and stores them in the issue's captures document.</div>
       <div class="up-box a">
         <h3>Writes the code</h3>
@@ -161,7 +161,7 @@
         <div class="up-unv"><span class="up-tag unv">Not verified</span> ADP has not been run in the User Guide repo. It needs a repository profile there, written by the existing <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-setup</a>.</div>
         <div class="up-unv"><span class="up-tag unv">Not verified</span> Reusing the light, desktop capture as the guide screenshot. Captures show seeded test data and are capped at 1568 px.</div>
       </div>
-      <div class="up-step"><div class="up-num">3</div><h2>Two pull requests</h2><span class="up-when">one per issue</span></div>
+      <div class="up-step"><div class="up-num">3</div><h2>Two pull requests</h2><span class="up-when">One per issue</span></div>
       <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-pr</a> opens the pull request and waits for the checks. A <span class="up-skill">review</span> criterion is judged by a reviewer.</div>
       <div class="up-box a">
         <h3>Pull request to Clara Studio</h3>
@@ -174,7 +174,7 @@
         <h3>Pull request to the User Guide</h3>
         <p><span class="up-tag today">Exists</span> It stays open. ADP never merges into <code>main</code>, and no automatic decision can override that.</p>
       </div>
-      <div class="up-step"><div class="up-num">4</div><h2>Test</h2><span class="up-when">before release</span></div>
+      <div class="up-step"><div class="up-num">4</div><h2>Test</h2><span class="up-when">Before release</span></div>
       <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-qa</a> checks the merged issue against its contract. The setting <span class="up-skill">qa.release: main</span> is already in the repository profile.</div>
       <div class="up-box a">
         <h3>Merged to dev and checked</h3>
@@ -185,7 +185,7 @@
         <h3>Waiting</h3>
         <p>If the guide were published now, it would describe a button users do not have yet.</p>
       </div>
-      <div class="up-step"><div class="up-num">5</div><h2>Release to production</h2><span class="up-when">the trigger</span></div>
+      <div class="up-step"><div class="up-num">5</div><h2>Release to production</h2><span class="up-when">The trigger</span></div>
       <div class="up-skills">ADP skill: <span class="up-skill none">none</span> ADP follows an issue up to the release but does not run the release.</div>
       <div class="up-box a">
         <div class="up-out first"><span class="up-tag out">Outside ADP</span> A person decides to release, as today.</div>
@@ -194,7 +194,7 @@
       <div class="up-box d">
         <div class="up-out first"><span class="up-tag out">Outside ADP</span> The guide pull request is merged by a person, or by the existing release step that already merges guide pull requests whose issues shipped.</div>
       </div>
-      <div class="up-step"><div class="up-num">6</div><h2>After the release</h2><span class="up-when">safety net</span></div>
+      <div class="up-step"><div class="up-num">6</div><h2>After the release</h2><span class="up-when">Safety net</span></div>
       <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-qa</a> runs each <span class="up-skill">post-merge</span> criterion. Only this skill closes an issue.</div>
       <div class="up-box a">
         <h3>The issue cannot close without the guide</h3>
