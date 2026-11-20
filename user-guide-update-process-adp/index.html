@@ -90,6 +90,10 @@
   .up-terms a, .up table a { color: var(--up-app); font-weight: 600; }
   a.up-skill { text-decoration: none; }
   a.up-skill:hover, a.up-skill:focus-visible { border-color: var(--up-app); text-decoration: underline; }
+  .up-sub { font-size: 18px; font-weight: 600; margin: 0 0 10px; }
+  .up-example p { margin: 0 0 4px; }
+  .up-example p.note { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--up-line); }
+  .up-example p.note b { color: inherit; }
 </style>
 </head>
 <body data-show="proposed">
@@ -105,11 +109,12 @@
 <div class="split-wrap">
   <div data-variant="proposed" class="pro">
   <div class="up">
-    <h1>How ADP can keep the User Guide up to date</h1>
+    <h1>User Guide (Documentation)</h1>
+    <p class="up-sub">How ADP can keep the help docs up to date:</p>
     <p class="up-lead">A proposal that needs no new skill and no change to any skill. The guide requirement travels inside the issue's own contract, and the issue cannot close until the guide is published.</p>
 
     <p class="up-foot" style="margin:-8px 0 16px">Also as a one-page image: <a href="summary.png">open the summary</a>.</p>
-    <div class="up-example">Example used below: the feature <b>"Add a button"</b>. ADP is the Autonomous Dev Pipeline. None of the ADP skills and ADP reference documents read for this proposal mentions the User Guide, so an issue shipped through ADP has no guide step.</div>
+    <div class="up-example"><p>Example: the feature <b>"Add a button"</b>.</p><p>ADP is the Autonomous Dev Pipeline.</p><p class="note"><b>Note:</b> As of today none of the ADP skills and ADP reference documents read for this proposal mentions the User Guide, so an issue shipped through ADP has no guide step yet.</p></div>
 
     <div class="up-legend">
       <span><span class="up-tag today">Exists</span> an ADP mechanism that works today</span>
@@ -118,7 +123,6 @@
       <span><span class="up-tag out">Outside ADP</span> stays with a person</span>
     </div>
 
-    <p class="up-terms"><b>Terms.</b> This page uses the same words as the <a href="../adp-document-map/">ADP document map</a>: a <b>skill</b> is the written instructions for one stage of the pipeline, an <b>ADP reference document</b> holds the rules every run follows, and an <b>issue</b> is the unit of work a run builds. Skill names open the Skills screen in Clara Studio.</p>
 
     <div class="up-lanes">
       <div class="up-head a">Clara Studio <small>the app · one issue run by ADP</small></div>
