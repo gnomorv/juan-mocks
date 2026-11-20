@@ -27,7 +27,7 @@
   .up-legend > span { display: contents; }
   .up-legend .up-tag { justify-self: start; }
   .up-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; vertical-align: middle; margin-right: 8px; }
-  .up-tag.today { background: var(--up-line); color: var(--up-ink); }
+  .up-tag.today { background: var(--up-doc-soft); color: var(--up-doc); border: 1px solid var(--up-doc); }
   .up-tag.new { background: var(--up-new-soft); color: var(--up-new); border: 1px solid var(--up-new); }
 
   .up-lanes { display: grid; grid-template-columns: 1fr 136px 1fr; }
@@ -77,7 +77,7 @@
     .up-box { margin-bottom: 6px; }
     .up-sources { grid-template-columns: 1fr; }
   }
-  .up-tag.unv { background: transparent; color: var(--up-muted); border: 1px dashed var(--up-muted); }
+  .up-tag.unv { background: var(--up-chip); color: var(--up-muted); border: 1px solid var(--up-muted); }
   .up-tag.out { background: var(--up-wait-soft); color: var(--up-wait); border: 1px solid var(--up-wait); }
   .up-unv { margin-top: 16px; padding: 12px 14px; border-radius: 8px; border: 1px dashed var(--up-muted); font-size: 14px; }
   .up-out { margin-top: 16px; padding: 12px 14px; border-radius: 8px; background: var(--up-wait-soft); font-size: 14px; }
