@@ -86,6 +86,10 @@
     .up-skill { white-space: normal; }
     .up th, .up td, .up code { overflow-wrap: anywhere; }
   }
+  .up-terms { background: var(--up-card); border: 1px solid var(--up-line); border-radius: 10px; padding: 12px 16px; margin: 0 0 24px; font-size: 14px; }
+  .up-terms a, .up table a { color: var(--up-app); font-weight: 600; }
+  a.up-skill { text-decoration: none; }
+  a.up-skill:hover, a.up-skill:focus-visible { border-color: var(--up-app); text-decoration: underline; }
 </style>
 </head>
 <body data-show="proposed">
@@ -102,10 +106,10 @@
   <div data-variant="proposed" class="pro">
   <div class="up">
     <h1>How ADP can keep the User Guide up to date</h1>
-    <p class="up-lead">A proposal that needs no new skill and no change to any skill. The guide requirement travels inside the story's own contract, and the story cannot close until the guide is published.</p>
+    <p class="up-lead">A proposal that needs no new skill and no change to any skill. The guide requirement travels inside the issue's own contract, and the issue cannot close until the guide is published.</p>
 
     <p class="up-foot" style="margin:-8px 0 16px">Also as a one-page image: <a href="summary.png">open the summary</a>.</p>
-    <div class="up-example">Example used below: the feature <b>"Add a button"</b>. ADP is the Autonomous Dev Pipeline. Today nothing in ADP mentions the User Guide, so a story shipped through ADP has no guide step.</div>
+    <div class="up-example">Example used below: the feature <b>"Add a button"</b>. ADP is the Autonomous Dev Pipeline. None of the ADP skills and ADP reference documents read for this proposal mentions the User Guide, so an issue shipped through ADP has no guide step.</div>
 
     <div class="up-legend">
       <span><span class="up-tag today">Exists</span> an ADP mechanism that works today</span>
@@ -114,42 +118,44 @@
       <span><span class="up-tag out">Outside ADP</span> stays with a person</span>
     </div>
 
+    <p class="up-terms"><b>Terms.</b> This page uses the same words as the <a href="../adp-document-map/">ADP document map</a>: a <b>skill</b> is the written instructions for one stage of the pipeline, an <b>ADP reference document</b> holds the rules every run follows, and an <b>issue</b> is the unit of work a run builds. Skill names open the Skills screen in Clara Studio.</p>
+
     <div class="up-lanes">
-      <div class="up-head a">Clara Studio <small>the app · one ADP story</small></div>
+      <div class="up-head a">Clara Studio <small>the app · one issue run by ADP</small></div>
       <div></div>
-      <div class="up-head d">User Guide <small>its own repo · a second, linked ADP story</small></div>
+      <div class="up-head d">User Guide <small>its own repo · a second, linked issue run by ADP</small></div>
       <div class="up-step"><div class="up-num">1</div><h2>Plan</h2><span class="up-when">the issue becomes a contract</span></div>
-      <div class="up-skills">ADP stage: <span class="up-skill">adp-plan-issue</span> turns the issue into a contract with at most 5 acceptance criteria, then stops at the plan gate.</div>
+      <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-plan-issue</a> turns the issue into a testable contract with at most 5 acceptance criteria, then stops at the plan gate.</div>
       <div class="up-box a">
         <h3>Issue: "Add a button"</h3>
         <p><span class="up-tag today">Exists</span> The planner reads the issue text and writes the criteria.</p>
         <div class="up-new"><span class="pin">1</span><span class="up-tag new">Proposed</span> The issue carries <code>Help docs: &lt;pages&gt;</code> or <code>Help docs: none, &lt;why&gt;</code>, and the contract gets the two guide criteria of steps 3 and 6.</div>
         <div class="up-new"><span class="pin">2</span><span class="up-tag new">Proposed</span> A page to guide map, kept as a data file, tells the issue writer which guide belongs to the page.</div>
       </div>
-      <div class="up-arrow">→<small>two linked stories</small></div>
+      <div class="up-arrow">→<small>two linked issues</small></div>
       <div class="up-box d">
-        <h3>A guide story is created</h3>
-        <div class="up-new first"><span class="pin">3</span><span class="up-tag new">Proposed</span> A second story, linked to the app story. ADP works in one repository per run, so the guide needs its own.</div>
+        <h3>A guide issue is created</h3>
+        <div class="up-new first"><span class="pin">3</span><span class="up-tag new">Proposed</span> A second issue, linked to the app issue. ADP works in one repository per run, so the guide needs its own issue.</div>
       </div>
       <div class="up-step"><div class="up-num">2</div><h2>Build</h2><span class="up-when">one run per repository</span></div>
-      <div class="up-skills">ADP stage: <span class="up-skill">adp-issue</span> runs the build steps. A <span class="up-skill">screenshot</span> criterion takes 4 captures per route (light and dark, 1440 and 390 px) and stores them in the story's captures document.</div>
+      <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-issue</a> runs the build steps. A <span class="up-skill">screenshot</span> criterion takes 4 captures per route (light and dark, 1440 and 390 px) and stores them in the issue's captures document.</div>
       <div class="up-box a">
         <h3>Writes the code</h3>
-        <p><span class="up-tag today">Exists</span> Adds the button with its tests and takes the captures.</p>
+        <p><span class="up-tag today">Exists</span> Writes the tests first, then the code for the button, and takes the captures.</p>
       </div>
       <div class="up-arrow">→<small>capture reused</small></div>
       <div class="up-box d">
         <h3>Writes the guide change</h3>
         <p>Edits the page's <code>.md</code> file: what the button is for and how to use it.</p>
-        <div class="up-unv"><span class="up-tag unv">Not verified</span> ADP has not been run in the User Guide repo. It needs a profile there, written by the existing <span class="up-skill">adp-setup</span>.</div>
+        <div class="up-unv"><span class="up-tag unv">Not verified</span> ADP has not been run in the User Guide repo. It needs a repository profile there, written by the existing <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-setup</a>.</div>
         <div class="up-unv"><span class="up-tag unv">Not verified</span> Reusing the light, desktop capture as the guide screenshot. Captures show seeded test data and are capped at 1568 px.</div>
       </div>
-      <div class="up-step"><div class="up-num">3</div><h2>Two pull requests</h2><span class="up-when">one per story</span></div>
-      <div class="up-skills">ADP stage: <span class="up-skill">adp-pr</span> opens the pull request and waits for the checks. A <span class="up-skill">review</span> criterion is judged by a review seat.</div>
+      <div class="up-step"><div class="up-num">3</div><h2>Two pull requests</h2><span class="up-when">one per issue</span></div>
+      <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-pr</a> opens the pull request and waits for the checks. A <span class="up-skill">review</span> criterion is judged by a reviewer.</div>
       <div class="up-box a">
         <h3>Pull request to Clara Studio</h3>
         <p><span class="up-tag today">Exists</span> The <code>review</code> kind of criterion.</p>
-        <div class="up-new"><span class="pin">4</span><span class="up-tag new">Proposed</span> Criterion: "The guide change for this story covers the page with the button."</div>
+        <div class="up-new"><span class="pin">4</span><span class="up-tag new">Proposed</span> Criterion: "The guide change for this issue covers the page with the button."</div>
         <div class="up-unv"><span class="up-tag unv">Not verified</span> That the reviewer can read a change that lives in another repo.</div>
       </div>
       <div class="up-arrow">↔<small>reviewed together</small></div>
@@ -158,10 +164,10 @@
         <p><span class="up-tag today">Exists</span> It stays open. ADP never merges into <code>main</code>, and no automatic decision can override that.</p>
       </div>
       <div class="up-step"><div class="up-num">4</div><h2>Test</h2><span class="up-when">before release</span></div>
-      <div class="up-skills">ADP stage: <span class="up-skill">adp-qa</span> checks the merged story against its contract. The profile setting <span class="up-skill">qa.release: main</span> is already in place.</div>
+      <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-qa</a> checks the merged issue against its contract. The setting <span class="up-skill">qa.release: main</span> is already in the repository profile.</div>
       <div class="up-box a">
         <h3>Merged to dev and checked</h3>
-        <p><span class="up-tag today">Exists</span> A passing story rests at <code>ready_for_release</code> until its code reaches production.</p>
+        <p><span class="up-tag today">Exists</span> Once merged, the issue is <code>ready_for_qa</code>. When <code>adp-qa</code> passes it, it rests at <code>ready_for_release</code> until its code reaches production.</p>
       </div>
       <div class="up-arrow"></div>
       <div class="up-box wait">
@@ -169,7 +175,7 @@
         <p>If the guide were published now, it would describe a button users do not have yet.</p>
       </div>
       <div class="up-step"><div class="up-num">5</div><h2>Release to production</h2><span class="up-when">the trigger</span></div>
-      <div class="up-skills">ADP stage: <span class="up-skill none">none</span> ADP follows a story up to the release but does not run the release.</div>
+      <div class="up-skills">ADP skill: <span class="up-skill none">none</span> ADP follows an issue up to the release but does not run the release.</div>
       <div class="up-box a">
         <div class="up-out first"><span class="up-tag out">Outside ADP</span> A person decides to release, as today.</div>
       </div>
@@ -178,47 +184,48 @@
         <div class="up-out first"><span class="up-tag out">Outside ADP</span> The guide pull request is merged by a person, or by the existing release step that already merges guide pull requests whose issues shipped.</div>
       </div>
       <div class="up-step"><div class="up-num">6</div><h2>After the release</h2><span class="up-when">safety net</span></div>
-      <div class="up-skills">ADP stage: <span class="up-skill">adp-qa</span> runs each <span class="up-skill">post-merge</span> criterion. Only this stage closes a story.</div>
+      <div class="up-skills">ADP skill: <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-qa</a> runs each <span class="up-skill">post-merge</span> criterion. Only this skill closes an issue.</div>
       <div class="up-box a">
-        <h3>The story cannot close without the guide</h3>
+        <h3>The issue cannot close without the guide</h3>
         <p><span class="up-tag today">Exists</span> An unmet post-merge criterion becomes an owed task and blocks the close.</p>
-        <div class="up-new"><span class="pin">5</span><span class="up-tag new">Proposed</span> Criterion: "The guide pull request for this story is merged."</div>
+        <div class="up-new"><span class="pin">5</span><span class="up-tag new">Proposed</span> Criterion: "The guide pull request for this issue is merged."</div>
       </div>
       <div class="up-arrow">←<small>proves the criterion</small></div>
       <div class="up-box d">
         <h3>The guide is published</h3>
         <p>Users see the new button and the updated guide on the same day.</p>
-        <div class="up-out"><span class="up-tag out">Outside ADP</span> A change nobody documented is not detected. When found, it is filed as an issue and runs as a guide story.</div>
+        <div class="up-out"><span class="up-tag out">Outside ADP</span> A change nobody documented is not detected. When found, it is filed as an issue and runs as a guide issue.</div>
       </div>
     </div>
 
     <h2 class="up-section">ADP pieces this proposal uses</h2>
+    <p class="up-foot" style="margin:0 0 10px">All of these come from the ADP skills and the ADP reference documents. See the <a href="../adp-document-map/">ADP document map</a> for the full list.</p>
     <table>
       <tr><th>ADP piece</th><th>What it is</th><th>What it does for the User Guide</th></tr>
       <tr><td>Issue text</td><td>The input the planner reads</td><td>Carries the <code>Help docs:</code> line</td></tr>
-      <tr><td><span class="up-skill">review</span> criterion</td><td>A review seat judges a written outcome</td><td>Confirms the guide change covers the page</td></tr>
+      <tr><td><span class="up-skill">review</span> criterion</td><td>A reviewer judges a written outcome</td><td>Confirms the guide change covers the page</td></tr>
       <tr><td><span class="up-skill">screenshot</span> criterion</td><td>4 captures per route, kept in the captures document</td><td>Source for the guide screenshot (not verified)</td></tr>
       <tr><td><span class="up-skill">post-merge</span> criterion</td><td>A proof only a deployed environment can give</td><td>Blocks the close until the guide pull request is merged</td></tr>
-      <tr><td><span class="up-skill">qa.release: main</span></td><td>A profile setting, already present</td><td>Holds the story at <code>ready_for_release</code> until production</td></tr>
+      <tr><td><span class="up-skill">qa.release: main</span></td><td>A setting in the repository profile, already present</td><td>Holds the issue at <code>ready_for_release</code> until production</td></tr>
       <tr><td>Never merge into <code>main</code></td><td>An ADP rule no automatic decision can override</td><td>Keeps the guide unpublished until release</td></tr>
     </table>
-    <p class="up-foot">The ADP stages (<span class="up-skill">adp-plan-issue</span>, <span class="up-skill">adp-issue</span>, <span class="up-skill">adp-pr</span>, <span class="up-skill">adp-qa</span>) are themselves skills served from Clara. This proposal adds no skill and edits none of them.</p>
+    <p class="up-foot">The ADP skills named on this page (<a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-plan-issue</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-issue</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-pr</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-qa</a>) are 4 of the 11 ADP skills: written instructions that Clara Studio sends to the agent for each stage. This proposal adds no skill and edits none of them.</p>
 
     <h2 class="up-section">Two phases</h2>
     <table>
       <tr><th>Phase</th><th>What changes</th><th>Result</th></tr>
-      <tr><td>1. Now</td><td>Nothing. Whoever writes the issue adds the <code>Help docs:</code> line and the two criteria by hand</td><td>Works story by story. Nothing enforces it</td></tr>
-      <tr><td>2. Automatic</td><td>One paragraph in the ADP Protocol, the reference document every run follows. It is a document, not a skill</td><td>The plan gate refuses a user-facing story that lacks the line and the two criteria</td></tr>
+      <tr><td>1. Now</td><td>Nothing. Whoever writes the issue adds the <code>Help docs:</code> line and the two criteria by hand</td><td>Works issue by issue. Nothing enforces it</td></tr>
+      <tr><td>2. Automatic</td><td>One paragraph in the <a href="https://app.clarastudio.ai/d/2296280c-7999-45d1-b46c-42424117057e" target="_blank" rel="noopener">Protocol ↗</a>, one of the 14 ADP reference documents. It is a document, not a skill</td><td>The plan gate refuses a user-facing issue that lacks the line and the two criteria</td></tr>
     </table>
 
     <h2 class="up-section">Compared with the process today</h2>
     <table>
       <tr><th>Part</th><th>Today, with the work-issue skills</th><th>With ADP, this proposal</th></tr>
       <tr><td>Who states the guide</td><td>The plan written by <span class="up-skill">/work-issue</span></td><td>The issue text and the contract</td></tr>
-      <tr><td>Who writes the guide</td><td>The same agent, in the same session</td><td>A second ADP story in the docs repo</td></tr>
+      <tr><td>Who writes the guide</td><td>The same agent, in the same session</td><td>A second issue run by ADP in the User Guide repo</td></tr>
       <tr><td>Screenshots</td><td>By hand, with local scripts</td><td>Reused from the ADP captures (not verified)</td></tr>
       <tr><td>Publishing</td><td><span class="up-skill">/production-release</span> step 12a</td><td>Unchanged, outside ADP</td></tr>
-      <tr><td>Forgotten guide</td><td>Nobody notices</td><td>The story cannot close</td></tr>
+      <tr><td>Forgotten guide</td><td>Nobody notices</td><td>The issue cannot close</td></tr>
       <tr><td>Change nobody documented</td><td>Nobody notices</td><td>Still not detected</td></tr>
     </table>
 
@@ -226,9 +233,9 @@
     <table>
       <tr><th>Point</th><th>Why it matters</th></tr>
       <tr><td>A reviewer reading a change in another repo</td><td>The review criterion of step 3 depends on it. Deduced, not tested</td></tr>
-      <tr><td>ADP running in the User Guide repo</td><td>The guide story depends on it. Never tested</td></tr>
-      <tr><td>ADP documents are all drafts</td><td>The mechanisms named here can still change</td></tr>
-      <tr><td>Seven ADP skills were not read</td><td><span class="up-skill">adp-epic</span>, <span class="up-skill">adp-plan-epic</span>, <span class="up-skill">adp-setup</span>, <span class="up-skill">adp-dispatch</span>, <span class="up-skill">adp-groom</span>, <span class="up-skill">adp-queue</span>, <span class="up-skill">adp-plan-project</span> may behave differently, above all for stories inside an epic</td></tr>
+      <tr><td>ADP running in the User Guide repo</td><td>The guide issue depends on it. Never tested</td></tr>
+      <tr><td>13 of the 14 ADP reference documents are drafts</td><td>The rules named here can still change</td></tr>
+      <tr><td>Seven of the 11 ADP skills were not read</td><td><a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-epic</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-plan-epic</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-setup</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-dispatch</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-groom</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-queue</a>, <a class="up-skill" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">adp-plan-project</a> may behave differently, above all for issues inside an epic</td></tr>
       <tr><td>Target branch of the guide pull request</td><td>The written process says <code>main</code>. The User Guide repo also has a <code>dev</code> branch</td></tr>
       <tr><td>Limit of 5 criteria per contract</td><td>The two guide criteria take two of the five places</td></tr>
     </table>
@@ -239,13 +246,13 @@
 </div>
 <aside class="notes">
   <h2>What changed and why</h2>
-  <p class="notes-sub">Today nothing in ADP mentions the User Guide. This proposal carries the guide inside each story's contract, using pieces ADP already has, with no new skill.</p>
+  <p class="notes-sub">None of the ADP skills and ADP reference documents read for this proposal mentions the User Guide. This proposal carries the guide inside each issue's contract, using pieces ADP already has, with no new skill.</p>
   <ol>
     <li><b>The issue names the guide.</b> A <code>Help docs:</code> line in the issue, and two guide criteria in the contract. <span class="why">The planner only acts on what the issue says, so the guide has to be stated there.</span></li>
     <li><b>A page → guide map.</b> One small data file linking each app page to its guide. <span class="why">Whoever writes the issue can miss a guide without it.</span></li>
-    <li><b>A linked guide story.</b> The guide change is its own story in the User Guide repo. <span class="why">ADP works in one repository per run.</span></li>
+    <li><b>A linked guide issue.</b> The guide change is its own issue in the User Guide repo. <span class="why">ADP works in one repository per run.</span></li>
     <li><b>A reviewer checks the guide.</b> A review criterion asks whether the guide change covers the page. <span class="why">The guide is judged with the code, not after it.</span></li>
-    <li><b>The story cannot close without the guide.</b> A post-merge criterion waits for the guide pull request to be merged. <span class="why">Today a forgotten guide goes unnoticed.</span></li>
+    <li><b>The issue cannot close without the guide.</b> A post-merge criterion waits for the guide pull request to be merged. <span class="why">Today a forgotten guide goes unnoticed.</span></li>
   </ol>
 </aside>
 </div>
