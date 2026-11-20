@@ -35,6 +35,8 @@
   .am-sub { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--am-muted); margin: 10px 0 5px; font-weight: 700; }
   .am-items { display: flex; flex-wrap: wrap; gap: 6px 8px; }
   .am-item { background: var(--s); border-radius: 7px; padding: 4px 10px; font-size: 14px; }
+  .am-cols { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px 14px; align-items: start; }
+  .am-col .am-items { flex-direction: column; align-items: stretch; }
   .am-item.mono { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; padding: 5px 10px; }
   a.am-item { color: inherit; text-decoration: none; border: 1px solid transparent; }
   a.am-item::after { content: ' ↗'; color: var(--c); font-weight: 700; }
@@ -56,11 +58,13 @@
   .am .pin { margin-right: 6px; }
 
   @media (max-width: 860px) {
+    .am-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .am-total { grid-template-columns: 1fr 1fr; }
     .am-tile.sum { grid-column: 1 / -1; }
     .am-list { grid-template-columns: 1fr; }
   }
   @media (max-width: 480px) {
+    .am-cols { grid-template-columns: 1fr; }
     .am-list li { grid-template-columns: 1fr; gap: 0; }
     .am th, .am td { overflow-wrap: anywhere; }
   }
@@ -121,16 +125,28 @@
     <div class="am-group" style="--c:var(--am-ref); --s:var(--am-ref-soft)">
       <h2><span class="pin">2</span>Reference documents <span class="am-count">14</span></h2>
       <p class="am-what">The rules every run follows. The skills cite them. 13 are drafts; 1 is approved.</p>
-      <div class="am-sub">Core rules</div>
-      <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/2296280c-7999-45d1-b46c-42424117057e" target="_blank" rel="noopener">Protocol</a><a class="am-item" href="https://app.clarastudio.ai/d/ac4bcafe-e53d-4331-ae00-75b638f2ad77" target="_blank" rel="noopener">Gate procedure</a><a class="am-item" href="https://app.clarastudio.ai/d/3c49d5d3-c9ca-4c4d-ada2-724f66774a1f" target="_blank" rel="noopener">Role briefs</a><a class="am-item" href="https://app.clarastudio.ai/d/202dce9c-809f-491d-8bdc-0d514b308d2e" target="_blank" rel="noopener">Decisions and the proxy</a></div>
-      <div class="am-sub">Running and state</div>
-      <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/b94666d7-7258-47b4-8c48-373e51d20592" target="_blank" rel="noopener">Dispatch and handoff</a><a class="am-item" href="https://app.clarastudio.ai/d/f21f55f6-9dcb-455d-b851-6a1dd3b0d02f" target="_blank" rel="noopener">Run-state comments</a><a class="am-item" href="https://app.clarastudio.ai/d/34e4f274-7bfc-415c-889e-e78dba67dba3" target="_blank" rel="noopener">Rolling wave and ceremony</a><a class="am-item" href="https://app.clarastudio.ai/d/14327122-4823-49a1-9061-cabc4dc88bd9" target="_blank" rel="noopener">Queue merge</a></div>
-      <div class="am-sub">Setup and hosts</div>
-      <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/d5bf8741-f5bc-4a8c-a40a-a78363ce1059" target="_blank" rel="noopener">Presets and detection</a><a class="am-item" href="https://app.clarastudio.ai/d/a07b016f-dbea-481a-9e1d-e632e253b219" target="_blank" rel="noopener">Host matrix</a><a class="am-item" href="https://app.clarastudio.ai/d/c492e9e6-7de6-4548-884e-4b2baaa85541" target="_blank" rel="noopener">SCM-provider table</a></div>
-      <div class="am-sub">Guides</div>
-      <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/374a49a9-d610-4fcc-a706-d3028b004c70" target="_blank" rel="noopener">Operator Manual</a><a class="am-item" href="https://app.clarastudio.ai/d/55533a09-e5e5-4160-9a44-1a9e60b0bd2d" target="_blank" rel="noopener">Design references</a></div>
-      <div class="am-sub">Decision record</div>
-      <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/d543ea79-7088-4566-95ec-9d0d754745c3" target="_blank" rel="noopener">Decisions and Questions: open model with an audit stamp<small>approved</small></a></div>
+      <div class="am-cols">
+        <div class="am-col">
+          <div class="am-sub">Core rules</div>
+          <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/2296280c-7999-45d1-b46c-42424117057e" target="_blank" rel="noopener">Protocol</a><a class="am-item" href="https://app.clarastudio.ai/d/ac4bcafe-e53d-4331-ae00-75b638f2ad77" target="_blank" rel="noopener">Gate procedure</a><a class="am-item" href="https://app.clarastudio.ai/d/3c49d5d3-c9ca-4c4d-ada2-724f66774a1f" target="_blank" rel="noopener">Role briefs</a><a class="am-item" href="https://app.clarastudio.ai/d/202dce9c-809f-491d-8bdc-0d514b308d2e" target="_blank" rel="noopener">Decisions and the proxy</a></div>
+        </div>
+        <div class="am-col">
+          <div class="am-sub">Running and state</div>
+          <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/b94666d7-7258-47b4-8c48-373e51d20592" target="_blank" rel="noopener">Dispatch and handoff</a><a class="am-item" href="https://app.clarastudio.ai/d/f21f55f6-9dcb-455d-b851-6a1dd3b0d02f" target="_blank" rel="noopener">Run-state comments</a><a class="am-item" href="https://app.clarastudio.ai/d/34e4f274-7bfc-415c-889e-e78dba67dba3" target="_blank" rel="noopener">Rolling wave and ceremony</a><a class="am-item" href="https://app.clarastudio.ai/d/14327122-4823-49a1-9061-cabc4dc88bd9" target="_blank" rel="noopener">Queue merge</a></div>
+        </div>
+        <div class="am-col">
+          <div class="am-sub">Setup and hosts</div>
+          <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/d5bf8741-f5bc-4a8c-a40a-a78363ce1059" target="_blank" rel="noopener">Presets and detection</a><a class="am-item" href="https://app.clarastudio.ai/d/a07b016f-dbea-481a-9e1d-e632e253b219" target="_blank" rel="noopener">Host matrix</a><a class="am-item" href="https://app.clarastudio.ai/d/c492e9e6-7de6-4548-884e-4b2baaa85541" target="_blank" rel="noopener">SCM-provider table</a></div>
+        </div>
+        <div class="am-col">
+          <div class="am-sub">Guides</div>
+          <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/374a49a9-d610-4fcc-a706-d3028b004c70" target="_blank" rel="noopener">Operator Manual</a><a class="am-item" href="https://app.clarastudio.ai/d/55533a09-e5e5-4160-9a44-1a9e60b0bd2d" target="_blank" rel="noopener">Design references</a></div>
+        </div>
+        <div class="am-col">
+          <div class="am-sub">Decision record</div>
+          <div class="am-items"><a class="am-item" href="https://app.clarastudio.ai/d/d543ea79-7088-4566-95ec-9d0d754745c3" target="_blank" rel="noopener">Decisions and Questions: open model with an audit stamp<small>approved</small></a></div>
+        </div>
+      </div>
     </div>
 
     <div class="am-group" style="--c:var(--am-des); --s:var(--am-des-soft)">
