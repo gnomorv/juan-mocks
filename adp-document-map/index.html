@@ -32,6 +32,8 @@
   .am-group > h2 { font-size: 17px; margin: 0; color: inherit; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
   .am-count { font-size: 13px; font-weight: 700; background: var(--s); color: var(--c); border-radius: 999px; padding: 1px 10px; }
   .am-what { color: var(--am-muted); margin: 2px 0 10px; }
+  .am-what + .am-what { margin-top: -4px; }
+  .am-what b { color: var(--am-ink); }
   .am-sub { font-size: 12.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--am-ink); margin: 10px 0 5px; font-weight: 700; }
   .am-col .am-sub { border-bottom: 2px solid var(--c); padding-bottom: 4px; margin-bottom: 8px; }
   .am-items { display: flex; flex-wrap: wrap; gap: 6px 8px; }
@@ -105,7 +107,8 @@
 
     <div class="am-group" style="--c:var(--am-skill); --s:var(--am-skill-soft)">
       <h2><span class="pin">1</span>Skills <span class="am-count">11</span><a class="am-open" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">Open the Skills screen ↗</a></h2>
-      <p class="am-what">The stages an agent runs. Each one is a set of instructions served to the agent. Every skill name below opens the Skills screen in Clara Studio; pick the skill there and choose Edit to read it.</p>
+      <p class="am-what">A skill is a written set of instructions for one stage of the pipeline, such as planning an issue or opening a pull request. When an agent starts that stage, Clara Studio sends it the skill's text and the agent follows it step by step.</p>
+      <p class="am-what"><b>To read a skill:</b> click its name below, find it in the list on the Skills screen, and choose Edit. Nothing changes unless you save.</p>
       <div class="am-sub">Plan</div>
       <ul class="am-list">
         <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-setup</code></a><span>Detects the repo's commands and writes its profile</span></li>
