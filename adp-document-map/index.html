@@ -43,6 +43,10 @@
   a.am-item::after { content: ' ↗'; color: var(--c); font-weight: 700; }
   a.am-item:hover, a.am-item:focus-visible { border-color: var(--c); text-decoration: underline; }
   .am-links a, .am-what a { color: var(--am-skill); font-weight: 600; }
+  .am-open { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--c); background: var(--s); border: 1px solid var(--c); border-radius: 999px; padding: 3px 12px; text-decoration: none; }
+  .am-open:hover, .am-open:focus-visible, .am-list a:hover code { text-decoration: underline; }
+  .am-list a { text-decoration: none; }
+  .am-list a code::after { content: ' ↗'; }
   .am-links { background: var(--am-soft); border-radius: 8px; padding: 8px 12px; margin: 0 0 22px; font-size: 14px; }
   .am-item small { color: var(--am-muted); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-left: 6px; }
   .am-list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
@@ -100,27 +104,27 @@
     </div>
 
     <div class="am-group" style="--c:var(--am-skill); --s:var(--am-skill-soft)">
-      <h2><span class="pin">1</span>Skills <span class="am-count">11</span></h2>
-      <p class="am-what">The stages an agent runs. Each one is a set of instructions served to the agent. To read one, open the <a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">Skills screen ↗</a> and pick it from the list.</p>
+      <h2><span class="pin">1</span>Skills <span class="am-count">11</span><a class="am-open" href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">Open the Skills screen ↗</a></h2>
+      <p class="am-what">The stages an agent runs. Each one is a set of instructions served to the agent. Every skill name below opens the Skills screen in Clara Studio; pick the skill there and choose Edit to read it.</p>
       <div class="am-sub">Plan</div>
       <ul class="am-list">
-        <li><code>adp-setup</code><span>Detects the repo's commands and writes its profile</span></li>
-        <li><code>adp-plan-project</code><span>Files an epic and placeholder stories from a work breakdown</span></li>
-        <li><code>adp-plan-epic</code><span>Splits an epic into stories, wave by wave</span></li>
-        <li><code>adp-plan-issue</code><span>Turns one issue into a testable contract</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-setup</code></a><span>Detects the repo's commands and writes its profile</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-plan-project</code></a><span>Files an epic and placeholder stories from a work breakdown</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-plan-epic</code></a><span>Splits an epic into stories, wave by wave</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-plan-issue</code></a><span>Turns one issue into a testable contract</span></li>
       </ul>
       <div class="am-sub">Build</div>
       <ul class="am-list">
-        <li><code>adp-issue</code><span>Runs one issue through all the build steps</span></li>
-        <li><code>adp-epic</code><span>Runs every story of an epic in order</span></li>
-        <li><code>adp-pr</code><span>Opens the pull request and waits for the checks</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-issue</code></a><span>Runs one issue through all the build steps</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-epic</code></a><span>Runs every story of an epic in order</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-pr</code></a><span>Opens the pull request and waits for the checks</span></li>
       </ul>
       <div class="am-sub">Close and backlog</div>
       <ul class="am-list">
-        <li><code>adp-qa</code><span>Checks a merged issue and closes it</span></li>
-        <li><code>adp-groom</code><span>Sorts the open backlog</span></li>
-        <li><code>adp-dispatch</code><span>Plans and launches the issues that are ready</span></li>
-        <li><code>adp-queue</code><span>Works a to-do queue one issue at a time</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-qa</code></a><span>Checks a merged issue and closes it</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-groom</code></a><span>Sorts the open backlog</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-dispatch</code></a><span>Plans and launches the issues that are ready</span></li>
+        <li><a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener"><code>adp-queue</code></a><span>Works a to-do queue one issue at a time</span></li>
       </ul>
     </div>
 
