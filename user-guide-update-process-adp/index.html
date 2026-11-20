@@ -36,10 +36,11 @@
   .up-head.a { background: var(--up-app-soft); border-bottom: 3px solid var(--up-app); }
   .up-head.d { background: var(--up-doc-soft); border-bottom: 3px solid var(--up-doc); }
 
-  .up-step { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin: 26px 0 10px; }
+  .up-step { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 10px; margin: 26px 0 10px; }
   .up-num { width: 28px; height: 28px; border-radius: 50%; background: var(--up-ink); color: var(--up-card); display: grid; place-items: center; font-weight: 700; font-size: 14px; flex: none; }
   .up-step h2 { font-size: 16px; margin: 0; color: inherit; }
-  .up-when { color: var(--up-muted); font-size: 13px; }
+  .up-when { color: var(--up-ink); font-size: 16px; font-weight: 700; line-height: 1.5; }
+  .up-when::before { content: '·'; margin-right: 10px; color: var(--up-muted); }
   .up-skills { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: -4px 0 10px 38px; font-size: 13px; color: var(--up-muted); }
   .up-skill { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; background: var(--up-card); color: var(--up-ink); border: 1px solid var(--up-line); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
   .up-skill.none { font-family: inherit; font-weight: 400; border-style: dashed; color: var(--up-muted); }
