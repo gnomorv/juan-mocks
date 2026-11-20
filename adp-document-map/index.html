@@ -42,6 +42,7 @@
   a.am-item { color: inherit; text-decoration: none; border: 1px solid transparent; }
   a.am-item::after { content: ' ↗'; color: var(--c); font-weight: 700; }
   a.am-item:hover, a.am-item:focus-visible { border-color: var(--c); text-decoration: underline; }
+  .am-links a, .am-what a { color: var(--am-skill); font-weight: 600; }
   .am-links { background: var(--am-soft); border-radius: 8px; padding: 8px 12px; margin: 0 0 22px; font-size: 14px; }
   .am-item small { color: var(--am-muted); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-left: 6px; }
   .am-list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
@@ -87,7 +88,7 @@
     <h1>What ADP is made of</h1>
     <p class="am-lead">ADP, the Autonomous Dev Pipeline, is defined by 24 documents and 11 skills. Its project holds about 900 more documents, but those are records of individual runs, not part of the definition. Counted on November 20, 2026.</p>
 
-    <p class="am-links">Each document name is a link (↗) that opens the document in Clara Studio. A sign-in with access to the project is required. Skills have no page of their own, so they are not linked.</p>
+    <p class="am-links">Each document name is a link (↗) that opens the document in Clara Studio. A sign-in with access to the project is required. A skill has no address of its own: all skills open from the <a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">Skills screen ↗</a> in the Admin console.</p>
 
     <div class="am-total">
       <div class="am-tile sum"><b>35</b><span>pieces define ADP: 24 documents + 11 skills</span></div>
@@ -100,7 +101,7 @@
 
     <div class="am-group" style="--c:var(--am-skill); --s:var(--am-skill-soft)">
       <h2><span class="pin">1</span>Skills <span class="am-count">11</span></h2>
-      <p class="am-what">The stages an agent runs. Each one is a set of instructions served to the agent.</p>
+      <p class="am-what">The stages an agent runs. Each one is a set of instructions served to the agent. To read one, open the <a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">Skills screen ↗</a> and pick it from the list.</p>
       <div class="am-sub">Plan</div>
       <ul class="am-list">
         <li><code>adp-setup</code><span>Detects the repo's commands and writes its profile</span></li>
