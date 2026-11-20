@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADP document map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  .am {
+    --am-card: #ffffff; --am-ink: #1c2330; --am-muted: #5d6778; --am-line: #d5dae2; --am-soft: #f1f4f9;
+    --am-skill: #2f6fde; --am-skill-soft: #e8f0fd; --am-ref: #1d8a5f; --am-ref-soft: #e4f5ed;
+    --am-des: #7a5cc4; --am-des-soft: #efeafb; --am-found: #b86a00; --am-found-soft: #fff3df; --am-note: #5d6778;
+    max-width: 1040px; margin: 0 auto; padding: 28px 20px 56px; color: var(--am-ink); font-size: 15px; line-height: 1.5;
+  }
+  html.dark .am {
+    --am-card: #1d2229; --am-ink: #e8ecf2; --am-muted: #9aa5b5; --am-line: #343c48; --am-soft: #232a33;
+    --am-skill: #7aa7f5; --am-skill-soft: #1c2a44; --am-ref: #5fd0a0; --am-ref-soft: #173326;
+    --am-des: #b6a0ee; --am-des-soft: #2a2342; --am-found: #f2b457; --am-found-soft: #3a2c12; --am-note: #9aa5b5;
+  }
+  .am h1 { font-size: 26px; margin: 0 0 6px; color: inherit; }
+  .am-lead { color: var(--am-muted); margin: 0 0 22px; max-width: 72ch; }
+  .am-total { display: grid; grid-template-columns: 1.3fr repeat(5, 1fr); gap: 10px; margin-bottom: 26px; }
+  .am-tile { background: var(--am-card); border: 1px solid var(--am-line); border-top: 4px solid var(--c, var(--am-line)); border-radius: 10px; padding: 12px 14px; }
+  .am-tile b { display: block; font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .am-tile span { color: var(--am-muted); font-size: 13px; }
+  .am-tile.sum { border-top-color: var(--am-ink); background: var(--am-soft); }
+  .am-tile.sum b { font-size: 38px; }
+
+  .am-group { position: relative; background: var(--am-card); border: 1px solid var(--am-line); border-left: 4px solid var(--c); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+  .am-group > h2 { font-size: 17px; margin: 0; color: inherit; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .am-count { font-size: 13px; font-weight: 700; background: var(--s); color: var(--c); border-radius: 999px; padding: 1px 10px; }
+  .am-what { color: var(--am-muted); margin: 2px 0 10px; }
+  .am-sub { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--am-muted); margin: 10px 0 5px; font-weight: 700; }
+  .am-items { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+  .am-item { background: var(--s); border-radius: 7px; padding: 4px 10px; font-size: 14px; }
+  .am-item.mono { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; padding: 5px 10px; }
+  .am-item small { color: var(--am-muted); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-left: 6px; }
+  .am-list { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
+  .am-list li { display: grid; grid-template-columns: 150px 1fr; gap: 10px; align-items: baseline; font-size: 14px; }
+  .am-list code { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; color: var(--c); }
+
+  .am h2.am-section { font-size: 18px; margin: 34px 0 10px; color: inherit; }
+  .am table { width: 100%; border-collapse: collapse; background: var(--am-card); border: 1px solid var(--am-line); }
+  .am th, .am td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--am-line); vertical-align: top; }
+  .am th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--am-muted); }
+  .am td.n { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap; }
+  .am-limits { margin: 0; padding-left: 20px; }
+  .am-limits li { margin: 4px 0; }
+  .am-foot { color: var(--am-muted); font-size: 13px; margin-top: 16px; }
+  .am .pin { margin-right: 6px; }
+
+  @media (max-width: 860px) {
+    .am-total { grid-template-columns: 1fr 1fr; }
+    .am-tile.sum { grid-column: 1 / -1; }
+    .am-list { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .am-list li { grid-template-columns: 1fr; gap: 0; }
+    .am th, .am td { overflow-wrap: anywhere; }
+  }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">ADP document map</span>
+  <span class="t-meta" style="color:#9ca3af">November 20, 2026 · inventory</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+<div class="review-layout">
+<div class="split-wrap">
+  <div data-variant="proposed" class="pro">
+  <div class="am">
+    <h1>What ADP is made of</h1>
+    <p class="am-lead">ADP, the Autonomous Dev Pipeline, is defined by 24 documents and 11 skills. Its project holds about 900 more documents, but those are records of individual runs, not part of the definition. Counted on November 20, 2026.</p>
+
+    <div class="am-total">
+      <div class="am-tile sum"><b>35</b><span>pieces define ADP: 24 documents + 11 skills</span></div>
+      <div class="am-tile" style="--c:var(--am-skill)"><b>11</b><span>Skills</span></div>
+      <div class="am-tile" style="--c:var(--am-ref)"><b>14</b><span>Reference documents</span></div>
+      <div class="am-tile" style="--c:var(--am-des)"><b>4</b><span>Design documents</span></div>
+      <div class="am-tile" style="--c:var(--am-found)"><b>4</b><span>Project foundation</span></div>
+      <div class="am-tile" style="--c:var(--am-note)"><b>2</b><span>Supporting notes</span></div>
+    </div>
+
+    <div class="am-group" style="--c:var(--am-skill); --s:var(--am-skill-soft)">
+      <h2><span class="pin">1</span>Skills <span class="am-count">11</span></h2>
+      <p class="am-what">The stages an agent runs. Each one is a set of instructions served to the agent.</p>
+      <div class="am-sub">Plan</div>
+      <ul class="am-list">
+        <li><code>adp-setup</code><span>Detects the repo's commands and writes its profile</span></li>
+        <li><code>adp-plan-project</code><span>Files an epic and placeholder stories from a work breakdown</span></li>
+        <li><code>adp-plan-epic</code><span>Splits an epic into stories, wave by wave</span></li>
+        <li><code>adp-plan-issue</code><span>Turns one issue into a testable contract</span></li>
+      </ul>
+      <div class="am-sub">Build</div>
+      <ul class="am-list">
+        <li><code>adp-issue</code><span>Runs one issue through all the build steps</span></li>
+        <li><code>adp-epic</code><span>Runs every story of an epic in order</span></li>
+        <li><code>adp-pr</code><span>Opens the pull request and waits for the checks</span></li>
+      </ul>
+      <div class="am-sub">Close and backlog</div>
+      <ul class="am-list">
+        <li><code>adp-qa</code><span>Checks a merged issue and closes it</span></li>
+        <li><code>adp-groom</code><span>Sorts the open backlog</span></li>
+        <li><code>adp-dispatch</code><span>Plans and launches the issues that are ready</span></li>
+        <li><code>adp-queue</code><span>Works a to-do queue one issue at a time</span></li>
+      </ul>
+    </div>
+
+    <div class="am-group" style="--c:var(--am-ref); --s:var(--am-ref-soft)">
+      <h2><span class="pin">2</span>Reference documents <span class="am-count">14</span></h2>
+      <p class="am-what">The rules every run follows. The skills cite them. 13 are drafts; 1 is approved.</p>
+      <div class="am-sub">Core rules</div>
+      <div class="am-items"><span class="am-item">Protocol</span><span class="am-item">Gate procedure</span><span class="am-item">Role briefs</span><span class="am-item">Decisions and the proxy</span></div>
+      <div class="am-sub">Running and state</div>
+      <div class="am-items"><span class="am-item">Dispatch and handoff</span><span class="am-item">Run-state comments</span><span class="am-item">Rolling wave and ceremony</span><span class="am-item">Queue merge</span></div>
+      <div class="am-sub">Setup and hosts</div>
+      <div class="am-items"><span class="am-item">Presets and detection</span><span class="am-item">Host matrix</span><span class="am-item">SCM-provider table</span></div>
+      <div class="am-sub">Guides</div>
+      <div class="am-items"><span class="am-item">Operator Manual</span><span class="am-item">Design references</span></div>
+      <div class="am-sub">Decision record</div>
+      <div class="am-items"><span class="am-item">Decisions and Questions: open model with an audit stamp<small>approved</small></span></div>
+    </div>
+
+    <div class="am-group" style="--c:var(--am-des); --s:var(--am-des-soft)">
+      <h2>Design documents <span class="am-count">4</span></h2>
+      <p class="am-what">How ADP is designed and why. All drafts.</p>
+      <div class="am-items"><span class="am-item">Solution design: epic wall-clock</span><span class="am-item">Epic run model: story and wave states</span><span class="am-item">Finding: live AI checks run too late</span><span class="am-item">Operations lane: design</span></div>
+    </div>
+
+    <div class="am-group" style="--c:var(--am-found); --s:var(--am-found-soft)">
+      <h2>Project foundation <span class="am-count">4</span></h2>
+      <p class="am-what">The documents that started the project. 3 are approved.</p>
+      <div class="am-items"><span class="am-item">Project scope<small>approved</small></span><span class="am-item">Business requirements<small>approved</small></span><span class="am-item">Solution design<small>approved</small></span><span class="am-item">Work breakdown and estimates<small>draft</small></span></div>
+    </div>
+
+    <div class="am-group" style="--c:var(--am-note); --s:var(--am-soft)">
+      <h2>Supporting notes <span class="am-count">2</span></h2>
+      <p class="am-what">Working notes that feed the rules. Both drafts.</p>
+      <div class="am-items"><span class="am-item">Protocol reference: run-document event lines (draft additions)</span><span class="am-item">Findings from the first watched grooming run</span></div>
+    </div>
+
+    <h2 class="am-section"><span class="pin">3</span>Not counted</h2>
+    <table>
+      <tr><th>Kind</th><th>Count</th><th>Why it is not part of the definition</th></tr>
+      <tr><td>Run history</td><td class="n">902</td><td>Records of individual runs, kept in one folder per issue (105 folders)</td></tr>
+      <tr><td>Edit sets</td><td class="n">17</td><td>Change records for past edits to ADP's own text</td></tr>
+      <tr><td>Issue-specific evidence and mock-ups</td><td class="n">6</td><td>They belong to one issue, not to ADP</td></tr>
+      <tr><td>Repository profile</td><td class="n">1 file</td><td>A settings file in each repo ADP runs in. A file, not a document</td></tr>
+    </table>
+
+    <h2 class="am-section"><span class="pin">4</span>Limits of this count</h2>
+    <ul class="am-limits">
+      <li>Only 4 of the 24 documents are approved. The other 20 are drafts and can still change.</li>
+      <li>The run history was counted, not read in full. A definition document filed as history by mistake would be missed.</li>
+      <li>Counting the 17 edit sets as part of ADP is a judgement call. With them the total is 52.</li>
+      <li>One document could not be classified, and the project charter did not appear in the list.</li>
+    </ul>
+    <p class="am-foot">An inventory, not a decided standard. Document names are grouped by their title; only some were read in full.</p>
+  </div>
+  </div>
+</div>
+<aside class="notes">
+  <h2>How to read this</h2>
+  <p class="notes-sub">ADP lives almost entirely in documents and skills, not in code. This page separates what defines it from what it produces while running.</p>
+  <ol>
+    <li><b>Skills are what an agent runs.</b> Eleven stages, from setup to backlog. <span class="why">A stage follows only its own text and the documents it cites.</span></li>
+    <li><b>Reference documents are the rulebook.</b> Fourteen documents the skills cite. <span class="why">Changing a rule means editing one of these, not a skill.</span></li>
+    <li><b>Run history is output, not definition.</b> About 900 documents record individual runs. <span class="why">Counting them would make ADP look 25 times larger than it is.</span></li>
+    <li><b>Most of it is still draft.</b> Four of the 24 documents are approved. <span class="why">Anything built on these rules should expect them to move.</span></li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>
