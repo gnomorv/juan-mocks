@@ -20,7 +20,8 @@
     --am-des: #b6a0ee; --am-des-soft: #2a2342; --am-found: #f2b457; --am-found-soft: #3a2c12; --am-note: #9aa5b5;
   }
   .am h1 { font-size: 26px; margin: 0 0 6px; color: inherit; }
-  .am-lead { color: var(--am-ink); margin: 0 0 22px; max-width: 72ch; }
+  .am-lead { color: var(--am-ink); margin: 6px 0 22px; padding-left: 20px; max-width: 80ch; }
+  .am-lead li { margin: 3px 0; }
   .am-total { display: grid; grid-template-columns: 1.3fr repeat(5, 1fr); gap: 10px; margin-bottom: 26px; }
   .am-tile { background: var(--am-card); border: 1px solid var(--am-line); border-top: 4px solid var(--c, var(--am-line)); border-radius: 10px; padding: 12px 14px; }
   .am-tile b { display: block; font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums; }
@@ -94,7 +95,12 @@
   <div data-variant="proposed" class="pro">
   <div class="am">
     <h1>What ADP is made of</h1>
-    <p class="am-lead">ADP, the Autonomous Dev Pipeline, is defined by 24 documents and 11 skills. Its project holds about 900 more documents, but those are records of individual runs, not part of the definition. Counted on November 20, 2026.</p>
+    <ul class="am-lead">
+      <li><b>What ADP is:</b> the Autonomous Dev Pipeline.</li>
+      <li><b>What defines it:</b> 24 documents and 11 skills.</li>
+      <li><b>What is not counted:</b> about 900 more documents in its project. They are records of individual runs, not part of the definition.</li>
+      <li><b>When it was counted:</b> November 20, 2026.</li>
+    </ul>
 
     <p class="am-links">Each document name is a link (↗) that opens the document in Clara Studio. A sign-in with access to the project is required. A skill has no address of its own: all skills open from the <a href="https://app.clarastudio.ai/admin/skills" target="_blank" rel="noopener">Skills screen ↗</a> in the Admin console.</p>
 
