@@ -9,13 +9,13 @@
 <link rel="stylesheet" href="../assets/mockup.css">
 <style>
   .up {
-    --up-card: #ffffff; --up-ink: #1c2330; --up-muted: #5d6778; --up-line: #d5dae2;
+    --up-card: #ffffff; --up-ink: #1c2330; --up-muted: #5d6778; --up-line: #d5dae2; --up-chip: #eceff3;
     --up-app: #2f6fde; --up-app-soft: #e8f0fd; --up-doc: #1d8a5f; --up-doc-soft: #e4f5ed;
     --up-new: #b86a00; --up-new-soft: #fff3df; --up-wait: #7a5cc4; --up-wait-soft: #efeafb;
     max-width: 1040px; margin: 0 auto; padding: 36px 24px 64px; color: var(--up-ink); font-size: 15px; line-height: 1.65;
   }
   html.dark .up {
-    --up-card: #1d2229; --up-ink: #e8ecf2; --up-muted: #9aa5b5; --up-line: #343c48;
+    --up-card: #1d2229; --up-ink: #e8ecf2; --up-muted: #9aa5b5; --up-line: #343c48; --up-chip: #2b323d;
     --up-app: #7aa7f5; --up-app-soft: #1c2a44; --up-doc: #5fd0a0; --up-doc-soft: #173326;
     --up-new: #f2b457; --up-new-soft: #3a2c12; --up-wait: #b6a0ee; --up-wait-soft: #2a2342;
   }
@@ -41,8 +41,8 @@
   .up-step h2 { font-size: 16px; margin: 0; color: inherit; }
   .up-when { margin-left: -6px; color: var(--up-ink); font-size: 16px; font-weight: 700; line-height: 1.5; }
   .up-when::before { content: '·'; margin-right: 4px; color: var(--up-muted); }
-  .up-skills { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 20px 38px; font-size: 13.5px; line-height: 1.7; color: var(--up-muted); }
-  .up-skill { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; background: var(--up-card); color: var(--up-ink); border: 1px solid var(--up-line); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+  .up-skills { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0 0 20px 38px; font-size: 13.5px; line-height: 1.7; color: var(--up-ink); }
+  .up-skill { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; background: var(--up-chip); color: var(--up-ink); border: 1px solid var(--up-line); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
   .up-skill.none { font-family: inherit; font-weight: 400; border-style: dashed; color: var(--up-muted); }
 
   .up-box { position: relative; background: var(--up-card); border: 1px solid var(--up-line); border-radius: 10px; padding: 20px 22px 22px; }
