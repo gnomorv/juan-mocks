@@ -23,7 +23,9 @@
   .up-lead { color: var(--up-muted); margin: 0 0 20px; max-width: 70ch; }
   .up-example { background: var(--up-card); border: 1px solid var(--up-line); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
   .up-example b { color: var(--up-app); }
-  .up-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 24px; color: var(--up-muted); font-size: 13px; }
+  .up-legend { display: grid; grid-template-columns: max-content 1fr; gap: 10px 14px; align-items: center; margin: 0 0 26px; color: var(--up-ink); font-size: 14px; }
+  .up-legend > span { display: contents; }
+  .up-legend .up-tag { justify-self: start; }
   .up-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
   .up-tag.today { background: var(--up-line); color: var(--up-ink); }
   .up-tag.new { background: var(--up-new-soft); color: var(--up-new); border: 1px solid var(--up-new); }
