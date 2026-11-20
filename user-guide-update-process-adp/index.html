@@ -104,6 +104,7 @@
     <h1>How ADP can keep the User Guide up to date</h1>
     <p class="up-lead">A proposal that needs no new skill and no change to any skill. The guide requirement travels inside the story's own contract, and the story cannot close until the guide is published.</p>
 
+    <p class="up-foot" style="margin:-8px 0 16px">Also as a one-page image: <a href="summary.png">open the summary</a>.</p>
     <div class="up-example">Example used below: the feature <b>"Add a button"</b>. ADP is the Autonomous Dev Pipeline. Today nothing in ADP mentions the User Guide, so a story shipped through ADP has no guide step.</div>
 
     <div class="up-legend">
@@ -149,6 +150,7 @@
         <h3>Pull request to Clara Studio</h3>
         <p><span class="up-tag today">Exists</span> The <code>review</code> kind of criterion.</p>
         <div class="up-new"><span class="pin">4</span><span class="up-tag new">Proposed</span> Criterion: "The guide change for this story covers the page with the button."</div>
+        <div class="up-unv"><span class="up-tag unv">Not verified</span> That the reviewer can read a change that lives in another repo.</div>
       </div>
       <div class="up-arrow">↔<small>reviewed together</small></div>
       <div class="up-box d">
@@ -223,6 +225,7 @@
     <h2 class="up-section">Not verified</h2>
     <table>
       <tr><th>Point</th><th>Why it matters</th></tr>
+      <tr><td>A reviewer reading a change in another repo</td><td>The review criterion of step 3 depends on it. Deduced, not tested</td></tr>
       <tr><td>ADP running in the User Guide repo</td><td>The guide story depends on it. Never tested</td></tr>
       <tr><td>ADP documents are all drafts</td><td>The mechanisms named here can still change</td></tr>
       <tr><td>Seven ADP skills were not read</td><td><span class="up-skill">adp-epic</span>, <span class="up-skill">adp-plan-epic</span>, <span class="up-skill">adp-setup</span>, <span class="up-skill">adp-dispatch</span>, <span class="up-skill">adp-groom</span>, <span class="up-skill">adp-queue</span>, <span class="up-skill">adp-plan-project</span> may behave differently, above all for stories inside an epic</td></tr>
