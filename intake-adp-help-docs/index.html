@@ -38,6 +38,9 @@
   .ia-two .ia-short h2 { color: var(--ia-ok); }
   .ia-two .ia-short.add { border-style: dashed; border-color: var(--ia-gap); }
   .ia-two .ia-short.add h2 { color: var(--ia-gap); }
+  .ia-note { border-left: 4px solid var(--ia-in); background: var(--ia-in-soft); border-radius: 8px; padding: 14px 18px; margin: 14px 0 0; }
+  .ia-note p { margin: 0 0 6px; }
+  .ia-note p:last-child { margin: 0; }
   .ia-more { margin: 12px 0 0; font-size: 14px; }
   .ia-term { background: var(--ia-chip); border-radius: 8px; padding: 12px 16px; margin: 18px 0 0; font-size: 14px; }
   .ia-part { border-radius: 8px; padding: 14px 16px; font-size: 14px; }
@@ -148,7 +151,7 @@
         <h2>What we have today</h2>
         <ul>
           <li><b>Project Intake hands over to ADP.</b> Project Intake ends with a client-approved estimate that contains a Ticket plan. A person then starts ADP, and ADP creates the issues from that Ticket plan.</li>
-          <li><b>The work-issue pipeline keeps the help docs up to date.</b> Its plan includes the Help docs statement, it opens a docs PR next to the Clara Studio pull request, and the production release merges that docs PR.</li>
+          <li><b>The work-issue pipeline, which is not ADP, keeps the help docs up to date.</b> Its plan includes the Help docs statement, it opens a docs PR next to the Clara Studio pull request, and the production release merges that docs PR.</li>
           <li><b>ADP has no step for the help docs.</b> Some ADP runs include the Help docs statement, but only because the agent also reads the rules of the Clara Studio repository.</li>
         </ul>
       </div>
@@ -284,10 +287,13 @@
       <li><b>Without Project Intake:</b> small work does not need it. Any issue in Clara Studio can start at step 2 with the <code>adp-plan-issue</code> skill.</li>
     </ul>
 
-    <h2 class="ia-section"><span class="ia-num">3</span>The work-issue pipeline already has these steps</h2>
-    <p class="ia-intro">This is how the work-issue pipeline handles the help docs today. ADP has no matching steps yet.</p>
+    <h2 class="ia-section"><span class="ia-num">3</span>Help docs steps in the work-issue pipeline (this is not ADP)</h2>
+    <div class="ia-note">
+      <p><b>This table does not describe ADP.</b> It describes the work-issue pipeline, a separate and earlier set of skills that is still in use.</p>
+      <p>It is shown here because these are the help docs steps that exist today. ADP has none of them yet.</p>
+    </div>
     <table>
-      <tr><th>Moment</th><th>Skill</th><th>What it does for the help docs</th></tr>
+      <tr><th>Moment</th><th>Skill of the work-issue pipeline</th><th>What it does for the help docs</th></tr>
       <tr><td>Plan</td><td><span class="ia-skill">/work-issue</span></td><td>The plan of the issue includes the Help docs statement</td></tr>
       <tr><td>Build</td><td><span class="ia-skill">/work-issue</span></td><td>The same agent edits the guide in the help docs repository</td></tr>
       <tr><td>Review</td><td><span class="ia-skill">/pr</span></td><td>The review before the pull request reads the help docs change together with the code</td></tr>
