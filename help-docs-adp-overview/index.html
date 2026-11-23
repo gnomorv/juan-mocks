@@ -173,7 +173,8 @@
       <div class="ia-short">
         <h2>Where we are</h2>
         <ul>
-          <li><b>The work-issue pipeline keeps the help docs up to date.</b> It is in use today.</li>
+          <li><b>The work-issue pipeline has a help docs step for each change.</b> It was set up on November 11, 2026. Two changes have used it so far.</li>
+          <li><b>Nothing re-checks the help docs already written.</b> A release publishes the docs PRs that were opened. It does not review existing guides.</li>
           <li><b>ADP is the pipeline meant to replace it.</b> It is also in use today.</li>
           <li><b>ADP has no step for the help docs.</b> An issue shipped through ADP can leave the help docs behind.</li>
         </ul>
@@ -279,8 +280,11 @@
     </div>
 
     <ul class="ia-list" style="margin:22px 0 0 0">
-      <li><b>The rule:</b> a change needs a help docs update when it alters what a person sees or does. Internal changes do not.</li>
-      <li><b>What it leaves out:</b> screenshots are taken by hand, and a change nobody documented is not detected.</li>
+      <li><b>Which changes:</b> any change that alters what a person sees or does, whether something is added, changed or removed. Internal changes do not count.</li>
+      <li><b>Who decides:</b> the agent, while it writes the plan. Nothing checks that decision afterwards.</li>
+      <li><b>How long it has existed:</b> since November 11, 2026, when the help docs moved to their own repository. Two docs PRs have gone through it, both merged on November 19.</li>
+      <li><b>What a production release does:</b> it merges the docs PRs that are open. It does not compare the existing guides with the app.</li>
+      <li><b>What it leaves out:</b> guides already written are never re-checked, a change with no Help docs statement leaves them unchanged, and screenshots are taken by hand.</li>
     </ul>
 
     <h2 class="ia-section"><span class="ia-num">2</span>ADP and how it works</h2>
@@ -464,13 +468,14 @@
       <tr><td>Publishing</td><td>The production release merges the docs PR</td><td>The same</td></tr>
       <tr><td>A forgotten help docs change</td><td>Nobody notices</td><td>The issue cannot close</td></tr>
       <tr><td>A change nobody documented</td><td>Not detected</td><td>Still not detected</td></tr>
+      <tr><td>Guides already written</td><td>Never re-checked</td><td>Still never re-checked</td></tr>
     </table>
 
     <h2 class="ia-section"><span class="ia-num">5</span>Status of every piece</h2>
     <p class="ia-intro">What is in use, what is ready, what is proposed and what is still open.</p>
     <table>
       <tr><th>Piece</th><th>Status</th><th>Note</th></tr>
-      <tr><td>Help docs steps of the work-issue pipeline</td><td><span class="ia-tag ok">In use</span></td><td>All five steps of section 1</td></tr>
+      <tr><td>Help docs steps of the work-issue pipeline, one change at a time</td><td><span class="ia-tag ok">In use</span></td><td>Since November 11, 2026. Used by two changes so far</td></tr>
       <tr><td>Project Intake handing over to ADP</td><td><span class="ia-tag ok">In use</span></td><td>Through the Ticket plan</td></tr>
       <tr><td>ADP planning, building, checking and closing issues</td><td><span class="ia-tag ok">In use</span></td><td>Its rules are mostly drafts</td></tr>
       <tr><td>The production release merging docs PRs</td><td><span class="ia-tag ok">In use</span></td><td>Works for any docs PR that names its issue</td></tr>
@@ -489,6 +494,7 @@
       <tr><td>The branch the docs PR targets</td><td><span class="ia-tag idea">To decide</span></td><td>The written process says main. The help docs repository also has a dev branch</td></tr>
       <tr><td>The limit of 5 criteria per contract</td><td><span class="ia-tag idea">To decide</span></td><td>The two help docs criteria use two of the five</td></tr>
       <tr><td>Naming the guides during Project Intake</td><td><span class="ia-tag idea">To decide</span></td><td>Open question</td></tr>
+      <tr><td>Re-checking the guides already written, at each release</td><td><span class="ia-tag idea">To decide</span></td><td>Nothing does this today, with or without ADP</td></tr>
       <tr><td>Detecting a change nobody documented</td><td><span class="ia-tag idea">To decide</span></td><td>Not covered by this proposal</td></tr>
     </table>
 
