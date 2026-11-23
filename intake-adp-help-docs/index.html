@@ -14,7 +14,7 @@
     --ia-in: #7a5cc4; --ia-in-soft: #efeafb;
     --ia-ok: #1d8a5f; --ia-ok-soft: #e4f5ed; --ia-new: #b86a00; --ia-new-soft: #fff3df;
     --ia-gap: #2f6fde; --ia-gap-soft: #e8f0fd; --ia-link: #2f6fde;
-    max-width: 1040px; margin: 0 auto; padding: 36px 24px 72px; color: var(--ia-ink); font-size: 15px; line-height: 1.65;
+    max-width: 1200px; margin: 0 auto; padding: 36px 24px 72px; color: var(--ia-ink); font-size: 15px; line-height: 1.65;
   }
   html.dark .ia {
     --ia-card: #1d2229; --ia-ink: #e8ecf2; --ia-muted: #9aa5b5; --ia-line: #343c48; --ia-chip: #2b323d;
@@ -60,6 +60,24 @@
   .ia-num { width: 30px; height: 30px; border-radius: 50%; background: var(--ia-ink); color: var(--ia-card); display: grid; place-items: center; font-weight: 700; font-size: 15px; flex: none; }
   .ia-intro { margin: 0 0 24px 42px; max-width: 70ch; }
 
+  .ia-hscroll { overflow-x: auto; padding-bottom: 6px; }
+  .ia-h { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; min-width: 980px; }
+  .ia-st { grid-row: 1; font-weight: 700; font-size: 14px; line-height: 1.3; padding: 12px 14px 12px 24px; background: var(--ia-cs-soft); clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); margin-right: -6px; }
+  .ia-st:first-child { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); padding-left: 14px; }
+  .ia-st:nth-child(6) { margin-right: 0; }
+  .ia-st.in, .ia-st.out { background: var(--ia-in-soft); }
+  .ia-st b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ia-ink); color: var(--ia-card); font-size: 12px; margin-right: 6px; }
+  .ia-lane { grid-column: 1 / -1; font-weight: 700; padding: 8px 14px; border-radius: 8px; margin-top: 12px; }
+  .ia-lane small { font-weight: 400; color: var(--ia-muted); margin-left: 8px; }
+  .ia-lane.cs { grid-row: 2; background: var(--ia-cs-soft); border-left: 4px solid var(--ia-cs); }
+  .ia-lane.ug { grid-row: 4; background: var(--ia-ug-soft); border-left: 4px solid var(--ia-ug); }
+  .ia-h .ia-box { padding: 14px 14px 16px; font-size: 13.5px; line-height: 1.55; }
+  .ia-h .ia-box h3 { font-size: 14px; line-height: 1.35; margin: 10px 0 8px; }
+  .ia-h .ia-box > h3:first-child { margin-top: 0; font-size: 15px; margin-bottom: 12px; }
+  .ia-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px !important; }
+  .ia-chips .ia-skill { font-size: 11.5px; padding: 2px 6px; white-space: normal; overflow-wrap: anywhere; }
+  .ia-parts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ia-parts .ia-part + .ia-part { margin-top: 0; }
   .ia-flow { display: grid; grid-template-columns: 132px 1fr 1fr; gap: 0 22px; }
   .ia-flow > * { min-width: 0; }
   .ia-head { font-weight: 700; padding: 12px 18px; border-radius: 10px 10px 0 0; margin-bottom: 22px; }
@@ -156,95 +174,97 @@
     </div>
 
     <h2 class="ia-section"><span class="ia-num">1</span>How it works today</h2>
-    <p class="ia-intro">Read from top to bottom. The left column is the work in Clara Studio. The right column is what happens to the help docs at the same moment.</p>
+    <p class="ia-intro">Read from left to right. The top row is the work in Clara Studio. The bottom row is what happens to the help docs at the same step.</p>
 
-    <div class="ia-flow">
-      <div style="grid-column:2;grid-row:1" class="ia-head cs">Clara Studio <small>the request, the issues and the code</small></div>
-      <div style="grid-column:3;grid-row:1" class="ia-head ug">Help docs <small>the User Guide, in its own repo</small></div>
+    <div class="ia-hscroll">
+    <div class="ia-h">
+      <div class="ia-st in" style="grid-column:1"><b>1</b> Project Intake</div>
+      <div class="ia-st" style="grid-column:2"><b>2</b> ADP · Plan</div>
+      <div class="ia-st" style="grid-column:3"><b>3</b> ADP · Build</div>
+      <div class="ia-st" style="grid-column:4"><b>4</b> ADP · Check</div>
+      <div class="ia-st out" style="grid-column:5"><b>5</b> Release</div>
+      <div class="ia-st" style="grid-column:6"><b>6</b> ADP · Close</div>
 
-      <div style="grid-column:1;grid-row:2" class="ia-stage">Project Intake<small>8 steps, one approval each</small></div>
-      <div style="grid-column:2;grid-row:2" class="ia-box in">
+      <div class="ia-lane cs">Clara Studio <small>the request, the issues and the code</small></div>
+
+      <div class="ia-box in" style="grid-column:1;grid-row:3">
+        <span class="ia-tag ok">Exists</span>
         <h3>A client request becomes signed documents</h3>
-        <p><span class="ia-tag ok">Exists</span> Scope, requirements, a mock when screens change, solution design, estimate, then the client signs off.</p>
-        <ul>
-          <li>The estimate ends with a <b>ticket plan</b>.</li>
-          <li>Intake creates <b>no tickets</b>.</li>
-        </ul>
+        <p>Ends with a <b>ticket plan</b>. Creates <b>no tickets</b>.</p>
       </div>
-      <div style="grid-column:3;grid-row:2" class="ia-box none">
-        <p><span class="ia-tag gap">To add</span> Project Intake does not deal with the help docs. Whether it should is an open question.</p>
-      </div>
-
-      <div style="grid-column:2;grid-row:3" class="ia-down">↓<small>The client signs off.<br>A person runs <code>adp-plan-project</code>.</small></div>
-
-      <div style="grid-column:1;grid-row:4" class="ia-stage">ADP · Plan<small>from ticket plan to contract</small></div>
-      <div style="grid-column:2;grid-row:4" class="ia-box cs">
+      <div class="ia-box cs" style="grid-column:2;grid-row:3">
+        <span class="ia-tag ok">Exists</span>
         <h3>The ticket plan becomes issues</h3>
-        <p><span class="ia-tag ok">Exists</span> ADP reads the intake documents and refuses to start without the sign-off.</p>
-        <ul>
-          <li><span class="ia-skill">adp-plan-project</span> files one epic and one placeholder story per line of the ticket plan.</li>
-          <li><span class="ia-skill">adp-plan-epic</span> splits the epic into stories.</li>
-          <li><span class="ia-skill">adp-plan-issue</span> turns each issue into a testable contract.</li>
-        </ul>
-        <p class="ia-side"><b>Second door:</b> small work skips intake. Any Clara issue can start at <code>adp-plan-issue</code>.</p>
+        <p>Each issue gets a testable contract.</p>
+        <p class="ia-chips"><span class="ia-skill">adp-plan-project</span><span class="ia-skill">adp-plan-epic</span><span class="ia-skill">adp-plan-issue</span></p>
       </div>
-      <div style="grid-column:3;grid-row:4 / span 5" class="ia-box ug">
-        <h3>Help docs while ADP plans, builds and checks</h3>
-        <div class="ia-part have">
-          <h4><span class="ia-tag ok">Exists</span> Already there</h4>
-          <ul>
-            <li>A written rule in the Clara Studio repo: a plan must carry the <code>Help docs:</code> line.</li>
-            <li>The rule was written for the older pipeline, not for ADP.</li>
-            <li>Some ADP runs write the line anyway, because the agent reads the repo's rules. Two such runs were found.</li>
-          </ul>
-        </div>
-        <div class="ia-part add">
-          <h4><span class="ia-tag gap">To add</span> Not there yet</h4>
-          <ul>
-            <li>ADP does not ask for the line. None of its 11 skills includes the help docs, so the line appears by chance.</li>
-            <li>Nothing in ADP writes the guide change.</li>
-            <li>Nothing in ADP reviews the guide change with the code.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div style="grid-column:2;grid-row:5" class="ia-down">↓</div>
-
-      <div style="grid-column:1;grid-row:6" class="ia-stage">ADP · Build<small>code and pull request</small></div>
-      <div style="grid-column:2;grid-row:6" class="ia-box cs">
+      <div class="ia-box cs" style="grid-column:3;grid-row:3">
+        <span class="ia-tag ok">Exists</span>
         <h3>The issue is built</h3>
-        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-issue</span> writes the tests and the code. <span class="ia-skill">adp-pr</span> opens the pull request and waits for the checks.</p>
+        <p>Tests, code and a pull request.</p>
+        <p class="ia-chips"><span class="ia-skill">adp-issue</span><span class="ia-skill">adp-pr</span></p>
       </div>
-
-      <div style="grid-column:2;grid-row:7" class="ia-down">↓</div>
-
-      <div style="grid-column:1;grid-row:8" class="ia-stage">ADP · Check<small>after the merge to dev</small></div>
-      <div style="grid-column:2;grid-row:8" class="ia-box cs">
+      <div class="ia-box cs" style="grid-column:4;grid-row:3">
+        <span class="ia-tag ok">Exists</span>
         <h3>The issue is checked</h3>
-        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-qa</span> checks the merged issue against its contract. The issue then waits for the release.</p>
+        <p>Against its contract. Then it waits for the release.</p>
+        <p class="ia-chips"><span class="ia-skill">adp-qa</span></p>
       </div>
-
-      <div style="grid-column:2;grid-row:9" class="ia-down">↓</div>
-
-      <div style="grid-column:1;grid-row:10" class="ia-stage">Release<small>to production</small></div>
-      <div style="grid-column:2;grid-row:10" class="ia-box out">
-        <p><span class="ia-tag out">Outside ADP</span> A person decides to release.</p>
+      <div class="ia-box out" style="grid-column:5;grid-row:3">
+        <span class="ia-tag out">Outside ADP</span>
+        <h3>The code goes to production</h3>
+        <p>A person decides to release.</p>
       </div>
-      <div style="grid-column:3;grid-row:10" class="ia-box ug">
-        <p><span class="ia-tag ok">Exists</span> The release step merges the guide pull requests whose issues shipped. It can only merge a guide pull request that someone opened.</p>
-      </div>
-
-      <div style="grid-column:2;grid-row:11" class="ia-down">↓</div>
-
-      <div style="grid-column:1;grid-row:12" class="ia-stage">ADP · Close<small>after the release</small></div>
-      <div style="grid-column:2;grid-row:12" class="ia-box cs">
+      <div class="ia-box cs" style="grid-column:6;grid-row:3">
+        <span class="ia-tag ok">Exists</span>
         <h3>The issue is closed</h3>
-        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-qa</span> closes the issue. Only this skill closes an issue.</p>
+        <p>Only this skill closes an issue.</p>
+        <p class="ia-chips"><span class="ia-skill">adp-qa</span></p>
       </div>
-      <div style="grid-column:3;grid-row:12" class="ia-box none">
-        <p><span class="ia-tag gap">To add</span> A check that the guide was published before the issue closes.</p>
+
+      <div class="ia-lane ug">Help docs <small>the User Guide, in its own repo, at the same step</small></div>
+
+      <div class="ia-box none" style="grid-column:1;grid-row:5">
+        <span class="ia-tag gap">To add</span>
+        <p>Project Intake does not deal with the help docs. Whether it should is an open question.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:2 / span 3;grid-row:5">
+        <h3>While ADP plans, builds and checks</h3>
+        <div class="ia-parts">
+          <div class="ia-part have">
+            <h4><span class="ia-tag ok">Exists</span> Already there</h4>
+            <ul>
+              <li>A written rule in the Clara Studio repo: a plan must carry the <code>Help docs:</code> line.</li>
+              <li>The rule was written for the older pipeline, not for ADP.</li>
+              <li>Some ADP runs write the line anyway, because the agent reads the repo's rules. Two such runs were found.</li>
+            </ul>
+          </div>
+          <div class="ia-part add">
+            <h4><span class="ia-tag gap">To add</span> Not there yet</h4>
+            <ul>
+              <li>ADP does not ask for the line. None of its 11 skills includes the help docs, so the line appears by chance.</li>
+              <li>Nothing in ADP writes the guide change.</li>
+              <li>Nothing in ADP reviews the guide change with the code.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="ia-box ug" style="grid-column:5;grid-row:5">
+        <span class="ia-tag ok">Exists</span>
+        <h3>The guide is published</h3>
+        <p>The release step merges the guide pull requests that someone opened.</p>
+      </div>
+      <div class="ia-box none" style="grid-column:6;grid-row:5">
+        <span class="ia-tag gap">To add</span>
+        <p>A check that the guide was published before the issue closes.</p>
       </div>
     </div>
+    </div>
+
+    <ul class="ia-list" style="margin:22px 0 0 0">
+      <li><b>From step 1 to step 2:</b> the client signs off, then a person runs <code>adp-plan-project</code>. ADP refuses to start without the sign-off.</li>
+      <li><b>Second door:</b> small work skips Project Intake. Any Clara issue can start at step 2 with <code>adp-plan-issue</code>.</li>
+    </ul>
 
     <h2 class="ia-section"><span class="ia-num">2</span>The older path has a help-docs step</h2>
     <p class="ia-intro">The pipeline that ADP is meant to replace does carry the help docs. This is the step ADP can take over.</p>
