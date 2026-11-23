@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Help docs and ADP: the whole picture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  .ia {
+    --ia-card: #ffffff; --ia-ink: #1c2330; --ia-muted: #5d6778; --ia-line: #d5dae2; --ia-chip: #eceff3;
+    --ia-cs: #43b6e7; --ia-cs-soft: #e8f6fc; --ia-ug: #f7a436; --ia-ug-soft: #fef0dc;
+    --ia-in: #7a5cc4; --ia-in-soft: #efeafb;
+    --ia-ok: #1d8a5f; --ia-ok-soft: #e4f5ed; --ia-new: #b86a00; --ia-new-soft: #fff3df;
+    --ia-gap: #2f6fde; --ia-gap-soft: #e8f0fd; --ia-link: #2f6fde;
+    max-width: 1200px; margin: 0 auto; padding: 36px 24px 72px; color: var(--ia-ink); font-size: 15px; line-height: 1.65;
+  }
+  html.dark .ia {
+    --ia-card: #1d2229; --ia-ink: #e8ecf2; --ia-muted: #9aa5b5; --ia-line: #343c48; --ia-chip: #2b323d;
+    --ia-cs: #43b6e7; --ia-cs-soft: #12303d; --ia-ug: #f7a436; --ia-ug-soft: #3a2a10;
+    --ia-in: #b6a0ee; --ia-in-soft: #2a2342;
+    --ia-ok: #5fd0a0; --ia-ok-soft: #173326; --ia-new: #f2b457; --ia-new-soft: #3a2c12;
+    --ia-gap: #7aa7f5; --ia-gap-soft: #1c2a44; --ia-link: #7aa7f5;
+  }
+  .ia h1 { font-size: 26px; margin: 0 0 6px; color: inherit; }
+  .ia-sub { font-size: 18px; font-weight: 600; margin: 0 0 22px; }
+  .ia a { color: var(--ia-link); font-weight: 600; }
+  .ia code, .ia-skill { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; }
+  .ia-skill { background: var(--ia-chip); color: var(--ia-ink); border: 1px solid var(--ia-line); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+
+  .ia-short { background: var(--ia-card); border: 1px solid var(--ia-line); border-radius: 10px; padding: 18px 22px; margin: 0 0 28px; }
+  .ia-short h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ia-muted); margin: 0 0 10px; }
+  .ia-short ul { margin: 0; padding-left: 20px; }
+  .ia-short li { margin: 8px 0; }
+  .ia-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 0 0 28px; }
+  .ia-two .ia-short { margin: 0; border-width: 2px; border-color: var(--ia-ok); }
+  .ia-two .ia-short h2 { color: var(--ia-ok); }
+  .ia-two .ia-short.add { border-style: dashed; border-color: var(--ia-gap); }
+  .ia-two .ia-short.add h2 { color: var(--ia-gap); }
+  .ia-note { border-left: 4px solid var(--ia-in); background: var(--ia-in-soft); border-radius: 8px; padding: 14px 18px; margin: 14px 0 0; }
+  .ia-note p { margin: 0 0 6px; }
+  .ia-note p:last-child { margin: 0; }
+  .ia-more { margin: 12px 0 0; font-size: 14px; }
+  .ia-term { background: var(--ia-chip); border-radius: 8px; padding: 12px 16px; margin: 18px 0 0; font-size: 14px; }
+  .ia-part { border-radius: 8px; padding: 14px 16px; font-size: 14px; }
+  .ia-part + .ia-part { margin-top: 14px; }
+  .ia-part.have { background: var(--ia-ok-soft); }
+  .ia-part.add { background: var(--ia-gap-soft); border: 2px dashed var(--ia-gap); }
+  .ia-part h4 { margin: 0 0 8px; font-size: 14px; }
+  .ia-part ul { margin: 0; padding-left: 20px; }
+
+  .ia-legend { display: grid; grid-template-columns: max-content 1fr; gap: 10px 14px; align-items: center; margin: 0 0 8px; font-size: 14px; }
+  .ia-legend > span { display: contents; }
+  .ia-tag { display: inline-block; justify-self: start; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; vertical-align: middle; margin-right: 8px; white-space: nowrap; }
+  .ia-tag.ok { background: var(--ia-ok-soft); color: var(--ia-ok); border: 1px solid var(--ia-ok); }
+  .ia-tag.new { background: var(--ia-new-soft); color: var(--ia-new); border: 1px solid var(--ia-new); }
+  .ia-tag.gap { background: var(--ia-gap-soft); color: var(--ia-gap); border: 1px solid var(--ia-gap); }
+  .ia-tag.idea { background: var(--ia-chip); color: var(--ia-muted); border: 1px solid var(--ia-muted); }
+  .ia-tag.out { background: var(--ia-in-soft); color: var(--ia-in); border: 1px solid var(--ia-in); }
+
+  .ia h2.ia-section { display: flex; align-items: center; gap: 12px; font-size: 20px; margin: 64px 0 8px; color: inherit; }
+  .ia-num { width: 30px; height: 30px; border-radius: 50%; background: var(--ia-ink); color: var(--ia-card); display: grid; place-items: center; font-weight: 700; font-size: 15px; flex: none; }
+  .ia-intro { margin: 0 0 24px 42px; max-width: 70ch; }
+
+  .ia-hscroll { overflow-x: auto; padding-bottom: 6px; }
+  .ia-h { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; min-width: 980px; }
+  .ia-st { font-weight: 700; font-size: 14px; line-height: 1.3; padding: 12px 14px 12px 24px; background: var(--ia-cs-soft); clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); margin-right: -6px; }
+  .ia-st.first { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); padding-left: 14px; }
+  .ia-st.last { margin-right: 0; }
+  .ia-st.ug { background: var(--ia-ug-soft); }
+  .ia-st b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ia-ink); color: var(--ia-card); font-size: 12px; margin-right: 6px; }
+  .ia-lane { grid-column: 1 / -1; font-weight: 700; padding: 8px 14px; border-radius: 8px; }
+  .ia-lane.ug { margin-top: 26px; }
+  .ia-lane small { font-weight: 400; color: var(--ia-muted); margin-left: 8px; }
+  .ia-lane.cs { grid-row: 1; background: var(--ia-cs-soft); border-left: 4px solid var(--ia-cs); }
+  .ia-lane.ug { grid-row: 4; background: var(--ia-ug-soft); border-left: 4px solid var(--ia-ug); }
+  .ia-h .ia-box { padding: 14px 14px 16px; font-size: 13.5px; line-height: 1.55; }
+  .ia-h .ia-box h3 { font-size: 14px; line-height: 1.35; margin: 10px 0 8px; }
+  .ia-h .ia-box > h3:first-child { margin-top: 0; font-size: 15px; margin-bottom: 12px; }
+  .ia-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px !important; }
+  .ia-chips .ia-skill { font-size: 11.5px; padding: 2px 6px; white-space: normal; overflow-wrap: anywhere; }
+  .ia-parts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ia-parts .ia-part + .ia-part { margin-top: 0; }
+  .ia-flow { display: grid; grid-template-columns: 132px 1fr 1fr; gap: 0 22px; }
+  .ia-flow > * { min-width: 0; }
+  .ia-head { font-weight: 700; padding: 12px 18px; border-radius: 10px 10px 0 0; margin-bottom: 22px; }
+  .ia-head small { display: block; font-weight: 400; color: var(--ia-muted); }
+  .ia-head.cs { background: var(--ia-cs-soft); border-bottom: 3px solid var(--ia-cs); }
+  .ia-head.ug { background: var(--ia-ug-soft); border-bottom: 3px solid var(--ia-ug); }
+  .ia-stage { font-weight: 700; font-size: 15px; line-height: 1.35; padding-top: 20px; }
+  .ia-stage small { display: block; font-weight: 400; font-size: 13px; color: var(--ia-muted); margin-top: 4px; }
+  .ia-box { background: var(--ia-card); border: 2px solid var(--ia-line); border-radius: 10px; padding: 18px 20px 20px; }
+  .ia-box.in { border-color: var(--ia-in); }
+  .ia-box.cs { border-color: var(--ia-cs); }
+  .ia-box.ug { border-color: var(--ia-ug); }
+  .ia-box.out { border-color: var(--ia-in); background: var(--ia-in-soft); }
+  .ia-box.gap { border: 2px dashed var(--ia-gap); background: var(--ia-gap-soft); display: flex; flex-direction: column; justify-content: center; }
+  .ia-box.none { border: 2px dashed var(--ia-line); background: transparent; color: var(--ia-muted); }
+  .ia-box h3 { font-size: 15px; margin: 0 0 10px; color: inherit; }
+  .ia-box p { margin: 0 0 8px; }
+  .ia-box p:last-child { margin-bottom: 0; }
+  .ia-box ul { margin: 6px 0 0; padding-left: 20px; }
+  .ia-box li { margin: 6px 0; }
+  .ia-box.gap h3 { color: var(--ia-gap); font-size: 17px; }
+  .ia-new { margin-top: 14px; padding: 12px 14px; border-radius: 8px; background: var(--ia-new-soft); font-size: 14px; }
+  .ia-new.first { margin-top: 0; }
+  .ia-down { display: flex; align-items: center; gap: 12px; padding: 10px 0 10px 22px; color: var(--ia-cs); font-size: 34px; font-weight: 700; line-height: 1; }
+  .ia-down small { font-size: 13.5px; font-weight: 700; line-height: 1.35; color: var(--ia-ink); }
+  .ia-side { margin: 14px 0 0; padding: 10px 14px; border-radius: 8px; background: var(--ia-chip); font-size: 14px; }
+
+  .ia table { margin-top: 18px; width: 100%; border-collapse: collapse; background: var(--ia-card); border: 1px solid var(--ia-line); margin-left: 0; }
+  .ia th, .ia td { text-align: left; padding: 9px 16px; border-bottom: 1px solid var(--ia-line); vertical-align: top; }
+  .ia th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--ia-muted); }
+  .ia-foot { color: var(--ia-muted); font-size: 13px; line-height: 1.7; margin-top: 14px; }
+  .ia .pin { margin-right: 6px; }
+  .ia-list { margin: 0 0 0 42px; padding-left: 20px; max-width: 72ch; }
+  .ia-list li { margin: 10px 0; }
+
+  @media (max-width: 720px) {
+    .ia-flow { display: block; }
+    .ia-two { grid-template-columns: 1fr; }
+    .ia-head { margin: 18px 0 10px; }
+    .ia-head.cs, .ia-head.ug { display: none; }
+    .ia-stage { padding-top: 26px; margin-bottom: 8px; }
+    .ia-box { margin-bottom: 10px; }
+    .ia-intro, .ia-list { margin-left: 0; }
+    .ia-skill { white-space: normal; }
+    .ia th, .ia td, .ia code { overflow-wrap: anywhere; }
+  }
+
+  .ia-tag.rdy { background: var(--ia-cs-soft); color: #0e7490; border: 1px solid var(--ia-cs); }
+  html.dark .ia-tag.rdy { color: var(--ia-cs); }
+  .ia-tag.new { background: var(--ia-new-soft); color: var(--ia-new); border: 1px solid var(--ia-new); }
+  .ia-tag.idea { background: var(--ia-chip); color: var(--ia-muted); border: 1px solid var(--ia-muted); }
+  .ia-h.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .ia-path { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 0 8px; }
+  .ia-path a { display: block; background: var(--ia-card); border: 1px solid var(--ia-line); border-radius: 10px; padding: 12px 14px; text-decoration: none; color: var(--ia-ink); font-weight: 400; font-size: 14px; line-height: 1.45; }
+  .ia-path a b { display: block; font-size: 15px; margin-bottom: 4px; }
+  .ia-path a:hover { border-color: var(--ia-link); }
+  .ia-pieces { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .ia-pieces li { background: var(--ia-new-soft); border-radius: 8px; padding: 12px 16px; }
+  .ia-box .ia-new { margin-top: 10px; padding: 10px 12px; font-size: 13px; }
+  .ia-key { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 18px; }
+  .ia-key > div { background: var(--ia-card); border: 1px solid var(--ia-line); border-radius: 10px; padding: 14px 18px; }
+  .ia-key h4 { margin: 0 0 8px; font-size: 14px; }
+  .ia-key ul { margin: 0; padding-left: 20px; }
+  .ia-key li { margin: 6px 0; }
+  @media (max-width: 720px) { .ia-path, .ia-key { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">Help docs and ADP: the whole picture</span>
+  <span class="t-meta" style="color:#9ca3af">November 23, 2026 · overview</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+<div class="review-layout">
+<div class="split-wrap">
+  <div data-variant="proposed" class="pro">
+  <div class="ia">
+    <h1>Help docs and ADP: the whole picture</h1>
+    <p class="ia-sub">How the help docs are kept up to date today, how ADP works, and how to make the help docs part of ADP.</p>
+
+    <div class="ia-two">
+      <div class="ia-short">
+        <h2>Where we are</h2>
+        <ul>
+          <li><b>The work-issue pipeline keeps the help docs up to date.</b> It is in use today.</li>
+          <li><b>ADP is the pipeline meant to replace it.</b> It is also in use today.</li>
+          <li><b>ADP has no step for the help docs.</b> An issue shipped through ADP can leave the help docs behind.</li>
+        </ul>
+      </div>
+      <div class="ia-short add">
+        <h2>Where we want to be</h2>
+        <ul>
+          <li><b>Updating the help docs is part of ADP.</b></li>
+          <li><b>No new skill.</b> The requirement travels inside each issue, using pieces ADP already has.</li>
+          <li><b>An issue cannot close</b> until its help docs change is published.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ia-legend">
+      <span><span class="ia-tag ok">In use</span> works and is used today</span>
+      <span><span class="ia-tag rdy">Ready</span> exists in ADP today, but is not yet used for the help docs</span>
+      <span><span class="ia-tag new">Proposed</span> part of the proposal, does not exist yet</span>
+      <span><span class="ia-tag idea">To decide</span> still to be designed, decided or tested</span>
+    </div>
+
+    <h2 class="ia-section">Terms</h2>
+    <table>
+      <tr><th>Term</th><th>What it means</th></tr>
+      <tr><td><b>Clara Studio</b></td><td>The app and its code repository.</td></tr>
+      <tr><td><b>Help docs</b></td><td>The help site for Clara Studio users, at docs.clarastudio.ai, kept in its own repository. One page of it is called a guide. Some pages of these mock-ups call it the User Guide.</td></tr>
+      <tr><td><b>Docs PR</b></td><td>A pull request in the help docs repository, separate from the Clara Studio pull request that carries the code.</td></tr>
+      <tr><td><b>Skill</b></td><td>A written set of instructions that Clara Studio gives to an AI agent for one task. Skills are listed on the Skills screen.</td></tr>
+      <tr><td><b>work-issue pipeline</b></td><td>The earlier set of skills: <code>/work-issue</code>, <code>/pr</code>, <code>/merge</code> and <code>/production-release</code>. It is not ADP.</td></tr>
+      <tr><td><b>ADP</b></td><td>The Autonomous Dev Pipeline: 11 skills whose names start with <code>adp-</code>, and the 14 reference documents that hold their rules.</td></tr>
+      <tr><td><b>Project Intake</b></td><td>The skills that take a client request to a client-approved scope, as documents in Clara Studio. Its estimate contains the Ticket plan: the list of issues to create.</td></tr>
+      <tr><td><b>Contract</b></td><td>What ADP writes for an issue before building it: at most 5 acceptance criteria that can be tested.</td></tr>
+      <tr><td><b>Help docs statement</b></td><td>One line in the plan of an issue: <code>Help docs: &lt;guides to update or add&gt;</code>, or <code>Help docs: none — &lt;why&gt;</code>.</td></tr>
+    </table>
+
+    <h2 class="ia-section"><span class="ia-num">1</span>What we have now: the work-issue pipeline</h2>
+    <p class="ia-intro">This is not ADP. Read from left to right. The first row is the work in Clara Studio. The second row is what happens to the help docs at the same step.</p>
+    <div class="ia-hscroll">
+    <div class="ia-h five">
+      <div class="ia-lane cs">Clara Studio <small>the issue and the code</small></div>
+      <div class="ia-st cs first" style="grid-column:1;grid-row:2"><b>1</b> Plan</div>
+      <div class="ia-st cs" style="grid-column:2;grid-row:2"><b>2</b> Build</div>
+      <div class="ia-st cs" style="grid-column:3;grid-row:2"><b>3</b> Pull requests</div>
+      <div class="ia-st cs" style="grid-column:4;grid-row:2"><b>4</b> Merge and test</div>
+      <div class="ia-st cs last" style="grid-column:5;grid-row:2"><b>5</b> Production release</div>
+      <div class="ia-box cs" style="grid-column:1;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The issue gets a plan</h3>
+        <p>A person picks up an issue. The agent writes the plan and waits for approval.</p><p class="ia-chips"><span class="ia-skill">/work-issue</span></p>
+      </div>
+      <div class="ia-box cs" style="grid-column:2;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The code is written</h3>
+        <p>The same agent writes the code and its tests.</p><p class="ia-chips"><span class="ia-skill">/work-issue</span></p>
+      </div>
+      <div class="ia-box cs" style="grid-column:3;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The Clara Studio pull request</h3>
+        <p>It is opened, reviewed and fixed until it is clean.</p><p class="ia-chips"><span class="ia-skill">/pr</span><span class="ia-skill">/pr-loop</span></p>
+      </div>
+      <div class="ia-box cs" style="grid-column:4;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>Merged and tested</h3>
+        <p>The change is merged to dev and tested on the test site.</p><p class="ia-chips"><span class="ia-skill">/merge</span><span class="ia-skill">/sandbox-test</span></p>
+      </div>
+      <div class="ia-box cs" style="grid-column:5;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The code reaches users</h3>
+        <p>A person decides to release.</p><p class="ia-chips"><span class="ia-skill">/production-release</span></p>
+      </div>
+      <div class="ia-lane ug">Help docs <small>the help site for users, in its own repository, at the same step</small></div>
+      <div class="ia-st ug first" style="grid-column:1;grid-row:5"><b>1</b> Plan</div>
+      <div class="ia-st ug" style="grid-column:2;grid-row:5"><b>2</b> Build</div>
+      <div class="ia-st ug" style="grid-column:3;grid-row:5"><b>3</b> Pull requests</div>
+      <div class="ia-st ug" style="grid-column:4;grid-row:5"><b>4</b> Merge and test</div>
+      <div class="ia-st ug last" style="grid-column:5;grid-row:5"><b>5</b> Production release</div>
+      <div class="ia-box ug" style="grid-column:1;grid-row:6">
+        <span class="ia-tag ok">In use</span>
+        <h3>The plan names the guides</h3>
+        <p>The plan includes the Help docs statement.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:2;grid-row:6">
+        <span class="ia-tag ok">In use</span>
+        <h3>The guide is edited</h3>
+        <p>The same agent edits the guide in the help docs repository.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:3;grid-row:6">
+        <span class="ia-tag ok">In use</span>
+        <h3>The docs PR</h3>
+        <p>It is opened first and linked to the Clara Studio pull request. The help docs change is reviewed with the code.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:4;grid-row:6">
+        <span class="ia-tag ok">In use</span>
+        <h3>The docs PR waits</h3>
+        <p>It stays open, so the help docs do not describe a feature users do not have yet.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:5;grid-row:6">
+        <span class="ia-tag ok">In use</span>
+        <h3>The help docs are published</h3>
+        <p>The docs PR is merged, the same day the code reaches users.</p>
+      </div>
+    </div>
+    </div>
+
+    <ul class="ia-list" style="margin:22px 0 0 0">
+      <li><b>The rule:</b> a change needs a help docs update when it alters what a person sees or does. Internal changes do not.</li>
+      <li><b>What it leaves out:</b> screenshots are taken by hand, and a change nobody documented is not detected.</li>
+    </ul>
+
+    <h2 class="ia-section"><span class="ia-num">2</span>ADP and how it works</h2>
+    <p class="ia-intro">ADP runs an issue from plan to close with AI agents, each following a skill. A person approves at fixed points.</p>
+    <div class="ia-hscroll">
+    <div class="ia-h">
+      <div class="ia-lane cs">Clara Studio <small>the client request, the issues and the code</small></div>
+      <div class="ia-st cs first" style="grid-column:1;grid-row:2"><b>1</b> Project Intake</div>
+      <div class="ia-st cs" style="grid-column:2;grid-row:2"><b>2</b> ADP · Plan</div>
+      <div class="ia-st cs" style="grid-column:3;grid-row:2"><b>3</b> ADP · Build</div>
+      <div class="ia-st cs" style="grid-column:4;grid-row:2"><b>4</b> ADP · Check</div>
+      <div class="ia-st cs" style="grid-column:5;grid-row:2"><b>5</b> Production release</div>
+      <div class="ia-st cs last" style="grid-column:6;grid-row:2"><b>6</b> ADP · Close</div>
+      <div class="ia-box in" style="grid-column:1;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>A client request becomes approved documents</h3>
+        <p>Scope, requirements, solution design and estimate. The estimate contains the <b>Ticket plan</b>. No issues are created.</p><p class="ia-chips"><span class="ia-skill">project-intake</span></p>
+      </div>
+      <div class="ia-box cs" style="grid-column:2;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The Ticket plan becomes issues</h3>
+        <p>ADP creates one epic and its issues, then writes a contract for each issue.</p><p class="ia-chips"><span class="ia-skill">adp-plan-project</span><span class="ia-skill">adp-plan-epic</span><span class="ia-skill">adp-plan-issue</span></p>
+      </div>
+      <div class="ia-box cs" style="grid-column:3;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The issue is built</h3>
+        <p>ADP writes the tests and the code, and opens the Clara Studio pull request.</p><p class="ia-chips"><span class="ia-skill">adp-issue</span><span class="ia-skill">adp-pr</span></p>
+      </div>
+      <div class="ia-box cs" style="grid-column:4;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The issue is checked</h3>
+        <p>ADP checks the merged issue against its contract. The issue then waits for the production release.</p><p class="ia-chips"><span class="ia-skill">adp-qa</span></p>
+      </div>
+      <div class="ia-box out" style="grid-column:5;grid-row:3">
+        <span class="ia-tag out">Outside ADP</span>
+        <h3>The code goes to production</h3>
+        <p>A person runs the production release.</p><p class="ia-chips"><span class="ia-skill">/production-release</span></p>
+      </div>
+      <div class="ia-box cs" style="grid-column:6;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The issue is closed</h3>
+        <p>ADP closes the issue after the production release.</p><p class="ia-chips"><span class="ia-skill">adp-qa</span></p>
+      </div>
+    </div>
+    </div>
+
+    <div class="ia-key">
+      <div>
+        <h4>Rules of ADP that matter here</h4>
+        <ul>
+          <li>An issue is built against its <b>contract</b>, and checked against it afterwards.</li>
+          <li>ADP works in <b>one repository per run</b>.</li>
+          <li>ADP <b>never merges into the main branch</b>. A person releases.</li>
+          <li>Only <code>adp-qa</code> closes an issue, and not while a criterion is unmet.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Help docs in ADP today</h4>
+        <ul>
+          <li>No ADP skill mentions the help docs.</li>
+          <li>Some ADP runs include the Help docs statement anyway, because the agent also reads the rules of the Clara Studio repository. Two such runs were found.</li>
+          <li>No ADP skill writes the help docs change, opens the docs PR, or checks that it was merged.</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="ia-list" style="margin:22px 0 0 0">
+      <li><b>From step 1 to step 2:</b> the client approves the scope, then a person runs the <code>adp-plan-project</code> skill.</li>
+      <li><b>Without Project Intake:</b> any issue in Clara Studio can start at step 2 with the <code>adp-plan-issue</code> skill.</li>
+      <li><b>Maturity:</b> ADP is defined by 24 documents and 11 skills. Only 4 of the 24 documents are approved; the rest are drafts.</li>
+    </ul>
+
+    <h2 class="ia-section"><span class="ia-num">3</span>How to make the help docs part of ADP</h2>
+    <p class="ia-intro">The idea: do not add a skill. State the help docs in the issue, so ADP's own contract and checks carry them. Five pieces are needed.</p>
+    <ol class="ia-pieces" style="margin-left:42px">
+      <li><span class="pin">1</span><b>The issue names the help docs.</b> It includes the Help docs statement, and its contract gets two help docs criteria.</li>
+      <li><span class="pin">2</span><b>A page to guide map.</b> One small file linking each app page to its guide, so no guide is missed.</li>
+      <li><span class="pin">3</span><b>A linked help docs issue.</b> The help docs change is its own issue, run by ADP in the help docs repository.</li>
+      <li><span class="pin">4</span><b>A reviewer checks the help docs change</b> together with the code, through a review criterion.</li>
+      <li><span class="pin">5</span><b>The issue waits for the help docs.</b> A criterion keeps it open until the docs PR is merged.</li>
+    </ol>
+    <table>
+      <tr><th>Phase</th><th>What changes</th><th>Result</th></tr>
+      <tr><td>1. By hand</td><td>Nothing in ADP. Whoever writes the issue adds the Help docs statement and the two criteria</td><td>Works issue by issue. Nothing enforces it</td></tr>
+      <tr><td>2. Enforced</td><td>One paragraph in the Protocol, one of the 14 ADP reference documents</td><td>ADP refuses to plan an issue that changes what users see and lacks them</td></tr>
+    </table>
+
+    <h2 class="ia-section"><span class="ia-num">4</span>End to end, with ADP and the proposal</h2>
+    <p class="ia-intro">The same six steps as section 2, with the five pieces in place. The orange blocks are the proposed pieces, and their numbers match section 3.</p>
+    <div class="ia-hscroll">
+    <div class="ia-h">
+      <div class="ia-lane cs">Clara Studio <small>the client request, the issues and the code</small></div>
+      <div class="ia-st cs first" style="grid-column:1;grid-row:2"><b>1</b> Project Intake</div>
+      <div class="ia-st cs" style="grid-column:2;grid-row:2"><b>2</b> ADP · Plan</div>
+      <div class="ia-st cs" style="grid-column:3;grid-row:2"><b>3</b> ADP · Build</div>
+      <div class="ia-st cs" style="grid-column:4;grid-row:2"><b>4</b> ADP · Check</div>
+      <div class="ia-st cs" style="grid-column:5;grid-row:2"><b>5</b> Production release</div>
+      <div class="ia-st cs last" style="grid-column:6;grid-row:2"><b>6</b> ADP · Close</div>
+      <div class="ia-box in" style="grid-column:1;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>Unchanged</h3>
+        <p>Project Intake works as in section 2.</p>
+      </div>
+      <div class="ia-box cs" style="grid-column:2;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The contract names the help docs</h3>
+        <p>ADP writes the contract from the text of the issue.</p>
+        <div class="ia-new"><span class="pin">1</span>The issue includes the Help docs statement and two help docs criteria.</div>
+        <div class="ia-new"><span class="pin">2</span>A page to guide map helps name the right guide.</div>
+      </div>
+      <div class="ia-box cs" style="grid-column:3;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The issue is built</h3>
+        <p>Tests, code and the Clara Studio pull request.</p>
+        <div class="ia-new"><span class="pin">4</span>A reviewer checks the help docs change with the code.</div>
+      </div>
+      <div class="ia-box cs" style="grid-column:4;grid-row:3">
+        <span class="ia-tag ok">In use</span>
+        <h3>The issue is checked</h3>
+        <p>As in section 2. The issue waits for the production release.</p>
+      </div>
+      <div class="ia-box out" style="grid-column:5;grid-row:3">
+        <span class="ia-tag out">Outside ADP</span>
+        <h3>The code goes to production</h3>
+        <p>A person runs the production release.</p>
+      </div>
+      <div class="ia-box cs" style="grid-column:6;grid-row:3">
+        <span class="ia-tag rdy">Ready</span>
+        <h3>The issue waits for the help docs</h3>
+        <p>ADP already keeps an issue open while a criterion is unmet.</p>
+        <div class="ia-new"><span class="pin">5</span>New criterion: "The docs PR is merged."</div>
+      </div>
+      <div class="ia-lane ug">Help docs <small>the help site for users, in its own repository, at the same step</small></div>
+      <div class="ia-st ug first" style="grid-column:1;grid-row:5"><b>1</b> Project Intake</div>
+      <div class="ia-st ug" style="grid-column:2;grid-row:5"><b>2</b> ADP · Plan</div>
+      <div class="ia-st ug" style="grid-column:3;grid-row:5"><b>3</b> ADP · Build</div>
+      <div class="ia-st ug" style="grid-column:4;grid-row:5"><b>4</b> ADP · Check</div>
+      <div class="ia-st ug" style="grid-column:5;grid-row:5"><b>5</b> Production release</div>
+      <div class="ia-st ug last" style="grid-column:6;grid-row:5"><b>6</b> ADP · Close</div>
+      <div class="ia-box none" style="grid-column:1;grid-row:6">
+        <span class="ia-tag idea">To decide</span>
+        
+        <p>The Ticket plan could say which guides each issue changes.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:2;grid-row:6">
+        
+        <span class="ia-tag new">Proposed</span>
+        <h3>A help docs issue is created</h3>
+        
+        <div class="ia-new"><span class="pin">3</span>A second, linked issue for the help docs repository.</div>
+      </div>
+      <div class="ia-box ug" style="grid-column:3;grid-row:6">
+        <span class="ia-tag idea">To decide</span>
+        <h3>The help docs change is written</h3>
+        <p>ADP writes it in the help docs repository and opens the docs PR. ADP has never been run in that repository.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:4;grid-row:6">
+        <span class="ia-tag rdy">Ready</span>
+        <h3>The docs PR waits</h3>
+        <p>ADP never merges into the main branch, so the docs PR stays open.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:5;grid-row:6">
+        <span class="ia-tag ok">In use</span>
+        <h3>The help docs are published</h3>
+        <p>The production release merges the docs PR.</p>
+      </div>
+      <div class="ia-box ug" style="grid-column:6;grid-row:6">
+        
+        <h3>The help docs are live</h3>
+        <p>Users see the feature and its guide on the same day.</p>
+      </div>
+    </div>
+    </div>
+
+    <h3 style="margin:34px 0 0;font-size:16px">With and without ADP</h3>
+    <table>
+      <tr><th>Part</th><th>Without ADP: the work-issue pipeline</th><th>With ADP and the proposal</th></tr>
+      <tr><td>Who states the help docs change</td><td>The plan written by <code>/work-issue</code></td><td>The issue and its contract</td></tr>
+      <tr><td>Who writes it</td><td>The same agent, in the same session</td><td>A second, linked issue run by ADP</td></tr>
+      <tr><td>Who reviews it</td><td>The review before the pull request</td><td>A review criterion of the contract</td></tr>
+      <tr><td>Screenshots</td><td>Taken by hand</td><td>Reused from the captures ADP already takes</td></tr>
+      <tr><td>Publishing</td><td>The production release merges the docs PR</td><td>The same</td></tr>
+      <tr><td>A forgotten help docs change</td><td>Nobody notices</td><td>The issue cannot close</td></tr>
+      <tr><td>A change nobody documented</td><td>Not detected</td><td>Still not detected</td></tr>
+    </table>
+
+    <h2 class="ia-section"><span class="ia-num">5</span>Status of every piece</h2>
+    <p class="ia-intro">What is in use, what is ready, what is proposed and what is still open.</p>
+    <table>
+      <tr><th>Piece</th><th>Status</th><th>Note</th></tr>
+      <tr><td>Help docs steps of the work-issue pipeline</td><td><span class="ia-tag ok">In use</span></td><td>All five steps of section 1</td></tr>
+      <tr><td>Project Intake handing over to ADP</td><td><span class="ia-tag ok">In use</span></td><td>Through the Ticket plan</td></tr>
+      <tr><td>ADP planning, building, checking and closing issues</td><td><span class="ia-tag ok">In use</span></td><td>Its rules are mostly drafts</td></tr>
+      <tr><td>The production release merging docs PRs</td><td><span class="ia-tag ok">In use</span></td><td>Works for any docs PR that names its issue</td></tr>
+      <tr><td>A review criterion in a contract</td><td><span class="ia-tag rdy">Ready</span></td><td>A reviewer judges a written outcome</td></tr>
+      <tr><td>A criterion that is checked after the release</td><td><span class="ia-tag rdy">Ready</span></td><td>While unmet, the issue stays open</td></tr>
+      <tr><td>ADP screen captures</td><td><span class="ia-tag rdy">Ready</span></td><td>4 captures per page, light and dark, desktop and phone</td></tr>
+      <tr><td>ADP never merging into the main branch</td><td><span class="ia-tag rdy">Ready</span></td><td>Keeps the docs PR open until the release</td></tr>
+      <tr><td>The Help docs statement required in ADP issues</td><td><span class="ia-tag new">Proposed</span></td><td>Piece 1. Today it appears only when the agent follows the repository rule</td></tr>
+      <tr><td>The page to guide map</td><td><span class="ia-tag new">Proposed</span></td><td>Piece 2</td></tr>
+      <tr><td>The linked help docs issue</td><td><span class="ia-tag new">Proposed</span></td><td>Piece 3</td></tr>
+      <tr><td>The two help docs criteria</td><td><span class="ia-tag new">Proposed</span></td><td>Pieces 4 and 5</td></tr>
+      <tr><td>The paragraph in the Protocol</td><td><span class="ia-tag new">Proposed</span></td><td>Phase 2</td></tr>
+      <tr><td>ADP running in the help docs repository</td><td><span class="ia-tag idea">To decide</span></td><td>Never tested. The repository needs an ADP profile first</td></tr>
+      <tr><td>A reviewer reading a change in another repository</td><td><span class="ia-tag idea">To decide</span></td><td>Piece 4 depends on it. Not tested</td></tr>
+      <tr><td>Reusing ADP captures as help docs screenshots</td><td><span class="ia-tag idea">To decide</span></td><td>Captures show test data and have a size limit</td></tr>
+      <tr><td>The branch the docs PR targets</td><td><span class="ia-tag idea">To decide</span></td><td>The written process says main. The help docs repository also has a dev branch</td></tr>
+      <tr><td>The limit of 5 criteria per contract</td><td><span class="ia-tag idea">To decide</span></td><td>The two help docs criteria use two of the five</td></tr>
+      <tr><td>Naming the guides during Project Intake</td><td><span class="ia-tag idea">To decide</span></td><td>Open question</td></tr>
+      <tr><td>Detecting a change nobody documented</td><td><span class="ia-tag idea">To decide</span></td><td>Not covered by this proposal</td></tr>
+    </table>
+
+    <h2 class="ia-section"><span class="ia-num">6</span>Where the detail is</h2>
+    <p class="ia-intro">This page is the summary. Each topic has its own page with the full detail.</p>
+    <div class="ia-path">
+      <a href="../user-guide-update-process/"><b>User Guide update process</b>The work-issue pipeline, step by step</a>
+      <a href="../adp-document-map/"><b>ADP document map</b>The 24 documents and 11 skills that define ADP</a>
+      <a href="../intake-adp-help-docs/"><b>Project Intake, ADP and the Help Docs</b>How they connect today, with the terms</a>
+      <a href="../user-guide-update-process-adp/"><b>User Guide updates with ADP</b>The proposal in full</a>
+    </div>
+
+    <p class="ia-foot">A working proposal, not a decided standard. This page reports what the skills and the workflow documents of Clara Studio say on November 23, 2026. Nothing on it was run or tested.</p>
+  </div>
+  </div>
+</div>
+<aside class="notes">
+  <h2>How to read this page</h2>
+  <p class="notes-sub">One page that joins four. Each section answers one question, in order.</p>
+  <ol>
+    <li><b>What do we have now?</b> The work-issue pipeline and its help docs steps.</li>
+    <li><b>What is ADP?</b> Its six steps, its rules, and what it does for the help docs today.</li>
+    <li><b>How do the help docs become part of ADP?</b> The idea and its five pieces.</li>
+    <li><b>What does it look like end to end?</b> With ADP, and compared with today.</li>
+    <li><b>What is the status of each piece?</b> In use, ready, proposed or still open.</li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>
