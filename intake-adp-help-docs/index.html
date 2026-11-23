@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Intake, ADP and the Help Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/mockup.css">
+<style>
+  .ia {
+    --ia-card: #ffffff; --ia-ink: #1c2330; --ia-muted: #5d6778; --ia-line: #d5dae2; --ia-chip: #eceff3;
+    --ia-cs: #43b6e7; --ia-cs-soft: #e8f6fc; --ia-ug: #f7a436; --ia-ug-soft: #fef0dc;
+    --ia-in: #7a5cc4; --ia-in-soft: #efeafb;
+    --ia-ok: #1d8a5f; --ia-ok-soft: #e4f5ed; --ia-new: #b86a00; --ia-new-soft: #fff3df;
+    --ia-gap: #c0392b; --ia-gap-soft: #fdecea; --ia-link: #2f6fde;
+    max-width: 1040px; margin: 0 auto; padding: 36px 24px 72px; color: var(--ia-ink); font-size: 15px; line-height: 1.65;
+  }
+  html.dark .ia {
+    --ia-card: #1d2229; --ia-ink: #e8ecf2; --ia-muted: #9aa5b5; --ia-line: #343c48; --ia-chip: #2b323d;
+    --ia-cs: #43b6e7; --ia-cs-soft: #12303d; --ia-ug: #f7a436; --ia-ug-soft: #3a2a10;
+    --ia-in: #b6a0ee; --ia-in-soft: #2a2342;
+    --ia-ok: #5fd0a0; --ia-ok-soft: #173326; --ia-new: #f2b457; --ia-new-soft: #3a2c12;
+    --ia-gap: #f08a7e; --ia-gap-soft: #3b1d1a; --ia-link: #7aa7f5;
+  }
+  .ia h1 { font-size: 26px; margin: 0 0 6px; color: inherit; }
+  .ia-sub { font-size: 18px; font-weight: 600; margin: 0 0 22px; }
+  .ia a { color: var(--ia-link); font-weight: 600; }
+  .ia code, .ia-skill { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; }
+  .ia-skill { background: var(--ia-chip); color: var(--ia-ink); border: 1px solid var(--ia-line); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+
+  .ia-short { background: var(--ia-card); border: 1px solid var(--ia-line); border-radius: 10px; padding: 18px 22px; margin: 0 0 28px; }
+  .ia-short h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ia-muted); margin: 0 0 10px; }
+  .ia-short ul { margin: 0; padding-left: 20px; }
+  .ia-short li { margin: 8px 0; }
+
+  .ia-legend { display: grid; grid-template-columns: max-content 1fr; gap: 10px 14px; align-items: center; margin: 0 0 8px; font-size: 14px; }
+  .ia-legend > span { display: contents; }
+  .ia-tag { display: inline-block; justify-self: start; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; vertical-align: middle; margin-right: 8px; white-space: nowrap; }
+  .ia-tag.ok { background: var(--ia-ok-soft); color: var(--ia-ok); border: 1px solid var(--ia-ok); }
+  .ia-tag.new { background: var(--ia-new-soft); color: var(--ia-new); border: 1px solid var(--ia-new); }
+  .ia-tag.gap { background: var(--ia-gap-soft); color: var(--ia-gap); border: 1px solid var(--ia-gap); }
+  .ia-tag.idea { background: var(--ia-chip); color: var(--ia-muted); border: 1px solid var(--ia-muted); }
+  .ia-tag.out { background: var(--ia-in-soft); color: var(--ia-in); border: 1px solid var(--ia-in); }
+
+  .ia h2.ia-section { display: flex; align-items: center; gap: 12px; font-size: 20px; margin: 64px 0 8px; color: inherit; }
+  .ia-num { width: 30px; height: 30px; border-radius: 50%; background: var(--ia-ink); color: var(--ia-card); display: grid; place-items: center; font-weight: 700; font-size: 15px; flex: none; }
+  .ia-intro { margin: 0 0 24px 42px; max-width: 70ch; }
+
+  .ia-flow { display: grid; grid-template-columns: 132px 1fr 1fr; gap: 0 22px; }
+  .ia-flow > * { min-width: 0; }
+  .ia-head { font-weight: 700; padding: 12px 18px; border-radius: 10px 10px 0 0; margin-bottom: 22px; }
+  .ia-head small { display: block; font-weight: 400; color: var(--ia-muted); }
+  .ia-head.cs { background: var(--ia-cs-soft); border-bottom: 3px solid var(--ia-cs); }
+  .ia-head.ug { background: var(--ia-ug-soft); border-bottom: 3px solid var(--ia-ug); }
+  .ia-stage { font-weight: 700; font-size: 15px; line-height: 1.35; padding-top: 20px; }
+  .ia-stage small { display: block; font-weight: 400; font-size: 13px; color: var(--ia-muted); margin-top: 4px; }
+  .ia-box { background: var(--ia-card); border: 2px solid var(--ia-line); border-radius: 10px; padding: 18px 20px 20px; }
+  .ia-box.in { border-color: var(--ia-in); }
+  .ia-box.cs { border-color: var(--ia-cs); }
+  .ia-box.ug { border-color: var(--ia-ug); }
+  .ia-box.out { border-color: var(--ia-in); background: var(--ia-in-soft); }
+  .ia-box.gap { border: 2px dashed var(--ia-gap); background: var(--ia-gap-soft); display: flex; flex-direction: column; justify-content: center; }
+  .ia-box.none { border: 2px dashed var(--ia-line); background: transparent; color: var(--ia-muted); }
+  .ia-box h3 { font-size: 15px; margin: 0 0 10px; color: inherit; }
+  .ia-box p { margin: 0 0 8px; }
+  .ia-box p:last-child { margin-bottom: 0; }
+  .ia-box ul { margin: 6px 0 0; padding-left: 20px; }
+  .ia-box li { margin: 6px 0; }
+  .ia-box.gap h3 { color: var(--ia-gap); font-size: 17px; }
+  .ia-new { margin-top: 14px; padding: 12px 14px; border-radius: 8px; background: var(--ia-new-soft); font-size: 14px; }
+  .ia-new.first { margin-top: 0; }
+  .ia-down { display: flex; align-items: center; gap: 12px; padding: 10px 0 10px 22px; color: var(--ia-cs); font-size: 34px; font-weight: 700; line-height: 1; }
+  .ia-down small { font-size: 13.5px; font-weight: 700; line-height: 1.35; color: var(--ia-ink); }
+  .ia-side { margin: 14px 0 0; padding: 10px 14px; border-radius: 8px; background: var(--ia-chip); font-size: 14px; }
+
+  .ia table { margin-top: 18px; width: 100%; border-collapse: collapse; background: var(--ia-card); border: 1px solid var(--ia-line); margin-left: 0; }
+  .ia th, .ia td { text-align: left; padding: 9px 16px; border-bottom: 1px solid var(--ia-line); vertical-align: top; }
+  .ia th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--ia-muted); }
+  .ia-foot { color: var(--ia-muted); font-size: 13px; line-height: 1.7; margin-top: 14px; }
+  .ia .pin { margin-right: 6px; }
+  .ia-list { margin: 0 0 0 42px; padding-left: 20px; max-width: 72ch; }
+  .ia-list li { margin: 10px 0; }
+
+  @media (max-width: 720px) {
+    .ia-flow { display: block; }
+    .ia-head { margin: 18px 0 10px; }
+    .ia-head.cs, .ia-head.ug { display: none; }
+    .ia-stage { padding-top: 26px; margin-bottom: 8px; }
+    .ia-box { margin-bottom: 10px; }
+    .ia-intro, .ia-list { margin-left: 0; }
+    .ia-skill { white-space: normal; }
+    .ia th, .ia td, .ia code { overflow-wrap: anywhere; }
+  }
+</style>
+</head>
+<body data-show="proposed">
+<div class="review-bar">
+  <a href="../">← All mock-ups</a>
+  <span class="rb-title">Project Intake, ADP and the Help Docs</span>
+  <span class="t-meta" style="color:#9ca3af">November 23, 2026 · process diagram</span>
+  <span class="rb-spacer"></span>
+  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
+  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
+</div>
+<div class="review-layout">
+<div class="split-wrap">
+  <div data-variant="proposed" class="pro">
+  <div class="ia">
+    <h1>Project Intake, ADP and the Help Docs</h1>
+    <p class="ia-sub">How they connect today, where the gap is, and how the proposal closes it.</p>
+
+    <div class="ia-short">
+      <h2>In short</h2>
+      <ul>
+        <li><b>Project Intake feeds ADP today.</b> Intake ends with a signed ticket plan, and a person starts ADP from it.</li>
+        <li><b>The help docs are the gap.</b> No Project Intake skill and no ADP skill mentions them, so work shipped through ADP has no help-docs step.</li>
+        <li><b>The proposal closes that gap inside ADP.</b> The guide is named in each issue's contract, and the issue cannot close until the guide is published.</li>
+        <li><b>Spec changes are a separate idea.</b> They are discussed, not built, and the proposal does not depend on them.</li>
+      </ul>
+    </div>
+
+    <div class="ia-legend">
+      <span><span class="ia-tag ok">Exists</span> works today, according to the skills and the workflow documents</span>
+      <span><span class="ia-tag gap">Gap</span> nothing covers this today</span>
+      <span><span class="ia-tag new">Proposed</span> part of the proposal, does not exist yet</span>
+      <span><span class="ia-tag idea">Idea</span> discussed, not built and not part of the proposal</span>
+      <span><span class="ia-tag out">Outside ADP</span> done by a person, because ADP does not do this step</span>
+    </div>
+    <p class="ia-foot" style="margin:0">ADP is the Autonomous Dev Pipeline. Project Intake is the chain of skills that takes a client request to a signed scope.</p>
+
+    <h2 class="ia-section"><span class="ia-num">1</span>How it works today</h2>
+    <p class="ia-intro">Read from top to bottom. The left column is the work in Clara Studio. The right column is what happens to the help docs at the same moment.</p>
+
+    <div class="ia-flow">
+      <div style="grid-column:2;grid-row:1" class="ia-head cs">Clara Studio <small>the request, the issues and the code</small></div>
+      <div style="grid-column:3;grid-row:1" class="ia-head ug">Help docs <small>the User Guide, in its own repo</small></div>
+
+      <div style="grid-column:1;grid-row:2" class="ia-stage">Project Intake<small>8 steps, one approval each</small></div>
+      <div style="grid-column:2;grid-row:2" class="ia-box in">
+        <h3>A client request becomes signed documents</h3>
+        <p><span class="ia-tag ok">Exists</span> Scope, requirements, a mock when screens change, solution design, estimate, then the client signs off.</p>
+        <ul>
+          <li>The estimate ends with a <b>ticket plan</b>.</li>
+          <li>Intake creates <b>no tickets</b>.</li>
+        </ul>
+      </div>
+      <div style="grid-column:3;grid-row:2" class="ia-box none">
+        <p>The intake skills do not mention the help docs.</p>
+      </div>
+
+      <div style="grid-column:2;grid-row:3" class="ia-down">↓<small>The client signs off.<br>A person runs <code>adp-plan-project</code>.</small></div>
+
+      <div style="grid-column:1;grid-row:4" class="ia-stage">ADP · Plan<small>from ticket plan to contract</small></div>
+      <div style="grid-column:2;grid-row:4" class="ia-box cs">
+        <h3>The ticket plan becomes issues</h3>
+        <p><span class="ia-tag ok">Exists</span> ADP reads the intake documents and refuses to start without the sign-off.</p>
+        <ul>
+          <li><span class="ia-skill">adp-plan-project</span> files one epic and one placeholder story per line of the ticket plan.</li>
+          <li><span class="ia-skill">adp-plan-epic</span> splits the epic into stories.</li>
+          <li><span class="ia-skill">adp-plan-issue</span> turns each issue into a testable contract.</li>
+        </ul>
+        <p class="ia-side"><b>Second door:</b> small work skips intake. Any Clara issue can start at <code>adp-plan-issue</code>.</p>
+      </div>
+      <div style="grid-column:3;grid-row:4 / span 5" class="ia-box gap">
+        <h3>The gap</h3>
+        <p><span class="ia-tag gap">Gap</span> None of the 11 ADP skills mentions the help docs.</p>
+        <ul>
+          <li>An issue can be planned, built and checked with no guide change.</li>
+          <li>Some runs add a <code>Help docs:</code> line anyway, because of a rule in the repo. Nothing enforces it.</li>
+          <li>A forgotten guide goes unnoticed.</li>
+        </ul>
+      </div>
+
+      <div style="grid-column:2;grid-row:5" class="ia-down">↓</div>
+
+      <div style="grid-column:1;grid-row:6" class="ia-stage">ADP · Build<small>code and pull request</small></div>
+      <div style="grid-column:2;grid-row:6" class="ia-box cs">
+        <h3>The issue is built</h3>
+        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-issue</span> writes the tests and the code. <span class="ia-skill">adp-pr</span> opens the pull request and waits for the checks.</p>
+      </div>
+
+      <div style="grid-column:2;grid-row:7" class="ia-down">↓</div>
+
+      <div style="grid-column:1;grid-row:8" class="ia-stage">ADP · Check<small>after the merge to dev</small></div>
+      <div style="grid-column:2;grid-row:8" class="ia-box cs">
+        <h3>The issue is checked</h3>
+        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-qa</span> checks the merged issue against its contract. The issue then waits for the release.</p>
+      </div>
+
+      <div style="grid-column:2;grid-row:9" class="ia-down">↓</div>
+
+      <div style="grid-column:1;grid-row:10" class="ia-stage">Release<small>to production</small></div>
+      <div style="grid-column:2;grid-row:10" class="ia-box out">
+        <p><span class="ia-tag out">Outside ADP</span> A person decides to release.</p>
+      </div>
+      <div style="grid-column:3;grid-row:10" class="ia-box ug">
+        <p><span class="ia-tag ok">Exists</span> The release step merges the guide pull requests whose issues shipped. It can only merge a guide pull request that someone opened.</p>
+      </div>
+
+      <div style="grid-column:2;grid-row:11" class="ia-down">↓</div>
+
+      <div style="grid-column:1;grid-row:12" class="ia-stage">ADP · Close<small>after the release</small></div>
+      <div style="grid-column:2;grid-row:12" class="ia-box cs">
+        <h3>The issue is closed</h3>
+        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-qa</span> closes the issue. Only this skill closes an issue.</p>
+      </div>
+      <div style="grid-column:3;grid-row:12" class="ia-box none">
+        <p>Nothing checks that a guide was published.</p>
+      </div>
+    </div>
+
+    <h2 class="ia-section"><span class="ia-num">2</span>The older path has a help-docs step</h2>
+    <p class="ia-intro">The pipeline that ADP is meant to replace does carry the help docs. This is the step that has no counterpart in ADP yet.</p>
+    <table>
+      <tr><th>Moment</th><th>Skill</th><th>What it does for the help docs</th></tr>
+      <tr><td>Plan</td><td><span class="ia-skill">/work-issue</span></td><td>The plan states <code>Help docs: &lt;guides&gt;</code> or <code>Help docs: none, &lt;why&gt;</code></td></tr>
+      <tr><td>Pull request</td><td><span class="ia-skill">/pr</span></td><td>Opens the guide pull request first, then the code pull request</td></tr>
+      <tr><td>Merge to dev</td><td><span class="ia-skill">/merge</span></td><td>Leaves the guide pull request open</td></tr>
+      <tr><td>Release</td><td><span class="ia-skill">/production-release</span></td><td>Merges each open guide pull request whose issues all shipped</td></tr>
+    </table>
+    <p class="ia-foot">The rule: a change needs a help-docs update when it alters what a person sees or does. Internal refactors, tests and pipeline changes do not.</p>
+
+    <h2 class="ia-section"><span class="ia-num">3</span>With the proposal</h2>
+    <p class="ia-intro">The same stages, with the right column filled in. Nothing changes in Project Intake. The full detail is in <a href="../user-guide-update-process-adp/">User Guide updates with ADP</a>.</p>
+
+    <div class="ia-flow">
+      <div style="grid-column:2;grid-row:1" class="ia-head cs">Clara Studio <small>the request, the issues and the code</small></div>
+      <div style="grid-column:3;grid-row:1" class="ia-head ug">Help docs <small>the User Guide, in its own repo</small></div>
+
+      <div style="grid-column:1;grid-row:2" class="ia-stage">Project Intake<small>unchanged</small></div>
+      <div style="grid-column:2;grid-row:2" class="ia-box in">
+        <h3>A client request becomes signed documents</h3>
+        <p><span class="ia-tag ok">Exists</span> Same eight steps, same ticket plan.</p>
+      </div>
+      <div style="grid-column:3;grid-row:2" class="ia-box none">
+        <p><span class="ia-tag idea">Idea</span> The ticket plan could say, per ticket, which guide it touches. Open question, not part of the proposal.</p>
+      </div>
+
+      <div style="grid-column:2;grid-row:3" class="ia-down">↓<small>The client signs off.<br>A person runs <code>adp-plan-project</code>.</small></div>
+
+      <div style="grid-column:1;grid-row:4" class="ia-stage">ADP · Plan<small>from ticket plan to contract</small></div>
+      <div style="grid-column:2;grid-row:4" class="ia-box cs">
+        <h3>The contract names the guide</h3>
+        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-plan-issue</span> writes the contract from the issue text.</p>
+        <div class="ia-new"><span class="pin">1</span><span class="ia-tag new">Proposed</span> The issue carries <code>Help docs: &lt;pages&gt;</code> or <code>Help docs: none, &lt;why&gt;</code>, and the contract gets two guide criteria.</div>
+      </div>
+      <div style="grid-column:3;grid-row:4" class="ia-box ug">
+        <h3>A guide issue is created</h3>
+        <div class="ia-new first"><span class="pin">2</span><span class="ia-tag new">Proposed</span> A second issue, linked to the first, for the User Guide repo. ADP works in one repository per run.</div>
+      </div>
+
+      <div style="grid-column:2;grid-row:5" class="ia-down">↓</div>
+
+      <div style="grid-column:1;grid-row:6" class="ia-stage">ADP · Build<small>code and pull request</small></div>
+      <div style="grid-column:2;grid-row:6" class="ia-box cs">
+        <h3>The issue is built</h3>
+        <p><span class="ia-tag ok">Exists</span> Tests, code and pull request, as today.</p>
+        <div class="ia-new"><span class="pin">3</span><span class="ia-tag new">Proposed</span> A reviewer checks that the guide change covers the page.</div>
+      </div>
+      <div style="grid-column:3;grid-row:6" class="ia-box ug">
+        <h3>The guide change is written</h3>
+        <p>ADP writes it in the User Guide repo and opens its pull request. That pull request stays open.</p>
+        <p class="ia-side">Not tested yet: ADP has never run in the User Guide repo.</p>
+      </div>
+
+      <div style="grid-column:2;grid-row:7" class="ia-down">↓</div>
+
+      <div style="grid-column:1;grid-row:8" class="ia-stage">ADP · Check<small>after the merge to dev</small></div>
+      <div style="grid-column:2;grid-row:8" class="ia-box cs">
+        <h3>The issue is checked</h3>
+        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-qa</span> checks the merged issue, which then waits for the release.</p>
+      </div>
+      <div style="grid-column:3;grid-row:8" class="ia-box ug">
+        <h3>The guide waits</h3>
+        <p>Published now, it would describe a feature users do not have yet.</p>
+      </div>
+
+      <div style="grid-column:2;grid-row:9" class="ia-down">↓</div>
+
+      <div style="grid-column:1;grid-row:10" class="ia-stage">Release<small>to production</small></div>
+      <div style="grid-column:2;grid-row:10" class="ia-box out">
+        <p><span class="ia-tag out">Outside ADP</span> A person decides to release, as today.</p>
+      </div>
+      <div style="grid-column:3;grid-row:10" class="ia-box ug">
+        <p><span class="ia-tag ok">Exists</span> The release step merges the guide pull request, so the guide is published with the feature.</p>
+      </div>
+
+      <div style="grid-column:2;grid-row:11" class="ia-down">↓</div>
+
+      <div style="grid-column:1;grid-row:12" class="ia-stage">ADP · Close<small>after the release</small></div>
+      <div style="grid-column:2;grid-row:12" class="ia-box cs">
+        <h3>The issue cannot close without the guide</h3>
+        <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-qa</span> keeps an issue open while a criterion is unmet.</p>
+        <div class="ia-new"><span class="pin">4</span><span class="ia-tag new">Proposed</span> Criterion: "The guide pull request for this issue is merged."</div>
+      </div>
+      <div style="grid-column:3;grid-row:12" class="ia-box ug">
+        <h3>The guide is published</h3>
+        <p>Users see the feature and its guide on the same day.</p>
+      </div>
+    </div>
+
+    <h2 class="ia-section"><span class="ia-num">4</span>What the proposal fixes, and what it does not</h2>
+    <table>
+      <tr><th>Problem today</th><th>With the proposal</th></tr>
+      <tr><td>An ADP issue has no help-docs step</td><td><span class="ia-tag ok">Fixed</span> The guide is named in the issue and in its contract</td></tr>
+      <tr><td>A forgotten guide goes unnoticed</td><td><span class="ia-tag ok">Fixed</span> The issue cannot close until the guide pull request is merged</td></tr>
+      <tr><td>The guide can be published before the feature</td><td><span class="ia-tag ok">Fixed</span> The guide pull request stays open until the release</td></tr>
+      <tr><td>Nobody states the guide during Project Intake</td><td><span class="ia-tag idea">Open</span> Still stated later, when the issue is written</td></tr>
+      <tr><td>A change nobody documented</td><td><span class="ia-tag gap">Not fixed</span> Still not detected</td></tr>
+      <tr><td>Spec changes produced by Project Intake</td><td><span class="ia-tag idea">Separate</span> A different idea, see below</td></tr>
+    </table>
+
+    <h2 class="ia-section"><span class="ia-num">5</span>The timeline sketch compared with today</h2>
+    <p class="ia-intro">A team sketch draws Project Intake feeding ADP, and Project Intake feeding Spec Changes and then the Help Docs. This is how each arrow stands against the skills and documents.</p>
+    <table>
+      <tr><th>Arrow in the sketch</th><th>Today</th><th>What the sources say</th></tr>
+      <tr><td>Project Intake to ADP</td><td><span class="ia-tag ok">Exists</span></td><td>Both sides name each other. The handoff is the signed ticket plan, and a person starts it</td></tr>
+      <tr><td>Project Intake to Spec Changes</td><td><span class="ia-tag idea">Idea</span></td><td>Intake writes a solution design per request. It does not update a standing spec. The idea appears in the planning notes of November 19</td></tr>
+      <tr><td>Spec Changes to Help Docs</td><td><span class="ia-tag idea">Idea</span></td><td>No skill or document links them. Help docs are triggered by a change users can see, decided when the issue is planned</td></tr>
+    </table>
+    <ul class="ia-list" style="margin-top:18px">
+      <li><b>Two starting points.</b> The sketch starts the help docs from a spec change. The proposal starts them from the issue.</li>
+      <li><b>They can coexist.</b> If spec changes are built later, they can feed the <code>Help docs:</code> line. The proposal works without them.</li>
+      <li><b>Earlier attempt.</b> The epic for spec-driven development, Clara-3098, was closed as not planned.</li>
+    </ul>
+
+    <h2 class="ia-section"><span class="ia-num">6</span>Sources and limits</h2>
+    <table>
+      <tr><th>Read</th><th>Used for</th></tr>
+      <tr><td>The <code>project-intake</code> skill and its 8 step skills</td><td>What intake produces and where it hands off</td></tr>
+      <tr><td>The 11 ADP skills, and the <code>adp-plan-project</code> detail document in the repo</td><td>What ADP needs as input, and that none mentions the help docs</td></tr>
+      <tr><td>The help-docs workflow document in the repo</td><td>The older path's help-docs step</td></tr>
+      <tr><td>The planning notes of November 19</td><td>The spec changes idea</td></tr>
+    </table>
+    <ul class="ia-list" style="margin-top:18px">
+      <li><b>Not read:</b> the ADP charter and ADR-033.</li>
+      <li><b>Read in part:</b> the ADP reference documents and the intake step skills, at the relevant sections only.</li>
+      <li><b>Not tested:</b> nothing on this page was run. It reports what the skills and documents say on November 23, 2026.</li>
+    </ul>
+
+    <p class="ia-foot">A working proposal, not a decided standard. Related pages: <a href="../user-guide-update-process-adp/">User Guide updates with ADP</a>, <a href="../user-guide-update-process/">User Guide update process</a>, <a href="../adp-document-map/">ADP document map</a>.</p>
+  </div>
+  </div>
+</div>
+<aside class="notes">
+  <h2>What changed and why</h2>
+  <p class="notes-sub">Project Intake already feeds ADP. Neither of them mentions the help docs, so work shipped through ADP has no guide step. The proposal adds four pieces, all inside ADP, with no new skill.</p>
+  <ol>
+    <li><b>The issue names the guide.</b> A <code>Help docs:</code> line in the issue, and two guide criteria in the contract. <span class="why">The planner only acts on what the issue says.</span></li>
+    <li><b>A linked guide issue.</b> The guide change is its own issue in the User Guide repo. <span class="why">ADP works in one repository per run.</span></li>
+    <li><b>A reviewer checks the guide.</b> A review criterion asks whether the guide change covers the page. <span class="why">The guide is judged with the code, not after it.</span></li>
+    <li><b>The issue cannot close without the guide.</b> A criterion waits for the guide pull request to be merged. <span class="why">Today a forgotten guide goes unnoticed.</span></li>
+  </ol>
+</aside>
+</div>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>
