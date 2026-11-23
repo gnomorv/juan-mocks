@@ -62,14 +62,15 @@
 
   .ia-hscroll { overflow-x: auto; padding-bottom: 6px; }
   .ia-h { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; min-width: 980px; }
-  .ia-st { grid-row: 1; font-weight: 700; font-size: 14px; line-height: 1.3; padding: 12px 14px 12px 24px; background: var(--ia-cs-soft); clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); margin-right: -6px; }
-  .ia-st:first-child { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); padding-left: 14px; }
-  .ia-st:nth-child(6) { margin-right: 0; }
-  .ia-st.in, .ia-st.out { background: var(--ia-in-soft); }
+  .ia-st { font-weight: 700; font-size: 14px; line-height: 1.3; padding: 12px 14px 12px 24px; background: var(--ia-cs-soft); clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%); margin-right: -6px; }
+  .ia-st.first { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%); padding-left: 14px; }
+  .ia-st.last { margin-right: 0; }
+  .ia-st.ug { background: var(--ia-ug-soft); }
   .ia-st b { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ia-ink); color: var(--ia-card); font-size: 12px; margin-right: 6px; }
-  .ia-lane { grid-column: 1 / -1; font-weight: 700; padding: 8px 14px; border-radius: 8px; margin-top: 12px; }
+  .ia-lane { grid-column: 1 / -1; font-weight: 700; padding: 8px 14px; border-radius: 8px; }
+  .ia-lane.ug { margin-top: 26px; }
   .ia-lane small { font-weight: 400; color: var(--ia-muted); margin-left: 8px; }
-  .ia-lane.cs { grid-row: 2; background: var(--ia-cs-soft); border-left: 4px solid var(--ia-cs); }
+  .ia-lane.cs { grid-row: 1; background: var(--ia-cs-soft); border-left: 4px solid var(--ia-cs); }
   .ia-lane.ug { grid-row: 4; background: var(--ia-ug-soft); border-left: 4px solid var(--ia-ug); }
   .ia-h .ia-box { padding: 14px 14px 16px; font-size: 13.5px; line-height: 1.55; }
   .ia-h .ia-box h3 { font-size: 14px; line-height: 1.35; margin: 10px 0 8px; }
@@ -178,14 +179,13 @@
 
     <div class="ia-hscroll">
     <div class="ia-h">
-      <div class="ia-st in" style="grid-column:1"><b>1</b> Project Intake</div>
-      <div class="ia-st" style="grid-column:2"><b>2</b> ADP · Plan</div>
-      <div class="ia-st" style="grid-column:3"><b>3</b> ADP · Build</div>
-      <div class="ia-st" style="grid-column:4"><b>4</b> ADP · Check</div>
-      <div class="ia-st out" style="grid-column:5"><b>5</b> Release</div>
-      <div class="ia-st" style="grid-column:6"><b>6</b> ADP · Close</div>
-
       <div class="ia-lane cs">Clara Studio <small>the request, the issues and the code</small></div>
+      <div class="ia-st cs first" style="grid-column:1;grid-row:2"><b>1</b> Project Intake</div>
+      <div class="ia-st cs" style="grid-column:2;grid-row:2"><b>2</b> ADP · Plan</div>
+      <div class="ia-st cs" style="grid-column:3;grid-row:2"><b>3</b> ADP · Build</div>
+      <div class="ia-st cs" style="grid-column:4;grid-row:2"><b>4</b> ADP · Check</div>
+      <div class="ia-st cs" style="grid-column:5;grid-row:2"><b>5</b> Release</div>
+      <div class="ia-st cs last" style="grid-column:6;grid-row:2"><b>6</b> ADP · Close</div>
 
       <div class="ia-box in" style="grid-column:1;grid-row:3">
         <span class="ia-tag ok">Exists</span>
@@ -223,12 +223,18 @@
       </div>
 
       <div class="ia-lane ug">Help docs <small>the User Guide, in its own repo, at the same step</small></div>
+      <div class="ia-st ug first" style="grid-column:1;grid-row:5"><b>1</b> Project Intake</div>
+      <div class="ia-st ug" style="grid-column:2;grid-row:5"><b>2</b> ADP · Plan</div>
+      <div class="ia-st ug" style="grid-column:3;grid-row:5"><b>3</b> ADP · Build</div>
+      <div class="ia-st ug" style="grid-column:4;grid-row:5"><b>4</b> ADP · Check</div>
+      <div class="ia-st ug" style="grid-column:5;grid-row:5"><b>5</b> Release</div>
+      <div class="ia-st ug last" style="grid-column:6;grid-row:5"><b>6</b> ADP · Close</div>
 
-      <div class="ia-box none" style="grid-column:1;grid-row:5">
+      <div class="ia-box none" style="grid-column:1;grid-row:6">
         <span class="ia-tag gap">To add</span>
         <p>Project Intake does not deal with the help docs. Whether it should is an open question.</p>
       </div>
-      <div class="ia-box ug" style="grid-column:2 / span 3;grid-row:5">
+      <div class="ia-box ug" style="grid-column:2 / span 3;grid-row:6">
         <h3>While ADP plans, builds and checks</h3>
         <div class="ia-parts">
           <div class="ia-part have">
@@ -249,12 +255,12 @@
           </div>
         </div>
       </div>
-      <div class="ia-box ug" style="grid-column:5;grid-row:5">
+      <div class="ia-box ug" style="grid-column:5;grid-row:6">
         <span class="ia-tag ok">Exists</span>
         <h3>The guide is published</h3>
         <p>The release step merges the guide pull requests that someone opened.</p>
       </div>
-      <div class="ia-box none" style="grid-column:6;grid-row:5">
+      <div class="ia-box none" style="grid-column:6;grid-row:6">
         <span class="ia-tag gap">To add</span>
         <p>A check that the guide was published before the issue closes.</p>
       </div>
