@@ -33,6 +33,19 @@
   .ia-short h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ia-muted); margin: 0 0 10px; }
   .ia-short ul { margin: 0; padding-left: 20px; }
   .ia-short li { margin: 8px 0; }
+  .ia-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 0 0 28px; }
+  .ia-two .ia-short { margin: 0; border-width: 2px; border-color: var(--ia-ok); }
+  .ia-two .ia-short h2 { color: var(--ia-ok); }
+  .ia-two .ia-short.add { border-style: dashed; border-color: var(--ia-gap); }
+  .ia-two .ia-short.add h2 { color: var(--ia-gap); }
+  .ia-more { margin: 12px 0 0; font-size: 14px; }
+  .ia-term { background: var(--ia-chip); border-radius: 8px; padding: 12px 16px; margin: 18px 0 0; font-size: 14px; }
+  .ia-part { border-radius: 8px; padding: 14px 16px; font-size: 14px; }
+  .ia-part + .ia-part { margin-top: 14px; }
+  .ia-part.have { background: var(--ia-ok-soft); }
+  .ia-part.add { background: var(--ia-gap-soft); border: 2px dashed var(--ia-gap); }
+  .ia-part h4 { margin: 0 0 8px; font-size: 14px; }
+  .ia-part ul { margin: 0; padding-left: 20px; }
 
   .ia-legend { display: grid; grid-template-columns: max-content 1fr; gap: 10px 14px; align-items: center; margin: 0 0 8px; font-size: 14px; }
   .ia-legend > span { display: contents; }
@@ -84,6 +97,7 @@
 
   @media (max-width: 720px) {
     .ia-flow { display: block; }
+    .ia-two { grid-template-columns: 1fr; }
     .ia-head { margin: 18px 0 10px; }
     .ia-head.cs, .ia-head.ug { display: none; }
     .ia-stage { padding-top: 26px; margin-bottom: 8px; }
@@ -108,23 +122,38 @@
   <div data-variant="proposed" class="pro">
   <div class="ia">
     <h1>Project Intake, ADP and the Help Docs</h1>
-    <p class="ia-sub">How they connect today, and where the help docs can join.</p>
+    <p class="ia-sub">What we have today, and what we need to add.</p>
 
-    <div class="ia-short">
-      <h2>In short</h2>
-      <ul>
-        <li><b>Project Intake feeds ADP today.</b> Intake ends with a signed ticket plan, and a person starts ADP from it.</li>
-        <li><b>The help docs are the opportunity.</b> Project Intake and ADP do not include them yet, so there is room to add a help-docs step to work shipped through ADP.</li>
-        <li><b>A proposal adds that step inside ADP.</b> It is on its own page: <a href="../user-guide-update-process-adp/">User Guide updates with ADP</a>.</li>
-      </ul>
+    <div class="ia-two">
+      <div class="ia-short">
+        <h2>What we have today</h2>
+        <ul>
+          <li><b>Project Intake feeds ADP.</b> Intake ends with a signed ticket plan, and a person starts ADP from it.</li>
+          <li><b>The older pipeline updates the help docs.</b> Its plan names the guide, the guide change travels with the code, and the release publishes it.</li>
+          <li><b>A written rule asks every plan to name the guide.</b> Some ADP runs follow it, because the agent reads the repo's rules. ADP itself does not ask for it.</li>
+        </ul>
+      </div>
+      <div class="ia-short add">
+        <h2>What we need to add</h2>
+        <ul>
+          <li><b>ADP asks for the guide.</b> Every issue that changes what users see names the guide to update.</li>
+          <li><b>ADP writes the guide change.</b> Today nothing in ADP does.</li>
+          <li><b>ADP checks the guide was published</b> before it closes the issue.</li>
+        </ul>
+        <p class="ia-more">How to add them: <a href="../user-guide-update-process-adp/">User Guide updates with ADP</a>.</p>
+      </div>
     </div>
 
     <div class="ia-legend">
       <span><span class="ia-tag ok">Exists</span> works today, according to the skills and the workflow documents</span>
-      <span><span class="ia-tag gap">Opportunity</span> not included yet, a good place to add a step</span>
+      <span><span class="ia-tag gap">To add</span> not there yet, what we need to add</span>
       <span><span class="ia-tag out">Outside ADP</span> done by a person, because ADP does not do this step</span>
     </div>
-    <p class="ia-foot" style="margin:0">ADP is the Autonomous Dev Pipeline. Project Intake is the chain of skills that takes a client request to a signed scope.</p>
+    <div class="ia-term">
+      <p style="margin:0 0 6px"><b>ADP</b> is the Autonomous Dev Pipeline: the skills that plan, build, check and close an issue.</p>
+      <p style="margin:0 0 6px"><b>Project Intake</b> is the chain of skills that takes a client request to a signed scope.</p>
+      <p style="margin:0"><b>The <code>Help docs:</code> line</b> is one line in a plan. It names the guides a change must update, or says "none" and why.</p>
+    </div>
 
     <h2 class="ia-section"><span class="ia-num">1</span>How it works today</h2>
     <p class="ia-intro">Read from top to bottom. The left column is the work in Clara Studio. The right column is what happens to the help docs at the same moment.</p>
@@ -143,7 +172,7 @@
         </ul>
       </div>
       <div style="grid-column:3;grid-row:2" class="ia-box none">
-        <p>Project Intake does not include the help docs yet.</p>
+        <p><span class="ia-tag gap">To add</span> Project Intake does not deal with the help docs. Whether it should is an open question.</p>
       </div>
 
       <div style="grid-column:2;grid-row:3" class="ia-down">↓<small>The client signs off.<br>A person runs <code>adp-plan-project</code>.</small></div>
@@ -159,14 +188,24 @@
         </ul>
         <p class="ia-side"><b>Second door:</b> small work skips intake. Any Clara issue can start at <code>adp-plan-issue</code>.</p>
       </div>
-      <div style="grid-column:3;grid-row:4 / span 5" class="ia-box gap">
-        <h3>The opportunity</h3>
-        <p><span class="ia-tag gap">Opportunity</span> The 11 ADP skills do not include the help docs yet.</p>
-        <ul>
-          <li>A guide step can join the plan, the build and the check.</li>
-          <li>Some runs already add a <code>Help docs:</code> line, because of a rule in the repo. ADP can make that the standard.</li>
-          <li>ADP can then make sure no guide is left behind.</li>
-        </ul>
+      <div style="grid-column:3;grid-row:4 / span 5" class="ia-box ug">
+        <h3>Help docs while ADP plans, builds and checks</h3>
+        <div class="ia-part have">
+          <h4><span class="ia-tag ok">Exists</span> Already there</h4>
+          <ul>
+            <li>A written rule in the Clara Studio repo: a plan must carry the <code>Help docs:</code> line.</li>
+            <li>The rule was written for the older pipeline, not for ADP.</li>
+            <li>Some ADP runs write the line anyway, because the agent reads the repo's rules. Two such runs were found.</li>
+          </ul>
+        </div>
+        <div class="ia-part add">
+          <h4><span class="ia-tag gap">To add</span> Not there yet</h4>
+          <ul>
+            <li>ADP does not ask for the line. None of its 11 skills includes the help docs, so the line appears by chance.</li>
+            <li>Nothing in ADP writes the guide change.</li>
+            <li>Nothing in ADP reviews the guide change with the code.</li>
+          </ul>
+        </div>
       </div>
 
       <div style="grid-column:2;grid-row:5" class="ia-down">↓</div>
@@ -203,7 +242,7 @@
         <p><span class="ia-tag ok">Exists</span> <span class="ia-skill">adp-qa</span> closes the issue. Only this skill closes an issue.</p>
       </div>
       <div style="grid-column:3;grid-row:12" class="ia-box none">
-        <p>A check that the guide was published can go here.</p>
+        <p><span class="ia-tag gap">To add</span> A check that the guide was published before the issue closes.</p>
       </div>
     </div>
 
@@ -218,14 +257,26 @@
     </table>
     <p class="ia-foot">The rule: a change needs a help-docs update when it alters what a person sees or does. Internal refactors, tests and pipeline changes do not.</p>
 
+    <h2 class="ia-section"><span class="ia-num">3</span>What exists and what to add</h2>
+    <p class="ia-intro">The same information as one table, for the help docs in work that ships through ADP.</p>
+    <table>
+      <tr><th>Piece</th><th>Today</th><th>To add</th></tr>
+      <tr><td>The <code>Help docs:</code> line in the issue</td><td><span class="ia-tag ok">Exists</span> As a repo rule. Some ADP runs follow it</td><td><span class="ia-tag gap">To add</span> ADP requires it in every issue that changes what users see</td></tr>
+      <tr><td>Writing the guide change</td><td>Not in ADP</td><td><span class="ia-tag gap">To add</span> A linked issue that writes it in the User Guide repo</td></tr>
+      <tr><td>Reviewing the guide change</td><td>Not in ADP</td><td><span class="ia-tag gap">To add</span> A reviewer checks it with the code</td></tr>
+      <tr><td>Publishing the guide</td><td><span class="ia-tag ok">Exists</span> The release step merges open guide pull requests</td><td>Nothing, it stays as it is</td></tr>
+      <tr><td>Making sure no guide is left behind</td><td>Not in ADP</td><td><span class="ia-tag gap">To add</span> The issue stays open until the guide is published</td></tr>
+    </table>
+    <p class="ia-foot">Not known: how many ADP runs carry the <code>Help docs:</code> line, and whether the two that were found went on to change the guide.</p>
+
     <p class="ia-foot">Reports what the skills and the workflow documents say on November 23, 2026. Nothing on this page was run. Related pages: <a href="../user-guide-update-process-adp/">User Guide updates with ADP</a>, <a href="../user-guide-update-process/">User Guide update process</a>, <a href="../adp-document-map/">ADP document map</a>.</p>
   </div>
   </div>
 </div>
 <aside class="notes">
   <h2>What this page shows</h2>
-  <p class="notes-sub">Project Intake already feeds ADP. Neither of them includes the help docs yet, so there is room to add a guide step. The older pipeline already has one.</p>
-  <p class="notes-sub">The proposal that adds the step is on its own page: <a href="../user-guide-update-process-adp/">User Guide updates with ADP</a>.</p>
+  <p class="notes-sub">Project Intake already feeds ADP. The older pipeline updates the help docs. ADP does not ask for that yet, although some runs follow the repo rule anyway.</p>
+  <p class="notes-sub">What to add, and how, is on its own page: <a href="../user-guide-update-process-adp/">User Guide updates with ADP</a>.</p>
 </aside>
 </div>
 <script src="../assets/mockup.js"></script>
