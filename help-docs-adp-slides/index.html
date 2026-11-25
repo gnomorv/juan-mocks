@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Help docs updates with ADP: slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* viewer */
+html,body{margin:0;height:100%;background:#0B1620;font-family:'Inter',Arial,sans-serif}
+body{display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:16px;padding:10px 16px;color:#BCD3E0;font-size:14px;flex:none}
+.bar a{color:#BCD3E0;text-decoration:none}
+.bar a:hover{color:#fff}
+.bar .name{color:#F3F7FA;font-weight:600}
+.bar .grow{flex:1}
+.bar button{font:inherit;color:#F3F7FA;background:#1B3144;border:1px solid #35516A;border-radius:8px;padding:6px 14px;cursor:pointer}
+.bar button:hover{background:#24425B}
+.bar button:disabled{opacity:.4;cursor:default}
+.bar button:focus-visible{outline:2px solid #43B6E7;outline-offset:2px}
+.fit{flex:1;min-height:0;position:relative;overflow:hidden}
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.stage > section{position:absolute;inset:0;width:1920px;height:1080px;box-sizing:border-box;overflow:hidden;visibility:hidden}
+.stage > section.on{visibility:visible}
+.stage > section aside{display:none}
+:where(.stage *){margin:0;box-sizing:border-box}
+/* deck styles, unchanged from the slide deck */
+section {
+  padding: 128px;
+  background: #F7F9FB;
+  color: #10202E;
+  font-family: 'Inter', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+.alt { background: #EAF1F6; }
+.dark { background: #10202E; color: #F3F7FA; }
+.accent { background: #43B6E7; color: #10202E; }
+
+h1, h2, h3 { font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 600; }
+
+.eyebrow { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 40px; font-weight: 700; letter-spacing: 4px; color: #0E6E9C; margin-bottom: 20px; }
+.dark .eyebrow { color: #43B6E7; }
+.accent .eyebrow { color: #10202E; }
+
+.title { font-size: 60px; line-height: 1.1; margin-bottom: 48px; }
+.lead { font-size: 32px; line-height: 1.4; color: #3D4F5E; }
+.dark .lead { color: #BCD3E0; }
+
+.cover-title { font-size: 104px; line-height: 1.05; width: 1400px; margin-bottom: 40px; }
+.cover-bar { width: 160px; height: 12px; background: #43B6E7; margin-bottom: 56px; }
+.cover-foot { font-size: 24px; color: #BCD3E0; }
+.spacer { flex: 1; }
+
+.statement { font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 600; font-size: 84px; line-height: 1.12; width: 1500px; }
+.statement-sub { font-size: 34px; line-height: 1.4; width: 1300px; margin-top: 48px; }
+
+.row { display: flex; gap: 32px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; }
+
+.card { flex: 1; background: #FDFEFE; border: 2px solid #D5E0E8; border-radius: 16px; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+.card-cs { border: 3px solid #43B6E7; }
+.card-ug { border: 3px solid #F7A436; }
+.card-title { font-size: 32px; line-height: 1.2; }
+.card-text { font-size: 26px; line-height: 1.4; color: #3D4F5E; }
+.card-list { font-size: 26px; line-height: 1.4; color: #3D4F5E; padding-left: 30px; }
+.card-list li { margin-top: 6px; margin-bottom: 6px; }
+
+.num { font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 700; font-size: 28px; line-height: 56px; width: 56px; height: 56px; border-radius: 28px; background: #F7A436; color: #10202E; text-align: center; }
+.num-cs { background: #43B6E7; }
+
+.tag { font-size: 24px; font-weight: 600; padding: 4px 16px; border-radius: 20px; align-self: flex-start; }
+.tag-use { background: #DDF2E7; color: #14633F; }
+.tag-ready { background: #E3ECFC; color: #1F4FA8; }
+.tag-prop { background: #FFEFD3; color: #8A4F00; }
+.tag-open { background: #E4E9EE; color: #3D4F5E; }
+.tag-out { background: #ECE6F9; color: #5A3FA3; }
+
+.step { background: #FDFEFE; border: 2px solid #D5E0E8; border-top: 8px solid #43B6E7; border-radius: 12px; padding: 22px 26px; display: flex; flex-direction: column; gap: 10px; }
+.step-out { border-top: 8px solid #7A5CC4; }
+.step-head { display: flex; gap: 16px; align-items: center; }
+.step-name { font-size: 30px; line-height: 1.2; }
+.step-text { font-size: 24px; line-height: 1.35; color: #3D4F5E; }
+.step-skill { font-size: 24px; font-weight: 600; color: #0E6E9C; }
+
+.lane-label { font-size: 24px; font-weight: 600; letter-spacing: 2px; margin-bottom: 12px; }
+.lane-cs { color: #0E6E9C; }
+.lane-ug { color: #8A4F00; margin-top: 28px; }
+.lane { display: flex; gap: 14px; }
+.cell { flex: 1; background: #FDFEFE; border: 2px solid #D5E0E8; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+.cell-cs { border-top: 6px solid #43B6E7; }
+.cell-ug { border-top: 6px solid #F7A436; }
+.cell-name { font-size: 24px; font-weight: 600; color: #10202E; }
+.cell-text { font-size: 24px; line-height: 1.3; color: #3D4F5E; }
+.pc { color: #8A4F00; }
+
+.issue { background: #FDFEFE; border: 2px solid #D5E0E8; border-radius: 16px; padding: 36px 40px; display: flex; flex-direction: column; gap: 18px; flex: 1.3; }
+.issue-label { font-size: 24px; font-weight: 600; letter-spacing: 2px; color: #5B6B78; }
+.issue-line { font-size: 28px; line-height: 1.4; color: #10202E; }
+.issue-new { font-size: 28px; line-height: 1.4; color: #10202E; background: #FFEFD3; border-left: 8px solid #F7A436; padding: 12px 20px; }
+.side { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+.note { font-size: 24px; color: #5B6B78; margin-top: 28px; }
+.dark .note { color: #BCD3E0; }
+
+.col-title { font-size: 30px; line-height: 1.2; }
+.phase-n { font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 600; font-size: 24px; letter-spacing: 3px; color: #0E6E9C; }
+.phase-title { font-size: 44px; line-height: 1.1; }
+.phase-k { font-size: 24px; font-weight: 600; color: #10202E; margin-top: 8px; }
+
+</style>
+</head>
+<body>
+<div class="bar">
+  <a href="../">← All mock-ups</a>
+  <span class="name">Help docs updates with ADP</span>
+  <span class="grow"></span>
+  <button id="prev" aria-label="Previous slide">← Previous</button>
+  <span id="count" aria-live="polite"></span>
+  <button id="next" aria-label="Next slide">Next →</button>
+</div>
+<div class="fit"><div class="stage" id="stage">
+<section id="cover" class="dark" data-transition="fade">
+<p class="eyebrow">CLARA STUDIO · WORKING PROPOSAL</p>
+<h1 class="cover-title">Keeping the help docs up to date with ADP</h1>
+<div class="cover-bar"></div>
+<p class="lead">How to make every help docs update part of the Autonomous Dev Pipeline, in five pieces and two phases.</p>
+<div class="spacer"></div>
+<p class="cover-foot">November 24, 2026 · Based on the skills and workflow documents of Clara Studio. Nothing here has been run or tested yet.</p>
+<aside>This deck walks through the idea in order: where we are today, how ADP works, the five pieces of the proposal, how to roll it out, and what is still open. It is a working proposal, not a decided standard.</aside>
+</section>
+<section id="goal" class="accent" data-transition="fade">
+<p class="eyebrow">THE GOAL</p>
+<div class="spacer"></div>
+<p class="statement">An issue cannot close until its help docs change is published.</p>
+<p class="statement-sub">Users see a feature and its guide on the same day, and nobody has to remember to ask for it.</p>
+<div class="spacer"></div>
+<aside>This is the one outcome the whole proposal serves. Help docs means the help site for Clara Studio users, at docs.clarastudio.ai, kept in its own repository. One page of it is a guide.</aside>
+</section>
+<section id="today" data-transition="fade">
+<p class="eyebrow">WHERE WE ARE</p>
+<h2 class="title">Two pipelines, and only one knows about the help docs</h2>
+<div class="row">
+<div class="card card-cs">
+<p class="tag tag-use">In use</p>
+<h3 class="card-title">The work-issue pipeline</h3>
+<p class="card-text">The earlier set of skills. It is not ADP.</p>
+<ul class="card-list">
+<li>It has a help docs step for each change.</li>
+<li>Set up on November 11, 2026. Two changes have used it so far.</li>
+<li>The agent decides whether a change needs the help docs. Nothing checks that decision.</li>
+</ul>
+</div>
+<div class="card card-ug">
+<p class="tag tag-use">In use</p>
+<h3 class="card-title">ADP, the Autonomous Dev Pipeline</h3>
+<p class="card-text">The pipeline meant to replace it: 11 skills and 14 reference documents.</p>
+<ul class="card-list">
+<li>None of its 11 skills mentions the help docs.</li>
+<li>No skill writes the help docs change, opens the docs PR or checks it was merged.</li>
+<li>An issue shipped through ADP can leave the help docs behind.</li>
+</ul>
+</div>
+</div>
+<p class="note">In both pipelines, nothing re-checks the guides already written.</p>
+<aside>The work-issue pipeline is /work-issue, /pr, /merge and /production-release. Its help docs steps were added when the help docs moved to their own repository. Two docs PRs have gone through, both merged on November 19. Some ADP runs carried a Help docs line anyway, only because the agent also reads the rules of the Clara Studio repository.</aside>
+</section>
+<section id="adp-flow" class="alt" data-transition="fade">
+<p class="eyebrow">HOW ADP WORKS</p>
+<h2 class="title">ADP takes an issue from plan to close in six steps</h2>
+<div class="grid3">
+<div class="step">
+<div class="step-head"><p class="num num-cs">1</p><h3 class="step-name">Project Intake</h3></div>
+<p class="step-text">A client request becomes approved documents. The estimate holds the Ticket plan.</p>
+<p class="step-skill">project-intake</p>
+</div>
+<div class="step">
+<div class="step-head"><p class="num num-cs">2</p><h3 class="step-name">Plan</h3></div>
+<p class="step-text">The Ticket plan becomes issues. Each issue gets a contract of at most 5 criteria.</p>
+<p class="step-skill">adp-plan-project · adp-plan-epic · adp-plan-issue</p>
+</div>
+<div class="step">
+<div class="step-head"><p class="num num-cs">3</p><h3 class="step-name">Build</h3></div>
+<p class="step-text">ADP writes the tests and the code, and opens the Clara Studio pull request.</p>
+<p class="step-skill">adp-issue · adp-pr</p>
+</div>
+<div class="step">
+<div class="step-head"><p class="num num-cs">4</p><h3 class="step-name">Check</h3></div>
+<p class="step-text">The merged issue is checked against its contract, then waits for the release.</p>
+<p class="step-skill">adp-qa</p>
+</div>
+<div class="step step-out">
+<div class="step-head"><p class="num num-cs">5</p><h3 class="step-name">Production release</h3></div>
+<p class="step-text">A person runs the release. ADP never merges into the main branch.</p>
+<p class="step-skill">Outside ADP</p>
+</div>
+<div class="step">
+<div class="step-head"><p class="num num-cs">6</p><h3 class="step-name">Close</h3></div>
+<p class="step-text">ADP closes the issue after the release, and not while a criterion is unmet.</p>
+<p class="step-skill">adp-qa</p>
+</div>
+</div>
+<aside>Three rules matter for the proposal. One: an issue is built and checked against its contract. Two: ADP never merges into the main branch, a person releases. Three: only adp-qa closes an issue, and never while a criterion is unmet. Small work can enter at step 2 without Project Intake. ADP works in one repository per run.</aside>
+</section>
+<section id="idea" class="dark" data-transition="fade">
+<p class="eyebrow">THE IDEA</p>
+<div class="spacer"></div>
+<p class="statement">No new skill. The help docs travel inside each issue.</p>
+<p class="statement-sub lead">State the help docs in the issue, and ADP’s own contract and checks carry them to the end. Five pieces are needed.</p>
+<div class="spacer"></div>
+<aside>ADP already builds against a contract and refuses to close an issue with an unmet criterion. So instead of writing a new help docs skill, the proposal puts the help docs requirement into the issue itself, where those existing mechanisms pick it up.</aside>
+</section>
+<section id="pieces" data-transition="fade">
+<p class="eyebrow">THE PROPOSAL</p>
+<h2 class="title">Five pieces make the help docs part of ADP</h2>
+<div class="row">
+<div class="card">
+<p class="num">1</p>
+<h3 class="card-title">The issue names the help docs</h3>
+<p class="card-text">It includes the Help docs statement, and its contract gets two help docs criteria.</p>
+</div>
+<div class="card">
+<p class="num">2</p>
+<h3 class="card-title">A page to guide map</h3>
+<p class="card-text">One small file linking each app page to its guide, so no guide is missed.</p>
+</div>
+<div class="card">
+<p class="num">3</p>
+<h3 class="card-title">A linked help docs issue</h3>
+<p class="card-text">The help docs change is its own issue, run by ADP in the help docs repository.</p>
+</div>
+<div class="card">
+<p class="num">4</p>
+<h3 class="card-title">A reviewer checks it</h3>
+<p class="card-text">The help docs change is reviewed together with the code, through a review criterion.</p>
+</div>
+<div class="card">
+<p class="num">5</p>
+<h3 class="card-title">The issue waits</h3>
+<p class="card-text">A criterion keeps the issue open until the docs PR is merged.</p>
+</div>
+</div>
+<aside>The Help docs statement is one line in the plan of an issue: either the guides to update or add, or none with the reason. Pieces 4 and 5 are the two help docs criteria named in piece 1. Piece 3 exists because ADP works in one repository per run, and the help docs live in a second repository.</aside>
+</section>
+<section id="example" class="alt" data-transition="fade">
+<p class="eyebrow">WHAT CHANGES IN AN ISSUE</p>
+<h2 class="title">Three added lines carry the whole requirement</h2>
+<div class="row">
+<div class="issue">
+<p class="issue-label">EXAMPLE ISSUE · “ADD A BUTTON”</p>
+<p class="issue-line">Plan: add the button to the board toolbar.</p>
+<p class="issue-new"><b>Help docs:</b> Project Board guide, update the toolbar section.</p>
+<p class="issue-label">CONTRACT CRITERIA</p>
+<p class="issue-line">1 to 3. The button works as described.</p>
+<p class="issue-new">4. A reviewer confirms the help docs change matches the new behaviour.</p>
+<p class="issue-new">5. The docs PR is merged.</p>
+</div>
+<div class="side">
+<div class="card">
+<h3 class="card-title">The Help docs statement</h3>
+<p class="card-text">Names the guides to update or add. If none, it says “none” and why.</p>
+</div>
+<div class="card">
+<h3 class="card-title">Two help docs criteria</h3>
+<p class="card-text">One is judged by a reviewer during the build. The other is checked after the release.</p>
+</div>
+</div>
+</div>
+<p class="note">Example wording, written for this deck. The final text of the criteria is still to be agreed.</p>
+<aside>The orange lines are what the proposal adds. Everything else is what an ADP issue already has. Note the cost: a contract allows at most five criteria, and the help docs take two of them. That limit is one of the open decisions.</aside>
+</section>
+<section id="end-to-end" data-transition="fade">
+<p class="eyebrow">END TO END</p>
+<h2 class="title">The same six steps, with the five pieces in place</h2>
+<p class="lane-label lane-cs">CLARA STUDIO · THE ISSUE AND THE CODE</p>
+<div class="lane">
+<div class="cell cell-cs"><p class="cell-name">1 Intake</p><p class="cell-text">Unchanged.</p></div>
+<div class="cell cell-cs"><p class="cell-name">2 Plan</p><p class="cell-text"><span class="pc"><b>Pieces 1, 2.</b></span> The issue names its guides and gets two criteria.</p></div>
+<div class="cell cell-cs"><p class="cell-name">3 Build</p><p class="cell-text"><span class="pc"><b>Piece 4.</b></span> A reviewer checks the docs change with the code.</p></div>
+<div class="cell cell-cs"><p class="cell-name">4 Check</p><p class="cell-text">Checked against the contract, as today.</p></div>
+<div class="cell cell-cs"><p class="cell-name">5 Release</p><p class="cell-text">A person runs the release.</p></div>
+<div class="cell cell-cs"><p class="cell-name">6 Close</p><p class="cell-text"><span class="pc"><b>Piece 5.</b></span> The issue waits until the docs PR is merged.</p></div>
+</div>
+<p class="lane-label lane-ug">HELP DOCS · THE SAME STEP, IN ITS OWN REPOSITORY</p>
+<div class="lane">
+<div class="cell cell-ug"><p class="cell-name">1 Intake</p><p class="cell-text">Could name the guides. To decide.</p></div>
+<div class="cell cell-ug"><p class="cell-name">2 Plan</p><p class="cell-text"><span class="pc"><b>Piece 3.</b></span> A linked help docs issue is created.</p></div>
+<div class="cell cell-ug"><p class="cell-name">3 Build</p><p class="cell-text">The guide is written and the docs PR opened.</p></div>
+<div class="cell cell-ug"><p class="cell-name">4 Check</p><p class="cell-text">The docs PR waits, still open.</p></div>
+<div class="cell cell-ug"><p class="cell-name">5 Release</p><p class="cell-text">The release merges the docs PR.</p></div>
+<div class="cell cell-ug"><p class="cell-name">6 Close</p><p class="cell-text">The guide is live, the same day as the feature.</p></div>
+</div>
+<aside>Read each column top to bottom: the first row is the code, the second is what happens to the help docs at the same step. The docs PR stays open on purpose, so the help docs never describe a feature users do not have yet. One caution for step 3 in the second row: ADP has never been run in the help docs repository.</aside>
+</section>
+<section id="phases" class="alt" data-transition="fade">
+<p class="eyebrow">HOW TO ROLL IT OUT</p>
+<h2 class="title">Start by hand, then let ADP enforce it</h2>
+<div class="row">
+<div class="card card-cs">
+<p class="phase-n">PHASE 1</p>
+<h3 class="phase-title">By hand</h3>
+<p class="phase-k">What changes</p>
+<p class="card-text">Nothing in ADP. Whoever writes the issue adds the Help docs statement and the two criteria.</p>
+<p class="phase-k">Result</p>
+<p class="card-text">Works issue by issue, starting now. Nothing enforces it.</p>
+</div>
+<div class="card card-ug">
+<p class="phase-n">PHASE 2</p>
+<h3 class="phase-title">Enforced</h3>
+<p class="phase-k">What changes</p>
+<p class="card-text">One paragraph in the Protocol, one of the 14 ADP reference documents.</p>
+<p class="phase-k">Result</p>
+<p class="card-text">ADP refuses to plan an issue that changes what users see and lacks the statement and criteria.</p>
+</div>
+</div>
+<aside>Phase 1 costs nothing and lets us try the idea on a few real issues. Phase 2 is a small written change, but it touches an ADP reference document, so it needs the agreement of whoever owns ADP.</aside>
+</section>
+<section id="status" data-transition="fade">
+<p class="eyebrow">STATUS</p>
+<h2 class="title">Most of what the proposal needs already exists</h2>
+<div class="row">
+<div class="card">
+<p class="tag tag-use">In use today</p>
+<ul class="card-list">
+<li>Project Intake handing over to ADP through the Ticket plan</li>
+<li>ADP planning, building, checking and closing issues</li>
+<li>The production release merging docs PRs</li>
+</ul>
+</div>
+<div class="card">
+<p class="tag tag-ready">Ready in ADP, not yet used for help docs</p>
+<ul class="card-list">
+<li>A review criterion in a contract</li>
+<li>A criterion checked after the release</li>
+<li>ADP never merging into the main branch</li>
+<li>ADP screen captures</li>
+</ul>
+</div>
+<div class="card">
+<p class="tag tag-prop">Proposed, does not exist yet</p>
+<ul class="card-list">
+<li>The Help docs statement required in ADP issues</li>
+<li>The page to guide map</li>
+<li>The linked help docs issue</li>
+<li>The two help docs criteria</li>
+<li>The paragraph in the Protocol</li>
+</ul>
+</div>
+</div>
+<aside>In use means it works and is used today. Ready means ADP has it, but nobody has used it for the help docs. Proposed means it is new and part of this proposal. The proposed column is short and mostly written text, not software.</aside>
+</section>
+<section id="decisions" class="dark">
+<p class="eyebrow">STILL TO DECIDE</p>
+<h2 class="title">Eight questions to settle before phase 2</h2>
+<div class="grid2">
+<p class="lead"><b>1.</b> Can ADP run in the help docs repository? Never tested.</p>
+<p class="lead"><b>2.</b> Can a reviewer read a change in another repository?</p>
+<p class="lead"><b>3.</b> Which branch does the docs PR target, main or dev?</p>
+<p class="lead"><b>4.</b> Do two help docs criteria fit the limit of five per contract?</p>
+<p class="lead"><b>5.</b> Can ADP captures be reused as help docs screenshots?</p>
+<p class="lead"><b>6.</b> Should Project Intake name the guides?</p>
+<p class="lead"><b>7.</b> Who re-checks the guides already written, at each release?</p>
+<p class="lead"><b>8.</b> How do we detect a change nobody documented?</p>
+</div>
+<div class="spacer"></div>
+<p class="note">Suggested first step: try phase 1 by hand on two or three real issues, and answer questions 1 and 2 with one test run.</p>
+<aside>Questions 1 and 2 decide whether pieces 3 and 4 work at all, so they come first. Questions 7 and 8 are not solved by this proposal: it covers new changes, not guides that are already out of date. The suggested first step is my recommendation, not something already agreed.</aside>
+</section>
+</div></div>
+<script>
+(function(){
+  var stage=document.getElementById('stage'),fit=stage.parentElement;
+  var s=[].slice.call(stage.children),i=0;
+  var prev=document.getElementById('prev'),next=document.getElementById('next'),count=document.getElementById('count');
+  function scale(){var k=Math.min(fit.clientWidth/1920,fit.clientHeight/1080)*0.97;stage.style.transform='translate(-50%,-50%) scale('+k+')';}
+  function show(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach(function(e,j){e.classList.toggle('on',j===i);});
+    count.textContent=(i+1)+' / '+s.length;prev.disabled=i===0;next.disabled=i===s.length-1;history.replaceState(null,'','#'+s[i].id);}
+  prev.onclick=function(){show(i-1);};next.onclick=function(){show(i+1);};
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();show(i+1);}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(i-1);}
+    if(e.key==='Home')show(0);if(e.key==='End')show(s.length-1);});
+  window.addEventListener('resize',scale);
+  var start=s.findIndex(function(e){return '#'+e.id===location.hash;});
+  scale();show(start<0?0:start);
+})();
+</script>
+</body>
+</html>

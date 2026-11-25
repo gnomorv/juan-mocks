@@ -6,6 +6,7 @@ Juan Arce's collection of front-end mock-ups for Clara Studio, served with GitHu
 
 | Mock-up | Path | Notes |
 |---|---|---|
+| Help docs updates with ADP: slides | [/help-docs-adp-slides/](https://gnomorv.github.io/juan-mocks/help-docs-adp-slides/) | Slide deck, not a screen mock-up: 11 slides presenting the proposal to make the help docs part of ADP; own slide viewer, no review bar |
 | Help docs and ADP: the whole picture | [/help-docs-adp-overview/](https://gnomorv.github.io/juan-mocks/help-docs-adp-overview/) | Overview, not a screen mock-up: joins the four ADP and User Guide pages in one reading order, with the status of every piece; concept page |
 | Project Intake, ADP and the Help Docs | [/intake-adp-help-docs/](https://gnomorv.github.io/juan-mocks/intake-adp-help-docs/) | Process diagram, not a screen mock-up: how Project Intake feeds the Autonomous Dev Pipeline today, where the help docs can join, and the help-docs step of the older pipeline; concept page |
 | ADP document map | [/adp-document-map/](https://gnomorv.github.io/juan-mocks/adp-document-map/) | Inventory, not a screen mock-up: the 24 documents and 11 skills that define the Autonomous Dev Pipeline, grouped, with what was not counted; concept page |
