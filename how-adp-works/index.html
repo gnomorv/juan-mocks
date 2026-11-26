@@ -1,224 +1,137 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How ADP works</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/mockup.css">
-<style>
-  .hw {
-    --hw-card: #ffffff; --hw-ink: #1c2330; --hw-muted: #5d6778; --hw-line: #d5dae2; --hw-soft: #f1f4f9;
-    --hw-plan: #2f6fde; --hw-plan-soft: #e8f0fd; --hw-build: #1d8a5f; --hw-build-soft: #e4f5ed;
-    --hw-close: #7a5cc4; --hw-close-soft: #efeafb; --hw-back: #b86a00; --hw-back-soft: #fff3df;
-    max-width: 1040px; margin: 0 auto; padding: 36px 24px 64px; color: var(--hw-ink); font-size: 15px; line-height: 1.65;
-  }
-  html.dark .hw {
-    --hw-card: #1d2229; --hw-ink: #e8ecf2; --hw-muted: #9aa5b5; --hw-line: #343c48; --hw-soft: #232a33;
-    --hw-plan: #7aa7f5; --hw-plan-soft: #1c2a44; --hw-build: #5fd0a0; --hw-build-soft: #173326;
-    --hw-close: #b6a0ee; --hw-close-soft: #2a2342; --hw-back: #f2b457; --hw-back-soft: #3a2c12;
-  }
-  .hw h1 { font-size: 26px; margin: 0 0 14px; color: inherit; }
-  .hw-lead { margin: 0 0 34px; padding-left: 20px; max-width: 80ch; }
-  .hw-lead li { margin: 8px 0; }
-  .hw h2 { font-size: 18px; margin: 52px 0 18px; color: inherit; }
-  .hw h2 .pin { margin-right: 6px; }
-  .hw p { margin: 0 0 16px; max-width: 84ch; }
-
-  .hw-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-  .hw-phase { background: var(--hw-card); border: 1px solid var(--hw-line); border-top: 4px solid var(--c); border-radius: 10px; padding: 18px 18px 20px; }
-  .hw-phase h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--c); margin: 0 0 14px; }
-  .hw-skill { background: var(--s); border-radius: 7px; padding: 9px 12px; margin-top: 10px; font-size: 13.5px; line-height: 1.45; }
-  .hw-skill code { display: block; font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; color: var(--c); margin-bottom: 3px; }
-
-  .hw table { width: 100%; border-collapse: collapse; background: var(--hw-card); border: 1px solid var(--hw-line); }
-  .hw th, .hw td { text-align: left; padding: 14px 16px; border-bottom: 1px solid var(--hw-line); vertical-align: top; }
-  .hw th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--hw-muted); }
-  .hw td code { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; white-space: nowrap; }
-  .hw td.w { font-weight: 700; white-space: nowrap; }
-  .hw-list { margin: 0; padding-left: 20px; max-width: 84ch; }
-  .hw-list li { margin: 10px 0; }
-  .hw-foot { color: var(--hw-muted); font-size: 13px; margin-top: 32px; }
-
-  @media (max-width: 860px) { .hw-flow { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 520px) {
-    .hw-flow { grid-template-columns: 1fr; }
-    .hw table, .hw tbody, .hw tr, .hw td { display: block; }
-    .hw thead { display: none; }
-    .hw td { border-bottom: 0; padding: 4px 16px; }
-    .hw tr { border-bottom: 1px solid var(--hw-line); padding: 10px 0; }
-    .hw td code { white-space: normal; }
-  }
-  .hw-step { background: var(--hw-card); border: 1px solid var(--hw-line); border-left: 4px solid var(--c); border-radius: 10px; padding: 22px 26px 24px; margin-bottom: 22px; }
-  .hw-step h3 { font-size: 17px; margin: 0 0 6px; color: inherit; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .hw-num { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--c); background: var(--s); border-radius: 999px; padding: 2px 11px; white-space: nowrap; }
-  .hw-by { margin: 0 0 14px; color: var(--hw-muted); font-size: 14px; }
-  .hw-by code, .hw code { font: 600 12.5px 'JetBrains Mono', ui-monospace, Menlo, monospace; color: var(--c, var(--hw-plan)); }
-  .hw-step ol { margin: 0; padding-left: 22px; max-width: 82ch; }
-  .hw-step ol li { margin: 8px 0; }
-  .hw-step p.after { margin: 14px 0 0; }
-  .hw-person { display: flex; gap: 12px; align-items: center; margin: 0 0 22px 26px; padding: 10px 16px; border: 1px dashed var(--hw-line); border-radius: 999px; width: fit-content; max-width: 100%; font-weight: 600; font-size: 14px; background: var(--hw-soft); }
-  .hw-person span { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--hw-muted); }
-  .hw-phase-title { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; color: var(--c); margin: 38px 0 14px; }
-  .hw-skill small { display: block; color: var(--hw-muted); font-size: 12px; margin-top: 3px; }
-</style>
-</head>
-<body data-show="proposed">
-<div class="review-bar">
-  <a href="../">← All mock-ups</a>
-  <span class="rb-title">How ADP works</span>
-  <span class="t-meta" style="color:#9ca3af">November 26, 2026 · explainer</span>
-  <span class="rb-spacer"></span>
-  <span class="seg" role="group" aria-label="Theme"><button data-set="theme:light">Light</button><button data-set="theme:dark">Dark</button></span>
-  <span class="seg" role="group" aria-label="Notes"><button data-set="notes:on">Notes on</button><button data-set="notes:off">Off</button></span>
-</div>
-<div class="review-layout">
-<div class="split-wrap">
-  <div data-variant="proposed" class="pro">
-  <div class="hw">
-    <h1>How ADP works</h1>
-    <ul class="hw-lead">
-      <li><b>What it is:</b> the Autonomous Dev Pipeline (ADP) takes a piece of work from an idea to merged, checked code.</li>
-      <li><b>Who does what:</b> agents plan, build and check. A person approves at fixed points and merges.</li>
-      <li><b>What it is made of:</b> 11 skills. A skill is a written set of instructions for one stage, which an agent follows step by step.</li>
-      <li><b>Where it is recorded:</b> on the issue in Clara Studio: a comment for each step, the approvals and the results.</li>
-    </ul>
-
-    <h2><span class="pin">1</span>The whole process</h2>
-    <div class="hw-flow">
-      <div class="hw-phase" style="--c:var(--hw-plan); --s:var(--hw-plan-soft)">
-        <h3>1 · Plan</h3>
-        <div class="hw-skill"><code>adp-setup</code>Prepare the repository<small>Once per repository</small></div>
-        <div class="hw-skill"><code>adp-plan-project</code>Turn the project into issues</div>
-        <div class="hw-skill"><code>adp-plan-epic</code>Plan the epic</div>
-        <div class="hw-skill"><code>adp-plan-issue</code>Plan the issue<small>A person approves the plan</small></div>
-      </div>
-      <div class="hw-phase" style="--c:var(--hw-build); --s:var(--hw-build-soft)">
-        <h3>2 · Build</h3>
-        <div class="hw-skill"><code>adp-issue</code>Build the issue</div>
-        <div class="hw-skill"><code>adp-epic</code>Build a whole epic</div>
-        <div class="hw-skill"><code>adp-pr</code>Open the pull request<small>A person merges</small></div>
-      </div>
-      <div class="hw-phase" style="--c:var(--hw-close); --s:var(--hw-close-soft)">
-        <h3>3 · Close</h3>
-        <div class="hw-skill"><code>adp-qa</code>Check and close</div>
-      </div>
-      <div class="hw-phase" style="--c:var(--hw-back); --s:var(--hw-back-soft)">
-        <h3>Backlog</h3>
-        <div class="hw-skill"><code>adp-groom</code>Sort the open issues</div>
-        <div class="hw-skill"><code>adp-dispatch</code>Start the ones that are ready</div>
-        <div class="hw-skill"><code>adp-queue</code>Work the queue, one issue at a time<small>Runs alongside the three phases</small></div>
-      </div>
-    </div>
-
-    <h2><span class="pin">2</span>Words to know</h2>
-    <table>
-      <thead><tr><th>Word</th><th>Meaning</th></tr></thead>
-      <tbody>
-        <tr><td class="w">Contract</td><td>The approved plan of an issue: its goal, the points that must be true at the end, and how each point is checked.</td></tr>
-        <tr><td class="w">Gate</td><td>A point where the work must pass a check or an approval before it continues.</td></tr>
-        <tr><td class="w">Run</td><td>One execution of a skill on an issue.</td></tr>
-        <tr><td class="w">Park</td><td>A run that stopped and waits for a person. The issue is set to Blocked until the person answers.</td></tr>
-        <tr><td class="w">Profile</td><td>The file that tells the skills how to test and build a repository.</td></tr>
-        <tr><td class="w">Epic</td><td>A large piece of work, split into stories.</td></tr>
-        <tr><td class="w">Story</td><td>One issue inside an epic.</td></tr>
-      </tbody>
-    </table>
-
-    <h2><span class="pin">3</span>The steps, in order</h2>
-    <div class="hw-phase-title" style="--c:var(--hw-plan); --s:var(--hw-plan-soft)">Plan</div>
-    <div class="hw-step" style="--c:var(--hw-plan); --s:var(--hw-plan-soft)">
-      <h3><span class="hw-num">Step 1</span>Prepare the repository</h3>
-      <p class="hw-by">Skill: <code>adp-setup</code></p>
-      <ol><li>The skill reads the repository to find the commands for tests, coverage and build.</li><li>It shows the proposed profile. A person confirms it or changes its values.</li><li>It saves the profile on its own branch and runs the checks once, to prove the profile works.</li></ol><p class="after">It runs once for each repository. Every later skill reads the profile to know which commands to run.</p>
-    </div>
-    <div class="hw-step" style="--c:var(--hw-plan); --s:var(--hw-plan-soft)">
-      <h3><span class="hw-num">Step 2</span>Turn the project into issues</h3>
-      <p class="hw-by">Skill: <code>adp-plan-project</code></p>
-      <ol><li>The skill finds the estimate of the project and checks that it is final and approved.</li><li>It says what it is about to file.</li><li>It files one epic, or one for each release, and one placeholder story for each line of the estimate.</li></ol><p class="after">A placeholder story is a rough story. It is planned in detail later.</p>
-    </div>
-    <div class="hw-step" style="--c:var(--hw-plan); --s:var(--hw-plan-soft)">
-      <h3><span class="hw-num">Step 3</span>Plan the epic</h3>
-      <p class="hw-by">Skill: <code>adp-plan-epic</code></p>
-      <ol><li>The skill sets the list of stories, their order and which story depends on which.</li><li>It writes the epic plan: the objective, what the stories share, the scope and the tests that prove the stories fit together.</li><li>Reviewers read the plan.</li><li>The skill plans the first story in full. The other stories stay as placeholders.</li></ol><p class="after">Later stories are planned one at a time, when their turn comes, against the work already finished.</p>
-    </div>
-    <div class="hw-step" style="--c:var(--hw-plan); --s:var(--hw-plan-soft)">
-      <h3><span class="hw-num">Step 4</span>Plan the issue</h3>
-      <p class="hw-by">Skill: <code>adp-plan-issue</code></p>
-      <ol><li>The skill reads the issue and sizes it. If the issue is too big, it proposes a split.</li><li>It writes the contract and saves it as the description of the issue.</li><li>If the change shows on screen, a mock-up is agreed.</li><li>Product, architecture and security reviewers read the contract.</li></ol><p class="after">Every issue passes through this step. No code is written before the contract is approved.</p>
-    </div>
-    <div class="hw-person"><span>A person</span>approves the contract at the plan gate. The issue moves to Ready for Dev.</div>
-    <div class="hw-phase-title" style="--c:var(--hw-build); --s:var(--hw-build-soft)">Build</div>
-    <div class="hw-step" style="--c:var(--hw-build); --s:var(--hw-build-soft)">
-      <h3><span class="hw-num">Step 5</span>Build the issue</h3>
-      <p class="hw-by">Skill: <code>adp-issue</code></p>
-      <ol><li><b>Tests first.</b> One test is written for each point of the contract. Each test must fail first.</li><li><b>Code.</b> The smallest change that makes the tests pass. The tests are not edited at this step.</li><li><b>Gate.</b> Every check of the repository runs. A failed gate goes no further.</li><li><b>Second look.</b> The tests are checked for gaps. If the change shows on screen, a person sees the screenshots and says whether they look right.</li><li><b>Review.</b> Architecture and security reviewers read every change.</li><li><b>Simplify.</b> The change is made smaller without altering what it does.</li></ol><p class="after">The work is split between roles, so that no role checks its own work: one writes the tests, another writes the code, others review.</p>
-    </div>
-    <div class="hw-step" style="--c:var(--hw-build); --s:var(--hw-build-soft)">
-      <h3><span class="hw-num">Step 6</span>Open the pull request</h3>
-      <p class="hw-by">Skill: <code>adp-pr</code></p>
-      <ol><li>The skill brings the branch of the issue up to date with the shared code.</li><li>If that changed reviewed files, they are reviewed again.</li><li>It opens the pull request and waits for the automatic checks.</li><li>It hands the pull request to a person. The skill itself never merges.</li></ol>
-    </div>
-    <div class="hw-person"><span>A person</span>merges the pull request.</div>
-    <div class="hw-phase-title" style="--c:var(--hw-close); --s:var(--hw-close-soft)">Close</div>
-    <div class="hw-step" style="--c:var(--hw-close); --s:var(--hw-close-soft)">
-      <h3><span class="hw-num">Step 7</span>Check and close</h3>
-      <p class="hw-by">Skill: <code>adp-qa</code></p>
-      <ol><li>The skill looks for proof of each point of the contract. A comment that only says a point is met does not count.</li><li>It posts one result comment on the issue.</li><li>It moves the issue once: closed or ready for release when every point is met, back to development with a bug when one is not, blocked when proof is missing.</li></ol><p class="after">The skill does not check work it built itself.</p>
-    </div>
-
-    <h2><span class="pin">4</span>One issue or a whole epic</h2>
-    <table>
-      <thead><tr><th></th><th>One issue</th><th>A whole epic</th></tr></thead>
-      <tbody>
-        <tr><td class="w">Plan</td><td><code>adp-plan-issue</code></td><td><code>adp-plan-epic</code>, then each story is planned when its turn comes</td></tr>
-        <tr><td class="w">Build</td><td><code>adp-issue</code></td><td><code>adp-epic</code> builds every story in order, the way <code>adp-issue</code> does</td></tr>
-        <tr><td class="w">Where the code goes</td><td>The branch of the issue</td><td>Each finished story is added to one shared branch, the epic branch</td></tr>
-        <tr><td class="w">Pull request</td><td>One for the issue</td><td>One for the whole epic. No pull request for each story</td></tr>
-      </tbody>
-    </table>
-
-    <h2><span class="pin">5</span>Keeping the work moving</h2>
-    <table>
-      <thead><tr><th>Order</th><th>Skill</th><th>What it does</th></tr></thead>
-      <tbody>
-        <tr><td class="w">1</td><td><code>adp-groom</code></td><td>Sorts every open issue into four groups: ready, needs planning, needs a person, stale. It writes one report of what people owe.</td></tr>
-        <tr><td class="w">2</td><td><code>adp-dispatch</code></td><td>Reads that report and starts the work: planning for the issues that need a plan, building for the issues that are ready. It never starts the same issue twice.</td></tr>
-        <tr><td class="w">3</td><td><code>adp-queue</code></td><td>Works through the issues assigned to a person with nobody present, one at a time. For each one it starts <code>adp-issue</code>, waits and records the result.</td></tr>
-      </tbody>
-    </table>
-
-    <h2><span class="pin">6</span>Where a person decides</h2>
-    <table>
-      <thead><tr><th>When</th><th>What the person decides</th></tr></thead>
-      <tbody>
-        <tr><td class="w">Setup proposes a profile</td><td>Whether the profile is right</td></tr>
-        <tr><td class="w">A contract or an epic plan reaches its gate</td><td>Whether to approve the plan</td></tr>
-        <tr><td class="w">The change shows on screen</td><td>Whether the screenshots look right</td></tr>
-        <tr><td class="w">A reviewer finds a critical problem</td><td>How to continue</td></tr>
-        <tr><td class="w">A point of the contract must change</td><td>Whether the scope changes</td></tr>
-        <tr><td class="w">The pull request is ready</td><td>To merge it</td></tr>
-        <tr><td class="w">The final check cannot find proof</td><td>Whether to accept the point or not</td></tr>
-      </tbody>
-    </table>
-    <p style="margin-top:18px">When a run stops, it leaves a comment on the issue, sets the issue to Blocked and asks one question. The run continues from the same step once the person answers.</p>
-
-    <p class="hw-foot">Written from the text of the 11 ADP skills as read in Clara Studio on November 25 and 26, 2026. It describes what the skills say, not a watched run. The skills still change.</p>
-  </div>
-  </div>
-</div>
-<aside class="notes">
-  <h2>How to read this</h2>
-  <p class="notes-sub">One page that follows a piece of work through the pipeline, in the order things happen.</p>
-  <ol>
-    <li><b>Three phases and a backlog.</b> Plan, Build, Close, with three skills that keep the list of work in order. <span class="why">The colours of the diagram are the colours of the steps below.</span></li>
-    <li><b>Nothing is built without an approved plan.</b> The contract comes first. <span class="why">Every later check is made against the contract.</span></li>
-    <li><b>Tests before code.</b> A test must fail before the code that fixes it is written. <span class="why">It proves the test really checks the point.</span></li>
-    <li><b>People hold the approvals and the merge.</b> <span class="why">The agents stop and wait at each of these points.</span></li>
-  </ol>
-</aside>
-</div>
-<script src="../assets/mockup.js"></script>
-</body>
-</html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-adp/how-adp-works" data-has-hydrated="true" data-theme="light" data-theme-choice="light" data-rh="lang,dir,class,data-has-hydrated"><head><meta charset="UTF-8"><meta name="generator" content="Docusaurus v3.10.2"><title>How ADP Works | User Guide</title><meta data-rh="true" name="viewport" content="width=device-width, initial-scale=1.0"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://docs.clarastudio.ai/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://docs.clarastudio.ai/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://docs.clarastudio.ai/adp/how-adp-works/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><link data-rh="true" rel="icon" href="assets/favicon-mark.svg"><link rel="stylesheet" href="assets/styles.f2cfe9f8.css"><meta property="og:title" content="How ADP Works | User Guide" data-rh="true"><meta name="description" content="How ADP Works — Reference for developers using the Autonomous Dev Pipeline." data-rh="true"><meta property="og:description" content="How ADP Works — Reference for developers using the Autonomous Dev Pipeline." data-rh="true"></head><body style="overflow: visible;"><svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></symbol>
+</defs></svg>
+<div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" aria-disabled="true" style="cursor: default;"><div class="navbar__logo"><img src="assets/clara-learning-mark.svg" alt="User Guide" class="themedComponent_mlkZ themedComponent--light_NVdE"></div><b class="navbar__title text--truncate">User Guide</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" aria-disabled="true" style="cursor: default;">Guides</a><a class="navbar__item navbar__link" aria-disabled="true" style="cursor: default;">Connect Clara</a><a class="navbar__item navbar__link" aria-disabled="true" style="cursor: default;">FAQ</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP" type="button" title="light mode" aria-label="Switch between dark and light mode (currently light mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><svg aria-hidden="true" class="searchIcon_T3tP" focusable="false" viewBox="0 0 16 16"><path fill="currentColor" d="M6.02945 10.20327a4.17382 4.17382 0 1 1 4.17382-4.17382 4.15609 4.15609 0 0 1-4.17382 4.17382Zm9.69195 4.2199-4.8225-4.82338A5.88021 5.88021 0 0 0 12.058 6.02856 6.00467 6.00467 0 1 0 9.59979 10.8989l4.82338 4.82338a.89729.89729 0 0 0 1.29912 0 .89749.89749 0 0 0-.00087-1.29909Z"></path></svg><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div><div class="searchHintContainer_Pkmr"><kbd class="searchHint_iIMx">⌘</kbd><kbd class="searchHint_iIMx">K</kbd></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU backToTopButtonShow_xfvO" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a href="#" class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false"><span class="categoryLinkLabel_W154">Working in Clara Studio</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a href="#" class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false"><span class="categoryLinkLabel_W154">Administration</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a href="#" class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true"><span class="categoryLinkLabel_W154">ADP</span></a></div><ul class="menu__list" style="display: block; overflow: visible; height: auto;"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" aria-disabled="true" style="cursor: default;"><span class="linkLabel_WmDU">How ADP Works</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a href="#" class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0"><span class="categoryLinkLabel_W154">Plan</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a href="#" class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0"><span class="categoryLinkLabel_W154">Build</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a href="#" class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0"><span class="categoryLinkLabel_W154">Close</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a href="#" class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0"><span class="categoryLinkLabel_W154">Backlog</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a href="#" class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false"><span class="categoryLinkLabel_W154">Connecting Clara to Your Tools</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" aria-disabled="true" style="cursor: default;"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">ADP</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">How ADP Works</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1>How ADP Works</h1></header>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="overview">Overview<a href="#overview" class="hash-link" aria-label="Direct link to Overview" title="Direct link to Overview" translate="no">​</a></h2>
+<p>The Autonomous Dev Pipeline (ADP) takes a piece of work from an idea to merged, checked code. Agents do the planning, the building and the checking. A person approves at fixed points and merges.</p>
+<p>ADP is made of 11 <strong>skills</strong>. A skill is a written set of instructions for one stage. You start a skill from a tool such as Claude Code, and the agent follows it step by step. This page explains the whole process in order. Each skill has its own page with the detail.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="table-of-contents">Table of Contents<a href="#table-of-contents" class="hash-link" aria-label="Direct link to Table of Contents" title="Direct link to Table of Contents" translate="no">​</a></h2>
+<ul>
+<li class=""><a href="#the-whole-process" class="">The Whole Process</a></li>
+<li class=""><a href="#words-to-know" class="">Words to Know</a></li>
+<li class=""><a href="#step-1-prepare-the-repository" class="">Step 1: Prepare the Repository</a></li>
+<li class=""><a href="#step-2-turn-the-project-into-issues" class="">Step 2: Turn the Project into Issues</a></li>
+<li class=""><a href="#step-3-plan-the-epic" class="">Step 3: Plan the Epic</a></li>
+<li class=""><a href="#step-4-plan-the-issue" class="">Step 4: Plan the Issue</a></li>
+<li class=""><a href="#step-5-build-the-issue" class="">Step 5: Build the Issue</a></li>
+<li class=""><a href="#step-6-open-the-pull-request" class="">Step 6: Open the Pull Request</a></li>
+<li class=""><a href="#step-7-check-and-close" class="">Step 7: Check and Close</a></li>
+<li class=""><a href="#one-issue-or-a-whole-epic" class="">One Issue or a Whole Epic</a></li>
+<li class=""><a href="#keeping-the-work-moving" class="">Keeping the Work Moving</a></li>
+<li class=""><a href="#where-a-person-decides" class="">Where a Person Decides</a></li>
+<li class=""><a href="#references" class="">References</a></li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-whole-process">The Whole Process<a href="#the-whole-process" class="hash-link" aria-label="Direct link to The Whole Process" title="Direct link to The Whole Process" translate="no">​</a></h2>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color: #9CDCFE; --prism-background-color: #1E1E1E;"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color: rgb(156, 220, 254); background-color: rgb(30, 30, 30);"><code class="codeBlockLines_e6Vv"><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">PLAN      1. Prepare the repository        adp-setup          once per repository</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">          2. Turn the project into issues  adp-plan-project</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">          3. Plan the epic                 adp-plan-epic</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">          4. Plan the issue                adp-plan-issue</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">                                           a person approves the plan</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain" style="display: inline-block;"></span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">BUILD     5. Build the issue               adp-issue          or adp-epic for a whole epic</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">          6. Open the pull request         adp-pr</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">                                           a person merges</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain" style="display: inline-block;"></span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">CLOSE     7. Check and close               adp-qa</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain" style="display: inline-block;"></span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">BACKLOG   Runs alongside: sorts the open issues and starts the ones that are ready</span><br></div><div class="token-line" style="color: rgb(156, 220, 254);"><span class="token plain">                                           adp-groom, adp-dispatch, adp-queue</span><br></div></code></pre><div class="buttonGroup_M5ko"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_IEyt" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_TrPX"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_cVMy"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>Everything the pipeline does is written on the issue in Clara Studio: a comment for each step, the approvals and the results. An agent that starts later reads those comments to know where the work stands.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="words-to-know">Words to Know<a href="#words-to-know" class="hash-link" aria-label="Direct link to Words to Know" title="Direct link to Words to Know" translate="no">​</a></h2>
+<table><thead><tr><th>Word</th><th>Meaning</th></tr></thead><tbody><tr><td><strong>Contract</strong></td><td>The approved plan of an issue: its goal, the points that must be true at the end, and how each point is checked.</td></tr><tr><td><strong>Gate</strong></td><td>A point where the work must pass a check or an approval before it continues.</td></tr><tr><td><strong>Run</strong></td><td>One execution of a skill on an issue.</td></tr><tr><td><strong>Park</strong></td><td>A run that stopped and waits for a person. The issue is set to <strong>Blocked</strong> until the person answers.</td></tr><tr><td><strong>Profile</strong></td><td>The file that tells the skills how to test and build a repository.</td></tr><tr><td><strong>Epic</strong></td><td>A large piece of work, split into stories.</td></tr><tr><td><strong>Story</strong></td><td>One issue inside an epic.</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-1-prepare-the-repository">Step 1: Prepare the Repository<a href="#step-1-prepare-the-repository" class="hash-link" aria-label="Direct link to Step 1: Prepare the Repository" title="Direct link to Step 1: Prepare the Repository" translate="no">​</a></h2>
+<p><strong>Skill:</strong> <a class="" aria-disabled="true" style="cursor: default;">adp-setup</a>. It runs once for each repository.</p>
+<ol>
+<li class="">The skill reads the repository to find the commands for tests, coverage and build.</li>
+<li class="">It shows you the proposed profile. You confirm it or change its values.</li>
+<li class="">It saves the profile on its own branch and runs the checks once, to prove the profile works.</li>
+</ol>
+<p>Every later skill reads the profile to know which commands to run.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-2-turn-the-project-into-issues">Step 2: Turn the Project into Issues<a href="#step-2-turn-the-project-into-issues" class="hash-link" aria-label="Direct link to Step 2: Turn the Project into Issues" title="Direct link to Step 2: Turn the Project into Issues" translate="no">​</a></h2>
+<p><strong>Skill:</strong> <a class="" aria-disabled="true" style="cursor: default;">adp-plan-project</a>. It applies when the work comes from a project with an estimate.</p>
+<ol>
+<li class="">The skill finds the estimate of the project and checks that it is final and approved.</li>
+<li class="">It tells you what it is about to file.</li>
+<li class="">It files one epic, or one for each release, and one placeholder story for each line of the estimate.</li>
+</ol>
+<p>A placeholder story is a rough story. It is planned in detail later.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-3-plan-the-epic">Step 3: Plan the Epic<a href="#step-3-plan-the-epic" class="hash-link" aria-label="Direct link to Step 3: Plan the Epic" title="Direct link to Step 3: Plan the Epic" translate="no">​</a></h2>
+<p><strong>Skill:</strong> <a class="" aria-disabled="true" style="cursor: default;">adp-plan-epic</a>.</p>
+<ol>
+<li class="">The skill sets the list of stories, their order and which story depends on which.</li>
+<li class="">It writes the epic plan: the objective, what the stories share, the scope and the tests that prove the stories fit together.</li>
+<li class="">Reviewers read the plan.</li>
+<li class="">The skill plans the first story in full. The other stories stay as placeholders.</li>
+<li class="">You approve the epic plan and the first story together.</li>
+</ol>
+<p>Later stories are planned one at a time, when their turn comes, against the work already finished.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-4-plan-the-issue">Step 4: Plan the Issue<a href="#step-4-plan-the-issue" class="hash-link" aria-label="Direct link to Step 4: Plan the Issue" title="Direct link to Step 4: Plan the Issue" translate="no">​</a></h2>
+<p><strong>Skill:</strong> <a class="" aria-disabled="true" style="cursor: default;">adp-plan-issue</a>. Every issue passes through this step.</p>
+<ol>
+<li class="">The skill reads the issue and sizes it. If the issue is too big, it proposes a split.</li>
+<li class="">It writes the contract and saves it as the description of the issue.</li>
+<li class="">If the change shows on screen, a mock-up is agreed.</li>
+<li class="">Product, architecture and security reviewers read the contract.</li>
+<li class="">You approve the contract at the <strong>plan gate</strong>. The issue moves to <strong>Ready for Dev</strong>.</li>
+</ol>
+<p>No code is written before the contract is approved.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-5-build-the-issue">Step 5: Build the Issue<a href="#step-5-build-the-issue" class="hash-link" aria-label="Direct link to Step 5: Build the Issue" title="Direct link to Step 5: Build the Issue" translate="no">​</a></h2>
+<p><strong>Skill:</strong> <a class="" aria-disabled="true" style="cursor: default;">adp-issue</a>.</p>
+<ol>
+<li class=""><strong>Tests first.</strong> One test is written for each point of the contract. Each test must fail first.</li>
+<li class=""><strong>Code.</strong> The smallest change that makes the tests pass. The tests are not edited at this step.</li>
+<li class=""><strong>Gate.</strong> Every check of the repository runs. A failed gate goes no further.</li>
+<li class=""><strong>Second look.</strong> The tests are checked for gaps. If the change shows on screen, you see the screenshots and say whether they look right.</li>
+<li class=""><strong>Review.</strong> Architecture and security reviewers read every change.</li>
+<li class=""><strong>Simplify.</strong> The change is made smaller without altering what it does.</li>
+</ol>
+<p>The work is split between roles, so that no role checks its own work: one writes the tests, another writes the code, others review.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-6-open-the-pull-request">Step 6: Open the Pull Request<a href="#step-6-open-the-pull-request" class="hash-link" aria-label="Direct link to Step 6: Open the Pull Request" title="Direct link to Step 6: Open the Pull Request" translate="no">​</a></h2>
+<p><strong>Skill:</strong> <a class="" aria-disabled="true" style="cursor: default;">adp-pr</a>.</p>
+<ol>
+<li class="">The skill brings the branch of the issue up to date with the shared code.</li>
+<li class="">If that changed reviewed files, they are reviewed again.</li>
+<li class="">It opens the pull request and waits for the automatic checks.</li>
+<li class="">It hands the pull request to you. The skill itself never merges.</li>
+</ol>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="step-7-check-and-close">Step 7: Check and Close<a href="#step-7-check-and-close" class="hash-link" aria-label="Direct link to Step 7: Check and Close" title="Direct link to Step 7: Check and Close" translate="no">​</a></h2>
+<p><strong>Skill:</strong> <a class="" aria-disabled="true" style="cursor: default;">adp-qa</a>. It runs after the pull request is merged.</p>
+<ol>
+<li class="">The skill looks for proof of each point of the contract. A comment that only says a point is met does not count.</li>
+<li class="">It posts one result comment on the issue.</li>
+<li class="">It moves the issue once.</li>
+</ol>
+<table><thead><tr><th>Outcome</th><th>Where the issue goes</th></tr></thead><tbody><tr><td>Every point is met</td><td><strong>Closed</strong>, or <strong>Ready for Release</strong></td></tr><tr><td>A point is not met</td><td><strong>Ready for Dev</strong>, with a bug issue</td></tr><tr><td>Proof is missing, or a person must answer</td><td><strong>Blocked</strong>, with the reason</td></tr></tbody></table>
+<p>The skill does not check work it built itself.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="one-issue-or-a-whole-epic">One Issue or a Whole Epic<a href="#one-issue-or-a-whole-epic" class="hash-link" aria-label="Direct link to One Issue or a Whole Epic" title="Direct link to One Issue or a Whole Epic" translate="no">​</a></h2>
+<p>The steps above describe one issue. An epic follows the same steps, with one difference in the Build phase.</p>
+<table><thead><tr><th></th><th>One issue</th><th>A whole epic</th></tr></thead><tbody><tr><td><strong>Plan</strong></td><td><code>adp-plan-issue</code></td><td><code>adp-plan-epic</code>, then each story is planned when its turn comes</td></tr><tr><td><strong>Build</strong></td><td><code>adp-issue</code></td><td><a class="" aria-disabled="true" style="cursor: default;">adp-epic</a> builds every story in order, the way <code>adp-issue</code> does</td></tr><tr><td><strong>Where the code goes</strong></td><td>The branch of the issue</td><td>Each finished story is added to one shared branch, the epic branch</td></tr><tr><td><strong>Pull request</strong></td><td>One for the issue</td><td>One for the whole epic. No pull request for each story</td></tr></tbody></table>
+<p>After each group of stories, <code>adp-epic</code> runs every check on the combined result, to prove the stories work together.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="keeping-the-work-moving">Keeping the Work Moving<a href="#keeping-the-work-moving" class="hash-link" aria-label="Direct link to Keeping the Work Moving" title="Direct link to Keeping the Work Moving" translate="no">​</a></h2>
+<p>Three skills manage the list of open issues, so the steps above always have work to take.</p>
+<table><thead><tr><th>Order</th><th>Skill</th><th>What it does</th></tr></thead><tbody><tr><td>1</td><td><a class="" aria-disabled="true" style="cursor: default;">adp-groom</a></td><td>Sorts every open issue into four groups: ready, needs planning, needs a person, stale. It writes one report of what people owe.</td></tr><tr><td>2</td><td><a class="" aria-disabled="true" style="cursor: default;">adp-dispatch</a></td><td>Reads that report and starts the work: planning for the issues that need a plan, building for the issues that are ready. It never starts the same issue twice.</td></tr><tr><td>3</td><td><a class="" aria-disabled="true" style="cursor: default;">adp-queue</a></td><td>Works through the issues assigned to you with nobody present, one at a time. For each one it starts <code>adp-issue</code>, waits and records the result.</td></tr></tbody></table>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="where-a-person-decides">Where a Person Decides<a href="#where-a-person-decides" class="hash-link" aria-label="Direct link to Where a Person Decides" title="Direct link to Where a Person Decides" translate="no">​</a></h2>
+<p>The agents stop at these points and wait for you.</p>
+<table><thead><tr><th>When</th><th>What you decide</th></tr></thead><tbody><tr><td>Setup proposes a profile</td><td>Whether the profile is right</td></tr><tr><td>A contract or an epic plan reaches its gate</td><td>Whether to approve the plan</td></tr><tr><td>The change shows on screen</td><td>Whether the screenshots look right</td></tr><tr><td>A reviewer finds a critical problem</td><td>How to continue</td></tr><tr><td>A point of the contract must change</td><td>Whether the scope changes</td></tr><tr><td>The pull request is ready</td><td>To merge it</td></tr><tr><td>The final check cannot find proof</td><td>Whether to accept the point or not</td></tr></tbody></table>
+<p>When a run stops, it leaves a comment on the issue, sets the issue to <strong>Blocked</strong> and asks one question. The run continues from the same step once you answer.</p>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="references">References<a href="#references" class="hash-link" aria-label="Direct link to References" title="Direct link to References" translate="no">​</a></h2>
+<ul>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-setup</a> — Prepares a repository for the pipeline</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-plan-project</a> — Files the epic and stories of a project</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-plan-epic</a> — Splits an epic into stories</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-plan-issue</a> — Turns one issue into an approved contract</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-issue</a> — Builds one issue from its contract</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-epic</a> — Runs every story of an epic in order</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-pr</a> — Opens the pull request and waits for the checks</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-qa</a> — Checks a merged issue and closes it</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-groom</a> — Sorts the open backlog</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-dispatch</a> — Plans and launches the issues that are ready</li>
+<li class=""><a class="" aria-disabled="true" style="cursor: default;">adp-queue</a> — Works a to-do queue one issue at a time</li>
+</ul>
+<hr>
+<details class="details_lb9f isBrowser_bmU9 alert alert--info details_b_Ee" data-collapsed="true"><summary>Change Log</summary><div style=""><div class="collapsibleContent_i85q"><table><thead><tr><th>Date</th><th>Author</th><th>Change</th></tr></thead><tbody><tr><td>2026-11-26</td><td>Juan Arce</td><td>Initial version</td></tr></tbody></table></div></div></details></div><details class="details_lb9f isBrowser_bmU9 alert alert--info details_b_Ee metadata_wGKW" data-collapsed="true"><summary>Document Info</summary><div><div class="collapsibleContent_i85q"><dl class="list_BnA7"><div class="row_Doa2"><dt class="label_raXY">Type</dt><dd class="value_wI0E">Reference</dd></div><div class="row_Doa2"><dt class="label_raXY">Audience</dt><dd class="value_wI0E">Developers using the Autonomous Dev Pipeline</dd></div><div class="row_Doa2"><dt class="label_raXY">Status</dt><dd class="value_wI0E">Draft</dd></div><div class="row_Doa2"><dt class="label_raXY">Last Updated</dt><dd class="value_wI0E">2026-11-26</dd></div></dl></div></div></details><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/razorvision/clara-studio-docs/edit/main/docs/adp/how-adp-works.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" aria-disabled="true" style="cursor: default;"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Leads</div></a><a class="pagination-nav__link pagination-nav__link--next" aria-disabled="true" style="cursor: default;"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">adp-setup</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#overview" class="table-of-contents__link toc-highlight">Overview</a></li><li><a href="#table-of-contents" class="table-of-contents__link toc-highlight table-of-contents__link--active">Table of Contents</a></li><li><a href="#the-whole-process" class="table-of-contents__link toc-highlight">The Whole Process</a></li><li><a href="#words-to-know" class="table-of-contents__link toc-highlight">Words to Know</a></li><li><a href="#step-1-prepare-the-repository" class="table-of-contents__link toc-highlight">Step 1: Prepare the Repository</a></li><li><a href="#step-2-turn-the-project-into-issues" class="table-of-contents__link toc-highlight">Step 2: Turn the Project into Issues</a></li><li><a href="#step-3-plan-the-epic" class="table-of-contents__link toc-highlight">Step 3: Plan the Epic</a></li><li><a href="#step-4-plan-the-issue" class="table-of-contents__link toc-highlight">Step 4: Plan the Issue</a></li><li><a href="#step-5-build-the-issue" class="table-of-contents__link toc-highlight">Step 5: Build the Issue</a></li><li><a href="#step-6-open-the-pull-request" class="table-of-contents__link toc-highlight">Step 6: Open the Pull Request</a></li><li><a href="#step-7-check-and-close" class="table-of-contents__link toc-highlight">Step 7: Check and Close</a></li><li><a href="#one-issue-or-a-whole-epic" class="table-of-contents__link toc-highlight">One Issue or a Whole Epic</a></li><li><a href="#keeping-the-work-moving" class="table-of-contents__link toc-highlight">Keeping the Work Moving</a></li><li><a href="#where-a-person-decides" class="table-of-contents__link toc-highlight">Where a Person Decides</a></li><li><a href="#references" class="table-of-contents__link toc-highlight">References</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 Razorvision.</div></div></div></footer></div><style>[data-theme=dark] img[class*="themedComponent--light"]{display:initial!important}</style>
+<a href="../" style="position:fixed;right:16px;bottom:16px;z-index:999;background:#101828;color:#fff;padding:8px 14px;border-radius:999px;font:600 13px system-ui,sans-serif;text-decoration:none">← All mock-ups</a>
+<script>document.addEventListener('click',function(e){var b=e.target.closest('button[class*="toggleButton"]');if(!b)return;var r=document.documentElement,d=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',d);r.setAttribute('data-theme-choice',d);});</script>
+</body></html>

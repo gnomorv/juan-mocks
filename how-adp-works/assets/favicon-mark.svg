@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Clara Learning favicon — the design doc's own "app icon 32px" spec for concept
+  1b: a #16161e (rv-darker) rounded square, radius 8, holding the three ascending
+  bars at 4x8 / 4x12 / 4x16 with a 2px gap and 8px bottom padding. Faded bars are
+  #43B6E7 at 0.4 / 0.7; the tallest is solid #6BC9F0.
+
+  Bars are centred horizontally (16px of bars in a 32px box, so x starts at 8) and
+  each is skewed about its own centre, as in the full mark.
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 32 32"
+  width="32"
+  height="32"
+  role="img"
+  aria-label="User Guide">
+  <rect width="32" height="32" rx="8" fill="#16161e" />
+  <rect
+    x="8" y="16" width="4" height="8" rx="1"
+    fill="#43B6E7" opacity="0.4"
+    transform="translate(10 20) skewX(-12) translate(-10 -20)" />
+  <rect
+    x="14" y="12" width="4" height="12" rx="1"
+    fill="#43B6E7" opacity="0.7"
+    transform="translate(16 18) skewX(-12) translate(-16 -18)" />
+  <rect
+    x="20" y="8" width="4" height="16" rx="1"
+    fill="#6BC9F0"
+    transform="translate(22 16) skewX(-12) translate(-22 -16)" />
+</svg>

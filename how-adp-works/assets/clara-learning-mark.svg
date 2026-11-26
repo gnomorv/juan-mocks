@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Clara Learning mark — concept 1b "Ascending slashes", light-theme variant.
+  Ported from the Clara Learning Logo Concepts design doc (claude.ai/design).
+
+  Three bars, bottom-aligned: 9x17 / 9x25 / 9x34 with a 5px gap, radius 1,
+  opacity 0.4 / 0.7 / 1.0, each filled with a vertical #43B6E7 -> #2A9FD0
+  gradient. Every bar is skewed skewX(-12deg) about its OWN centre, matching how
+  CSS `transform: skewX(-12deg)` behaves with the default 50% 50% origin — a
+  single skew about y=0 would shear the group sideways instead.
+  The viewBox is widened to -2..41 to hold the skew overhang.
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="-2 0 43 34"
+  width="43"
+  height="34"
+  role="img"
+  aria-label="User Guide">
+  <defs>
+    <linearGradient id="clSlashLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#43B6E7" />
+      <stop offset="1" stop-color="#2A9FD0" />
+    </linearGradient>
+  </defs>
+  <rect
+    x="0" y="17" width="9" height="17" rx="1"
+    fill="url(#clSlashLight)" opacity="0.4"
+    transform="translate(4.5 25.5) skewX(-12) translate(-4.5 -25.5)" />
+  <rect
+    x="14" y="9" width="9" height="25" rx="1"
+    fill="url(#clSlashLight)" opacity="0.7"
+    transform="translate(18.5 21.5) skewX(-12) translate(-18.5 -21.5)" />
+  <rect
+    x="28" y="0" width="9" height="34" rx="1"
+    fill="url(#clSlashLight)"
+    transform="translate(32.5 17) skewX(-12) translate(-32.5 -17)" />
+</svg>
